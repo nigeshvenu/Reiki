@@ -7,29 +7,42 @@
 
 import UIKit
 import CoreData
+import IQKeyboardManagerSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
+    var window: UIWindow?
+    var progressVC : ActivityVC?
+    var orientation: UIInterfaceOrientationMask = .portrait
+    static let shared = UIApplication.shared.delegate as! AppDelegate
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return orientation
+    }
+    
+    func showLoading(isShow: Bool) {
+        if isShow {
+            // Remove progress view if already exist
+            if progressVC != nil {
+                progressVC?.view.removeFromSuperview()
+                progressVC = nil
+            }
+            progressVC = ActivityVC.viewController()
+            if let rootVC = UIWindow.key {
+                rootVC.addSubview((progressVC?.view)!)
+            }
+        } else {
+            if progressVC != nil {
+                progressVC?.view.removeFromSuperview()
+            }
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        application.delegate = self
+        IQKeyboardManager.shared.enable = true
         return true
-    }
-
-    // MARK: UISceneSession Lifecycle
-
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
-    }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
     // MARK: - Core Data stack

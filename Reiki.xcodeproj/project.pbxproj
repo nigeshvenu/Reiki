@@ -7,25 +7,159 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		586CC12728AFAF4D00E8D6A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586CC12628AFAF4D00E8D6A5 /* GradientView.swift */; };
+		587781FF28CB1E36003E219E /* ChangeMobileNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587781FE28CB1E36003E219E /* ChangeMobileNumberVC.swift */; };
+		5877820128CB2021003E219E /* OtpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5877820028CB2021003E219E /* OtpVC.swift */; };
+		587971D628BF302F001A282D /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587971D528BF302F001A282D /* SideMenuVC.swift */; };
+		587971D828BF375D001A282D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587971D728BF375D001A282D /* OptionsTVC.swift */; };
+		5887FD6728C72604000400D2 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6628C72604000400D2 /* EditProfileVC.swift */; };
+		5887FD6928C7361C000400D2 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */; };
+		5887FD6B28C76CE5000400D2 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6A28C76CE5000400D2 /* SplashVC.swift */; };
 		5888583828AE62C7008BA58D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5888583728AE62C7008BA58D /* AppDelegate.swift */; };
-		5888583A28AE62C7008BA58D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5888583928AE62C7008BA58D /* SceneDelegate.swift */; };
 		5888583C28AE62C7008BA58D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5888583B28AE62C7008BA58D /* ViewController.swift */; };
 		5888583F28AE62C7008BA58D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5888583D28AE62C7008BA58D /* Main.storyboard */; };
 		5888584228AE62C7008BA58D /* Reiki.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5888584028AE62C7008BA58D /* Reiki.xcdatamodeld */; };
 		5888584428AE62C8008BA58D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5888584328AE62C8008BA58D /* Assets.xcassets */; };
-		5888584728AE62C8008BA58D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5888584528AE62C8008BA58D /* LaunchScreen.storyboard */; };
+		588C1E1F28CF1A9D00DB978D /* countryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 588C1E1E28CF1A9D00DB978D /* countryCodes.json */; };
+		588CD69928CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68628CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf */; };
+		588CD69A28CEFE3400DF3EA1 /* Montserrat-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68728CEFE3400DF3EA1 /* Montserrat-Bold.otf */; };
+		588CD69B28CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68828CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf */; };
+		588CD69C28CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68928CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf */; };
+		588CD69D28CEFE3400DF3EA1 /* Montserrat-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68A28CEFE3400DF3EA1 /* Montserrat-Light.otf */; };
+		588CD69E28CEFE3400DF3EA1 /* Montserrat-ThinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68B28CEFE3400DF3EA1 /* Montserrat-ThinItalic.otf */; };
+		588CD69F28CEFE3400DF3EA1 /* Montserrat-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68C28CEFE3400DF3EA1 /* Montserrat-Thin.otf */; };
+		588CD6A028CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68D28CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf */; };
+		588CD6A128CEFE3400DF3EA1 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68E28CEFE3400DF3EA1 /* Montserrat-Bold.ttf */; };
+		588CD6A228CEFE3400DF3EA1 /* Montserrat-LightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68F28CEFE3400DF3EA1 /* Montserrat-LightItalic.otf */; };
+		588CD6A328CEFE3400DF3EA1 /* Montserrat-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69028CEFE3400DF3EA1 /* Montserrat-Medium.otf */; };
+		588CD6A428CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69128CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf */; };
+		588CD6A528CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69228CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf */; };
+		588CD6A628CEFE3400DF3EA1 /* Montserrat-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69328CEFE3400DF3EA1 /* Montserrat-Italic.otf */; };
+		588CD6A728CEFE3400DF3EA1 /* Montserrat-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69428CEFE3400DF3EA1 /* Montserrat-Regular.otf */; };
+		588CD6A828CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69528CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf */; };
+		588CD6A928CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69628CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf */; };
+		588CD6AA28CEFE3400DF3EA1 /* Montserrat-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69728CEFE3400DF3EA1 /* Montserrat-Black.otf */; };
+		588CD6AB28CEFE3400DF3EA1 /* Montserrat-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD69828CEFE3400DF3EA1 /* Montserrat-SemiBold.otf */; };
+		588CD6AD28CF08AF00DF3EA1 /* CountryCallingCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588CD6AC28CF08AF00DF3EA1 /* CountryCallingCode.swift */; };
+		58934FAA28D1E51F00793F10 /* PopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58934FA928D1E51F00793F10 /* PopUpVC.swift */; };
+		58934FAC28D1F14E00793F10 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58934FAB28D1F14E00793F10 /* ShadowView.swift */; };
+		58AD18FF28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */; };
+		58AD190128CB590500A4F715 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD190028CB590500A4F715 /* WebViewVC.swift */; };
+		58C2E52828CF675900CD3A38 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */; };
+		58D3E70328CF66C800766A82 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70028CF66C700766A82 /* splash.png */; };
+		58D3E70428CF66C800766A82 /* splash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70128CF66C700766A82 /* splash@3x.png */; };
+		58D3E70528CF66C800766A82 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70228CF66C700766A82 /* splash@2x.png */; };
+		58EB904728BDD71F007DD261 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904628BDD71F007DD261 /* ApiHelper.swift */; };
+		58EB904928BDD756007DD261 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904828BDD756007DD261 /* RequestManager.swift */; };
+		58EB904B28BDD778007DD261 /* APIResponseParserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904A28BDD778007DD261 /* APIResponseParserHelper.swift */; };
+		58EB904E28BDD90B007DD261 /* UserModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904D28BDD90B007DD261 /* UserModal.swift */; };
+		58EB905128BDD949007DD261 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905028BDD949007DD261 /* LoginVM.swift */; };
+		58EB905328BDD97C007DD261 /* UserDefaultsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905228BDD97C007DD261 /* UserDefaultsHelper.swift */; };
+		58EB905528BDDABF007DD261 /* ActivityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905428BDDABF007DD261 /* ActivityVC.swift */; };
+		58EB905728BDDCD8007DD261 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905628BDDCD8007DD261 /* Extensions.swift */; };
+		58EB905928BDDD19007DD261 /* SignupVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905828BDDD19007DD261 /* SignupVM.swift */; };
+		58EB905C28BDED3A007DD261 /* CharacterCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905B28BDED3A007DD261 /* CharacterCVC.swift */; };
+		58EB905E28BE14F9007DD261 /* SignupSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905D28BE14F9007DD261 /* SignupSuccessVC.swift */; };
+		58EB906028BE1A35007DD261 /* LoginPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB905F28BE1A35007DD261 /* LoginPageVC.swift */; };
+		58EB906228BE2663007DD261 /* HomePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB906128BE2663007DD261 /* HomePageVC.swift */; };
+		58ECA1FA28C5E108003332D6 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58ECA1F928C5E108003332D6 /* ProfileVC.swift */; };
+		58F3912B28CAF6BE009B4776 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F3912A28CAF6BE009B4776 /* ImagePicker.swift */; };
+		58F3912D28CAF7DF009B4776 /* EditProfileVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F3912C28CAF7DF009B4776 /* EditProfileVM.swift */; };
+		58F3912F28CAFAC5009B4776 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F3912E28CAFAC5009B4776 /* CustomImageView.swift */; };
+		58F8E6D828B7517000EBC659 /* FontHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6D728B7517000EBC659 /* FontHelper.swift */; };
+		58F8E6DB28B75B3B00EBC659 /* ColorExtensionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6DA28B75B3B00EBC659 /* ColorExtensionHelper.swift */; };
+		58F8E6DD28B75D0000EBC659 /* ValidationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6DC28B75D0000EBC659 /* ValidationHelper.swift */; };
+		58F8E6DF28B75E2200EBC659 /* SwiftMessagesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6DE28B75E2200EBC659 /* SwiftMessagesHelper.swift */; };
+		58F8E6E128B75E4B00EBC659 /* MessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6E028B75E4B00EBC659 /* MessageHelper.swift */; };
+		58F8E6E328B75FF800EBC659 /* SignupOtpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6E228B75FF800EBC659 /* SignupOtpVC.swift */; };
+		58F8E6E728B7604E00EBC659 /* OTPFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6E528B7604E00EBC659 /* OTPFieldView.swift */; };
+		58F8E6E828B7604E00EBC659 /* OTPTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6E628B7604E00EBC659 /* OTPTextField.swift */; };
+		58F8E6EA28B7606E00EBC659 /* VCExtensionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6E928B7606E00EBC659 /* VCExtensionHelper.swift */; };
+		58F8E6EC28B7994A00EBC659 /* SignupSetPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6EB28B7994A00EBC659 /* SignupSetPasswordVC.swift */; };
+		58F8E6EE28B79A4700EBC659 /* SignupAboutMeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6ED28B79A4700EBC659 /* SignupAboutMeVC.swift */; };
+		58F8E6F028B79B7400EBC659 /* SignupCharacterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F8E6EF28B79B7400EBC659 /* SignupCharacterVC.swift */; };
+		58FC79D528C5D1EA00426EF8 /* ForgotPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FC79D428C5D1EA00426EF8 /* ForgotPasswordVC.swift */; };
+		E6F111A59057949F879594A5 /* Pods_Reiki.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B86E8B652DFB3063E6B7DD73 /* Pods_Reiki.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		297A5A0007D973D5E86302F0 /* Pods-Reiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reiki.release.xcconfig"; path = "Target Support Files/Pods-Reiki/Pods-Reiki.release.xcconfig"; sourceTree = "<group>"; };
+		586CC12628AFAF4D00E8D6A5 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		587781FE28CB1E36003E219E /* ChangeMobileNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMobileNumberVC.swift; sourceTree = "<group>"; };
+		5877820028CB2021003E219E /* OtpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtpVC.swift; sourceTree = "<group>"; };
+		587971D528BF302F001A282D /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
+		587971D728BF375D001A282D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
+		5887FD6628C72604000400D2 /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
+		5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
+		5887FD6A28C76CE5000400D2 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
 		5888583428AE62C7008BA58D /* Reiki.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reiki.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5888583728AE62C7008BA58D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5888583928AE62C7008BA58D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5888583B28AE62C7008BA58D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5888583E28AE62C7008BA58D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5888584128AE62C7008BA58D /* Reiki.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Reiki.xcdatamodel; sourceTree = "<group>"; };
 		5888584328AE62C8008BA58D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5888584628AE62C8008BA58D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5888584828AE62C8008BA58D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		588C1E1E28CF1A9D00DB978D /* countryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countryCodes.json; sourceTree = "<group>"; };
+		588CD68628CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.otf"; sourceTree = "<group>"; };
+		588CD68728CEFE3400DF3EA1 /* Montserrat-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.otf"; sourceTree = "<group>"; };
+		588CD68828CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BlackItalic.otf"; sourceTree = "<group>"; };
+		588CD68928CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BoldItalic.otf"; sourceTree = "<group>"; };
+		588CD68A28CEFE3400DF3EA1 /* Montserrat-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.otf"; sourceTree = "<group>"; };
+		588CD68B28CEFE3400DF3EA1 /* Montserrat-ThinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ThinItalic.otf"; sourceTree = "<group>"; };
+		588CD68C28CEFE3400DF3EA1 /* Montserrat-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Thin.otf"; sourceTree = "<group>"; };
+		588CD68D28CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLight.otf"; sourceTree = "<group>"; };
+		588CD68E28CEFE3400DF3EA1 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
+		588CD68F28CEFE3400DF3EA1 /* Montserrat-LightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-LightItalic.otf"; sourceTree = "<group>"; };
+		588CD69028CEFE3400DF3EA1 /* Montserrat-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Medium.otf"; sourceTree = "<group>"; };
+		588CD69128CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBoldItalic.otf"; sourceTree = "<group>"; };
+		588CD69228CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBoldItalic.otf"; sourceTree = "<group>"; };
+		588CD69328CEFE3400DF3EA1 /* Montserrat-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Italic.otf"; sourceTree = "<group>"; };
+		588CD69428CEFE3400DF3EA1 /* Montserrat-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.otf"; sourceTree = "<group>"; };
+		588CD69528CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraBold.otf"; sourceTree = "<group>"; };
+		588CD69628CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.otf"; sourceTree = "<group>"; };
+		588CD69728CEFE3400DF3EA1 /* Montserrat-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.otf"; sourceTree = "<group>"; };
+		588CD69828CEFE3400DF3EA1 /* Montserrat-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-SemiBold.otf"; sourceTree = "<group>"; };
+		588CD6AC28CF08AF00DF3EA1 /* CountryCallingCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCallingCode.swift; sourceTree = "<group>"; };
+		58934FA928D1E51F00793F10 /* PopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpVC.swift; sourceTree = "<group>"; };
+		58934FAB28D1F14E00793F10 /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordSetPwdVC.swift; sourceTree = "<group>"; };
+		58AD190028CB590500A4F715 /* WebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
+		58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		58D3E70028CF66C700766A82 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
+		58D3E70128CF66C700766A82 /* splash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@3x.png"; sourceTree = "<group>"; };
+		58D3E70228CF66C700766A82 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
+		58EB904628BDD71F007DD261 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
+		58EB904828BDD756007DD261 /* RequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
+		58EB904A28BDD778007DD261 /* APIResponseParserHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponseParserHelper.swift; sourceTree = "<group>"; };
+		58EB904D28BDD90B007DD261 /* UserModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModal.swift; sourceTree = "<group>"; };
+		58EB905028BDD949007DD261 /* LoginVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
+		58EB905228BDD97C007DD261 /* UserDefaultsHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsHelper.swift; sourceTree = "<group>"; };
+		58EB905428BDDABF007DD261 /* ActivityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityVC.swift; sourceTree = "<group>"; };
+		58EB905628BDDCD8007DD261 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		58EB905828BDDD19007DD261 /* SignupVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupVM.swift; sourceTree = "<group>"; };
+		58EB905B28BDED3A007DD261 /* CharacterCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterCVC.swift; sourceTree = "<group>"; };
+		58EB905D28BE14F9007DD261 /* SignupSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSuccessVC.swift; sourceTree = "<group>"; };
+		58EB905F28BE1A35007DD261 /* LoginPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPageVC.swift; sourceTree = "<group>"; };
+		58EB906128BE2663007DD261 /* HomePageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageVC.swift; sourceTree = "<group>"; };
+		58ECA1F928C5E108003332D6 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
+		58F3912A28CAF6BE009B4776 /* ImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		58F3912C28CAF7DF009B4776 /* EditProfileVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVM.swift; sourceTree = "<group>"; };
+		58F3912E28CAFAC5009B4776 /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
+		58F8E6D728B7517000EBC659 /* FontHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontHelper.swift; sourceTree = "<group>"; };
+		58F8E6DA28B75B3B00EBC659 /* ColorExtensionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtensionHelper.swift; sourceTree = "<group>"; };
+		58F8E6DC28B75D0000EBC659 /* ValidationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidationHelper.swift; sourceTree = "<group>"; };
+		58F8E6DE28B75E2200EBC659 /* SwiftMessagesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftMessagesHelper.swift; sourceTree = "<group>"; };
+		58F8E6E028B75E4B00EBC659 /* MessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageHelper.swift; sourceTree = "<group>"; };
+		58F8E6E228B75FF800EBC659 /* SignupOtpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOtpVC.swift; sourceTree = "<group>"; };
+		58F8E6E528B7604E00EBC659 /* OTPFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPFieldView.swift; sourceTree = "<group>"; };
+		58F8E6E628B7604E00EBC659 /* OTPTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextField.swift; sourceTree = "<group>"; };
+		58F8E6E928B7606E00EBC659 /* VCExtensionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCExtensionHelper.swift; sourceTree = "<group>"; };
+		58F8E6EB28B7994A00EBC659 /* SignupSetPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupSetPasswordVC.swift; sourceTree = "<group>"; };
+		58F8E6ED28B79A4700EBC659 /* SignupAboutMeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupAboutMeVC.swift; sourceTree = "<group>"; };
+		58F8E6EF28B79B7400EBC659 /* SignupCharacterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupCharacterVC.swift; sourceTree = "<group>"; };
+		58FC79D428C5D1EA00426EF8 /* ForgotPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordVC.swift; sourceTree = "<group>"; };
+		B86E8B652DFB3063E6B7DD73 /* Pods_Reiki.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Reiki.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C36ED378A5ED12831483DF39 /* Pods-Reiki.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reiki.debug.xcconfig"; path = "Target Support Files/Pods-Reiki/Pods-Reiki.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +167,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6F111A59057949F879594A5 /* Pods_Reiki.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A5B8C256FEA03EBCC37EB77 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B86E8B652DFB3063E6B7DD73 /* Pods_Reiki.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5888582B28AE62C7008BA58D = {
 			isa = PBXGroup;
 			children = (
 				5888583628AE62C7008BA58D /* Reiki */,
 				5888583528AE62C7008BA58D /* Products */,
+				6E33BE85B5B2979C5F8D5523 /* Pods */,
+				0A5B8C256FEA03EBCC37EB77 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,16 +203,146 @@
 		5888583628AE62C7008BA58D /* Reiki */ = {
 			isa = PBXGroup;
 			children = (
+				58EB905A28BDED0B007DD261 /* View */,
+				58EB904F28BDD91D007DD261 /* ViewModal */,
+				58EB904C28BDD8F6007DD261 /* Model */,
 				5888583728AE62C7008BA58D /* AppDelegate.swift */,
-				5888583928AE62C7008BA58D /* SceneDelegate.swift */,
+				5887FD6A28C76CE5000400D2 /* SplashVC.swift */,
+				58EB905F28BE1A35007DD261 /* LoginPageVC.swift */,
 				5888583B28AE62C7008BA58D /* ViewController.swift */,
+				58F8E6E228B75FF800EBC659 /* SignupOtpVC.swift */,
+				58F8E6EB28B7994A00EBC659 /* SignupSetPasswordVC.swift */,
+				58F8E6ED28B79A4700EBC659 /* SignupAboutMeVC.swift */,
+				58F8E6EF28B79B7400EBC659 /* SignupCharacterVC.swift */,
+				58EB905D28BE14F9007DD261 /* SignupSuccessVC.swift */,
+				58FC79D428C5D1EA00426EF8 /* ForgotPasswordVC.swift */,
+				58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */,
+				58EB905428BDDABF007DD261 /* ActivityVC.swift */,
+				58EB906128BE2663007DD261 /* HomePageVC.swift */,
+				587971D528BF302F001A282D /* SideMenuVC.swift */,
+				58ECA1F928C5E108003332D6 /* ProfileVC.swift */,
+				5887FD6628C72604000400D2 /* EditProfileVC.swift */,
+				5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */,
+				587781FE28CB1E36003E219E /* ChangeMobileNumberVC.swift */,
+				5877820028CB2021003E219E /* OtpVC.swift */,
+				58AD190028CB590500A4F715 /* WebViewVC.swift */,
+				58934FA928D1E51F00793F10 /* PopUpVC.swift */,
+				58F8E6D928B75A2000EBC659 /* Resources */,
+				58F8E6D628B7515B00EBC659 /* Helper */,
 				5888583D28AE62C7008BA58D /* Main.storyboard */,
+				58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */,
 				5888584328AE62C8008BA58D /* Assets.xcassets */,
-				5888584528AE62C8008BA58D /* LaunchScreen.storyboard */,
 				5888584828AE62C8008BA58D /* Info.plist */,
 				5888584028AE62C7008BA58D /* Reiki.xcdatamodeld */,
 			);
 			path = Reiki;
+			sourceTree = "<group>";
+		};
+		588CD68528CEFE3400DF3EA1 /* montserrat */ = {
+			isa = PBXGroup;
+			children = (
+				588CD68628CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf */,
+				588CD68728CEFE3400DF3EA1 /* Montserrat-Bold.otf */,
+				588CD68828CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf */,
+				588CD68928CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf */,
+				588CD68A28CEFE3400DF3EA1 /* Montserrat-Light.otf */,
+				588CD68B28CEFE3400DF3EA1 /* Montserrat-ThinItalic.otf */,
+				588CD68C28CEFE3400DF3EA1 /* Montserrat-Thin.otf */,
+				588CD68D28CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf */,
+				588CD68E28CEFE3400DF3EA1 /* Montserrat-Bold.ttf */,
+				588CD68F28CEFE3400DF3EA1 /* Montserrat-LightItalic.otf */,
+				588CD69028CEFE3400DF3EA1 /* Montserrat-Medium.otf */,
+				588CD69128CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf */,
+				588CD69228CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf */,
+				588CD69328CEFE3400DF3EA1 /* Montserrat-Italic.otf */,
+				588CD69428CEFE3400DF3EA1 /* Montserrat-Regular.otf */,
+				588CD69528CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf */,
+				588CD69628CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf */,
+				588CD69728CEFE3400DF3EA1 /* Montserrat-Black.otf */,
+				588CD69828CEFE3400DF3EA1 /* Montserrat-SemiBold.otf */,
+			);
+			path = montserrat;
+			sourceTree = "<group>";
+		};
+		58EB904C28BDD8F6007DD261 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				58EB904D28BDD90B007DD261 /* UserModal.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		58EB904F28BDD91D007DD261 /* ViewModal */ = {
+			isa = PBXGroup;
+			children = (
+				58EB905828BDDD19007DD261 /* SignupVM.swift */,
+				58EB905028BDD949007DD261 /* LoginVM.swift */,
+				58F3912C28CAF7DF009B4776 /* EditProfileVM.swift */,
+			);
+			path = ViewModal;
+			sourceTree = "<group>";
+		};
+		58EB905A28BDED0B007DD261 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				58EB905B28BDED3A007DD261 /* CharacterCVC.swift */,
+				587971D728BF375D001A282D /* OptionsTVC.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		58F8E6D628B7515B00EBC659 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				588CD6AC28CF08AF00DF3EA1 /* CountryCallingCode.swift */,
+				58F8E6E928B7606E00EBC659 /* VCExtensionHelper.swift */,
+				58F8E6E428B7604E00EBC659 /* OTPFieldView */,
+				58EB905628BDDCD8007DD261 /* Extensions.swift */,
+				58EB905228BDD97C007DD261 /* UserDefaultsHelper.swift */,
+				58EB904A28BDD778007DD261 /* APIResponseParserHelper.swift */,
+				58EB904828BDD756007DD261 /* RequestManager.swift */,
+				58EB904628BDD71F007DD261 /* ApiHelper.swift */,
+				58F8E6D728B7517000EBC659 /* FontHelper.swift */,
+				58F8E6DA28B75B3B00EBC659 /* ColorExtensionHelper.swift */,
+				58F8E6DC28B75D0000EBC659 /* ValidationHelper.swift */,
+				58F8E6DE28B75E2200EBC659 /* SwiftMessagesHelper.swift */,
+				58F8E6E028B75E4B00EBC659 /* MessageHelper.swift */,
+				58F3912A28CAF6BE009B4776 /* ImagePicker.swift */,
+				586CC12628AFAF4D00E8D6A5 /* GradientView.swift */,
+				58F3912E28CAFAC5009B4776 /* CustomImageView.swift */,
+				58934FAB28D1F14E00793F10 /* ShadowView.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		58F8E6D928B75A2000EBC659 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				58D3E70028CF66C700766A82 /* splash.png */,
+				58D3E70228CF66C700766A82 /* splash@2x.png */,
+				58D3E70128CF66C700766A82 /* splash@3x.png */,
+				588C1E1E28CF1A9D00DB978D /* countryCodes.json */,
+				588CD68528CEFE3400DF3EA1 /* montserrat */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		58F8E6E428B7604E00EBC659 /* OTPFieldView */ = {
+			isa = PBXGroup;
+			children = (
+				58F8E6E528B7604E00EBC659 /* OTPFieldView.swift */,
+				58F8E6E628B7604E00EBC659 /* OTPTextField.swift */,
+			);
+			path = OTPFieldView;
+			sourceTree = "<group>";
+		};
+		6E33BE85B5B2979C5F8D5523 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C36ED378A5ED12831483DF39 /* Pods-Reiki.debug.xcconfig */,
+				297A5A0007D973D5E86302F0 /* Pods-Reiki.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,9 +352,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5888584B28AE62C8008BA58D /* Build configuration list for PBXNativeTarget "Reiki" */;
 			buildPhases = (
+				032F8A1F18D7A19A0DEDFE3A /* [CP] Check Pods Manifest.lock */,
 				5888583028AE62C7008BA58D /* Sources */,
 				5888583128AE62C7008BA58D /* Frameworks */,
 				5888583228AE62C7008BA58D /* Resources */,
+				7E602B7A66EAA3A2EDB33A86 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -128,23 +405,130 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5888584728AE62C8008BA58D /* LaunchScreen.storyboard in Resources */,
+				588CD69A28CEFE3400DF3EA1 /* Montserrat-Bold.otf in Resources */,
+				588C1E1F28CF1A9D00DB978D /* countryCodes.json in Resources */,
+				588CD69B28CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf in Resources */,
+				588CD6A428CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf in Resources */,
+				58C2E52828CF675900CD3A38 /* Launch Screen.storyboard in Resources */,
+				588CD69928CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf in Resources */,
+				588CD69C28CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf in Resources */,
+				588CD6A328CEFE3400DF3EA1 /* Montserrat-Medium.otf in Resources */,
+				588CD6AB28CEFE3400DF3EA1 /* Montserrat-SemiBold.otf in Resources */,
+				588CD6A828CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf in Resources */,
+				588CD69F28CEFE3400DF3EA1 /* Montserrat-Thin.otf in Resources */,
+				58D3E70528CF66C800766A82 /* splash@2x.png in Resources */,
+				588CD6A628CEFE3400DF3EA1 /* Montserrat-Italic.otf in Resources */,
+				588CD6A028CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf in Resources */,
 				5888584428AE62C8008BA58D /* Assets.xcassets in Resources */,
+				588CD6A928CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf in Resources */,
+				588CD6AA28CEFE3400DF3EA1 /* Montserrat-Black.otf in Resources */,
+				588CD6A128CEFE3400DF3EA1 /* Montserrat-Bold.ttf in Resources */,
 				5888583F28AE62C7008BA58D /* Main.storyboard in Resources */,
+				588CD6A528CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf in Resources */,
+				588CD69D28CEFE3400DF3EA1 /* Montserrat-Light.otf in Resources */,
+				58D3E70328CF66C800766A82 /* splash.png in Resources */,
+				588CD6A228CEFE3400DF3EA1 /* Montserrat-LightItalic.otf in Resources */,
+				588CD69E28CEFE3400DF3EA1 /* Montserrat-ThinItalic.otf in Resources */,
+				58D3E70428CF66C800766A82 /* splash@3x.png in Resources */,
+				588CD6A728CEFE3400DF3EA1 /* Montserrat-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		032F8A1F18D7A19A0DEDFE3A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Reiki-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7E602B7A66EAA3A2EDB33A86 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Reiki/Pods-Reiki-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Reiki/Pods-Reiki-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Reiki/Pods-Reiki-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5888583028AE62C7008BA58D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58EB904B28BDD778007DD261 /* APIResponseParserHelper.swift in Sources */,
+				58F8E6E328B75FF800EBC659 /* SignupOtpVC.swift in Sources */,
+				58EB905C28BDED3A007DD261 /* CharacterCVC.swift in Sources */,
+				58F8E6D828B7517000EBC659 /* FontHelper.swift in Sources */,
+				58AD190128CB590500A4F715 /* WebViewVC.swift in Sources */,
+				58F8E6E728B7604E00EBC659 /* OTPFieldView.swift in Sources */,
+				587781FF28CB1E36003E219E /* ChangeMobileNumberVC.swift in Sources */,
+				58F8E6E128B75E4B00EBC659 /* MessageHelper.swift in Sources */,
+				58F8E6EC28B7994A00EBC659 /* SignupSetPasswordVC.swift in Sources */,
+				5887FD6928C7361C000400D2 /* ChangePasswordVC.swift in Sources */,
+				58F3912B28CAF6BE009B4776 /* ImagePicker.swift in Sources */,
+				58EB905928BDDD19007DD261 /* SignupVM.swift in Sources */,
+				58EB904E28BDD90B007DD261 /* UserModal.swift in Sources */,
+				58ECA1FA28C5E108003332D6 /* ProfileVC.swift in Sources */,
+				58F8E6DF28B75E2200EBC659 /* SwiftMessagesHelper.swift in Sources */,
+				58F8E6E828B7604E00EBC659 /* OTPTextField.swift in Sources */,
+				58F8E6DD28B75D0000EBC659 /* ValidationHelper.swift in Sources */,
+				58F8E6DB28B75B3B00EBC659 /* ColorExtensionHelper.swift in Sources */,
+				58EB905528BDDABF007DD261 /* ActivityVC.swift in Sources */,
+				58FC79D528C5D1EA00426EF8 /* ForgotPasswordVC.swift in Sources */,
+				588CD6AD28CF08AF00DF3EA1 /* CountryCallingCode.swift in Sources */,
+				58F3912D28CAF7DF009B4776 /* EditProfileVM.swift in Sources */,
+				5887FD6B28C76CE5000400D2 /* SplashVC.swift in Sources */,
+				587971D628BF302F001A282D /* SideMenuVC.swift in Sources */,
+				58F8E6EE28B79A4700EBC659 /* SignupAboutMeVC.swift in Sources */,
+				58EB906028BE1A35007DD261 /* LoginPageVC.swift in Sources */,
 				5888583C28AE62C7008BA58D /* ViewController.swift in Sources */,
+				58934FAA28D1E51F00793F10 /* PopUpVC.swift in Sources */,
+				58EB904728BDD71F007DD261 /* ApiHelper.swift in Sources */,
+				58F3912F28CAFAC5009B4776 /* CustomImageView.swift in Sources */,
+				58EB905128BDD949007DD261 /* LoginVM.swift in Sources */,
+				5887FD6728C72604000400D2 /* EditProfileVC.swift in Sources */,
+				58F8E6EA28B7606E00EBC659 /* VCExtensionHelper.swift in Sources */,
+				58EB905E28BE14F9007DD261 /* SignupSuccessVC.swift in Sources */,
+				58AD18FF28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift in Sources */,
 				5888583828AE62C7008BA58D /* AppDelegate.swift in Sources */,
+				58934FAC28D1F14E00793F10 /* ShadowView.swift in Sources */,
+				586CC12728AFAF4D00E8D6A5 /* GradientView.swift in Sources */,
+				5877820128CB2021003E219E /* OtpVC.swift in Sources */,
+				58EB905728BDDCD8007DD261 /* Extensions.swift in Sources */,
+				58EB905328BDD97C007DD261 /* UserDefaultsHelper.swift in Sources */,
+				58EB904928BDD756007DD261 /* RequestManager.swift in Sources */,
+				587971D828BF375D001A282D /* OptionsTVC.swift in Sources */,
+				58EB906228BE2663007DD261 /* HomePageVC.swift in Sources */,
+				58F8E6F028B79B7400EBC659 /* SignupCharacterVC.swift in Sources */,
 				5888584228AE62C7008BA58D /* Reiki.xcdatamodeld in Sources */,
-				5888583A28AE62C7008BA58D /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,14 +541,6 @@
 				5888583E28AE62C7008BA58D /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		5888584528AE62C8008BA58D /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5888584628AE62C8008BA58D /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -286,26 +662,34 @@
 		};
 		5888584C28AE62C8008BA58D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C36ED378A5ED12831483DF39 /* Pods-Reiki.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AWTTDM87PD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Reiki/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Reiki would like to use the camera so that you can capture and process images.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Reiki would like to use the photo library so that you can process images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki.Reiki;
+				MARKETING_VERSION = 0.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -314,26 +698,34 @@
 		};
 		5888584D28AE62C8008BA58D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 297A5A0007D973D5E86302F0 /* Pods-Reiki.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AWTTDM87PD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Reiki/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Reiki would like to use the camera so that you can capture and process images.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Reiki would like to use the photo library so that you can process images.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki.Reiki;
+				MARKETING_VERSION = 0.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
