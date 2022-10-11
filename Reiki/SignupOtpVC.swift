@@ -43,12 +43,12 @@ class SignupOtpVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.startTimer()
+        //self.startTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        self.stopTimer()
+        //self.stopTimer()
     }
     
     func initialSettings(){
@@ -168,7 +168,7 @@ extension SignupOtpVC{
         viewModal.resendOTP(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.otpResend, type: .success)
-            self.startTimer()
+            //self.startTimer()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)

@@ -6,10 +6,17 @@
 //
 
 import UIKit
+import Lottie
 
 class ActivityVC: UIViewController {
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var activityIndicatorView: UIView!
+    
+    private let animationView = AnimationView()
+    private var loopMode = LottieLoopMode.loop
+    private var fromProgress: AnimationProgressTime = 0
+    private var toProgress: AnimationProgressTime = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -17,9 +24,14 @@ class ActivityVC: UIViewController {
     }
     
     func initialSettings(){
-        activityIndicatorView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        activityIndicatorView.backgroundColor = UIColor.init(hexString: "#B3000000")
+        addLoader()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        playLoaderAnimation()
+    }
     /*
     // MARK: - Navigation
 
@@ -35,3 +47,26 @@ class ActivityVC: UIViewController {
 
 }
 
+extension ActivityVC{
+    
+    func addLoader(){
+        let animation = Animation.named("loader")
+        animationView.animation = animation
+        animationView.contentMode = .scaleAspectFit
+        view.addSubview(animationView)
+        animationView.loopMode = loopMode
+        animationView.isUserInteractionEnabled = false
+        animationView.backgroundBehavior = .stop
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            animationView.heightAnchor.constraint(equalToConstant: 140),
+            animationView.widthAnchor.constraint(equalToConstant: 140)
+           ])
+    }
+    
+    func playLoaderAnimation(){
+        animationView.play(fromProgress: fromProgress, toProgress: toProgress, loopMode: loopMode)
+    }
+}

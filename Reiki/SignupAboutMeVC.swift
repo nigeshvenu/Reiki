@@ -49,6 +49,7 @@ class SignupAboutMeVC: UIViewController {
             return
         }
         SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.aboutMeAdded, type: .success)
+        self.view.endEditing(true)
         let VC = self.getSignupCharacterVC()
         VC.firstName = self.firstName
         VC.lastName = self.lastName
@@ -57,6 +58,9 @@ class SignupAboutMeVC: UIViewController {
         VC.mobileNumber = self.mobileNumber
         VC.aboutMe = self.descriptionTxtView.textColor == textViewTextColor ? self.descriptionTxtView.text.trimmingCharacters(in: .whitespacesAndNewlines) : ""
         VC.password = self.password
+        //Clear textfield
+        descriptionTxtView.text = "Write something.."
+        descriptionTxtView.textColor = textViewPlaceholderColor
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
@@ -72,6 +76,7 @@ class SignupAboutMeVC: UIViewController {
 
 }
 
+
 extension SignupAboutMeVC : UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == textViewPlaceholderColor {
@@ -86,5 +91,11 @@ extension SignupAboutMeVC : UITextViewDelegate{
             textView.textColor = textViewPlaceholderColor
         }
     }
-
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 300    // 300 Limit Value
+    }
+    
 }

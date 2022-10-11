@@ -31,11 +31,19 @@ class ForgotPasswordVC: UIViewController {
         setTextfieldPadding(textfield: emailTxt)
         countryCodeTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         mobileTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: mobileTxt)
         setTextfieldPadding(textfield: mobileTxt)
         selectbtn(btn: mobileCheckBtn, selectedView: mobileView)
-        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "IN")
+        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "")
         //let countryCode = CountryCallingCode.countryNamesByCode(code: "IN")
         countryCodeTxt.text = countryCode
+    }
+    
+    func setPlaceholderColor(textfield:UITextField){
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
+        )
     }
     
     func setTextfieldPadding(textfield:UITextField){
@@ -196,7 +204,7 @@ extension ForgotPasswordVC{
            AppDelegate.shared.showLoading(isShow: false)
             self.view.endEditing(true)
             self.mobileTxt.text = ""
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: message, type: .success)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.otpSent, type: .success)
             let VC = self.getOtpVC()
             VC.VC = "forgotpassword"
             VC.isEditProfile = false

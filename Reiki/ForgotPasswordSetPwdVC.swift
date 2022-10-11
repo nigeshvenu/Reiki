@@ -25,9 +25,18 @@ class ForgotPasswordSetPwdVC: UIViewController {
     
     func initialSettings(){
         newPasswordTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: newPasswordTxt)
         setTextfieldPadding(textfield: newPasswordTxt)
         confirmPasswordTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: confirmPasswordTxt)
         setTextfieldPadding(textfield: confirmPasswordTxt)
+    }
+    
+    func setPlaceholderColor(textfield:UITextField){
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
+        )
     }
     
     func setTextfieldPadding(textfield:UITextField){

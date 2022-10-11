@@ -37,8 +37,7 @@ class LoginPageVC: UIViewController {
             string: "Password",
             attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
         )
-        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "IN")
-        //let countryCode = CountryCallingCode.countryNamesByCode(code: "IN")
+        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "")
         countryCodeTxt.text = countryCode
     }
     
@@ -99,6 +98,8 @@ class LoginPageVC: UIViewController {
     }
     
     func clearLogin(){
+        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "")
+        countryCodeTxt.text = countryCode
         self.mobileNumberTxt.text = ""
         self.passwordTxt.text = ""
         self.view.endEditing(true)

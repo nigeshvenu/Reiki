@@ -52,6 +52,7 @@ extension SplashVC{
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+            self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
         })
     }
 }

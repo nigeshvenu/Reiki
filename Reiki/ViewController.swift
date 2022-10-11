@@ -29,19 +29,30 @@ class ViewController: UIViewController {
     
     func initialSettings(){
         firstNameTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: firstNameTxt)
         setTextfieldPadding(textfield: firstNameTxt)
         lastNameTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: lastNameTxt)
         setTextfieldPadding(textfield: lastNameTxt)
         emailTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: emailTxt)
         setTextfieldPadding(textfield: emailTxt)
         mobileTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: mobileTxt)
         setTextfieldPadding(textfield: mobileTxt)
         countryCodeTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         //setTextfieldPadding(textfield: countryCodeTxt)
         setAgreementTextView()
-        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "IN")
+        let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "")
         //let countryCode = CountryCallingCode.countryNamesByCode(code: "IN")
         countryCodeTxt.text = countryCode
+    }
+    
+    func setPlaceholderColor(textfield:UITextField){
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
+        )
     }
     
     func setTextfieldPadding(textfield:UITextField){
@@ -76,7 +87,6 @@ class ViewController: UIViewController {
     @IBAction func backBtnClicked(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
-    
     
     @IBAction func signupBtnClicked(_ sender: Any) {
         if validateFieldValues(){
@@ -169,18 +179,14 @@ extension ViewController : UITextFieldDelegate{
 
         // add their new text to the existing text
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
-        
         if textField == firstNameTxt || textField == lastNameTxt{
             let regex = try! NSRegularExpression(pattern: "[a-zA-Z\\s]+", options: [])
             let range = regex.rangeOfFirstMatch(in: string, options: [], range: NSRange(location: 0, length: string.count))
-            return range.length == string.count
+            return range.length == string.count && updatedText.count <= 30
         }else if textField.keyboardType == .phonePad{
             // make sure the result is under 16 characters
             textField.text = format(with: "(XXX) XXX-XXXX", phone: updatedText)
             return false
-        }else if textField == firstNameTxt || textField == lastNameTxt{
-            // make sure the result is under 16 characters
-            return updatedText.count <= 30
         }
         return true
     }
@@ -243,12 +249,21 @@ extension ViewController{
         viewModal.validatePhone(urlParams: param, param: nil, onSuccess: { message in
            AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.otpSent, type: .success)
+            self.view.endEditing(true)
             let VC = self.getSignupOtpVC()
             VC.firstName = self.firstNameTxt.text ?? ""
             VC.lastName = self.lastNameTxt.text ?? ""
             VC.email = self.emailTxt.text ?? ""
             VC.countryCode = self.countryCodeTxt.text ?? ""
             VC.mobileNumber = self.mobileTxt.text ?? ""
+            //Clear Textfields
+            self.firstNameTxt.text = ""
+            self.lastNameTxt.text = ""
+            self.emailTxt.text = ""
+            let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "IN")
+            self.countryCodeTxt.text = countryCode
+            self.mobileTxt.text = ""
+            self.checkBtnClicked(self.checkBtn)
             self.navigationController?.pushViewController(VC, animated: true)
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

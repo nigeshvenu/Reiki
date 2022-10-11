@@ -31,9 +31,18 @@ class SignupSetPasswordVC: UIViewController {
     
     func initialSettings(){
         newPasswordTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: newPasswordTxt)
         setTextfieldPadding(textfield: newPasswordTxt)
         confirmPasswordTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: confirmPasswordTxt)
         setTextfieldPadding(textfield: confirmPasswordTxt)
+    }
+    
+    func setPlaceholderColor(textfield:UITextField){
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
+        )
     }
     
     func setTextfieldPadding(textfield:UITextField){
@@ -68,6 +77,7 @@ class SignupSetPasswordVC: UIViewController {
     @IBAction func continueBtnClicked(_ sender: Any) {
         if validateFieldValues(){
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.passwordAdded, type: .success)
+            self.view.endEditing(true)
             let VC = self.getSignupAboutMeVC()
             VC.firstName = self.firstName
             VC.lastName = self.lastName
@@ -75,6 +85,9 @@ class SignupSetPasswordVC: UIViewController {
             VC.countryCode = self.countryCode
             VC.mobileNumber = self.mobileNumber
             VC.password = self.newPasswordTxt.text!
+            //Clear textfield
+            self.newPasswordTxt.text = ""
+            self.confirmPasswordTxt.text = ""
             self.navigationController?.pushViewController(VC, animated: true)
         }
         

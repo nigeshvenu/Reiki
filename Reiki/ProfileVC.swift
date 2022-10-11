@@ -31,9 +31,12 @@ class ProfileVC: UIViewController {
     
     func initialSettings(){
         gradientView.roundCorners(cornerRadius: 20.0, cornerMask: [.layerMinXMaxYCorner,.layerMaxXMaxYCorner])
+        setUI()
+        //sidemenu
         SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
-        setUI()
+        sideMenuSettings()
+        SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
     }
     
     func setUI(){
@@ -55,6 +58,16 @@ class ProfileVC: UIViewController {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
+    func sideMenuSettings(){
+        var settings = SideMenuSettings()
+        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let minimumSize = min(appScreenRect.width, appScreenRect.height)
+        settings.menuWidth = round(minimumSize * 0.82)
+        settings.presentationStyle = .menuSlideIn
+        settings.presentationStyle.presentingEndAlpha = 0.5
+        SideMenuManager.default.leftMenuNavigationController?.settings = settings
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -67,21 +80,15 @@ class ProfileVC: UIViewController {
     // MARK: - Navigation
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         if segue.identifier == "sideMenu" {
+         //if segue.identifier == "sideMenu" {
              if let sideMenu = segue.destination as? SideMenuNavigationController{
                  if let rootVC = sideMenu.viewControllers.first as? SideMenuVC{
                      rootVC.delegate = self
                      rootVC.ParentNavigationController = self.navigationController
-                     var settings = SideMenuSettings()
-                     let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
-                     let minimumSize = min(appScreenRect.width, appScreenRect.height)
-                     settings.menuWidth = round(minimumSize * 0.82)
-                     settings.presentationStyle = .menuSlideIn
-                     settings.presentationStyle.presentingEndAlpha = 0.5
-                     SideMenuManager.default.leftMenuNavigationController?.settings = settings
+                     sideMenuSettings()
                  }
              }
-         }
+         //}
      }
 }
 
@@ -164,5 +171,28 @@ extension ProfileVC : SideMenuDelegate{
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
         self.goToLogin()
+    }
+}
+
+extension ProfileVC: SideMenuNavigationControllerDelegate {
+
+    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Appearing! (animated: \(animated))")
+    }
+
+    func sideMenuDidAppear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Appeared! (animated: \(animated))")
+        if let rootVC = menu.viewControllers.first as? SideMenuVC{
+            rootVC.delegate = self
+            rootVC.ParentNavigationController = self.navigationController
+        }
+    }
+
+    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Disappearing! (animated: \(animated))")
+    }
+
+    func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        print("SideMenu Disappeared! (animated: \(animated))")
     }
 }

@@ -45,13 +45,20 @@ class EditProfileVC: UIViewController {
         gradientView.roundCorners(cornerRadius: 20.0, cornerMask: [.layerMinXMaxYCorner,.layerMaxXMaxYCorner])
         imagePicker = ImagePicker(presentationController: self,editing: false, delegate: self)
         firstNameTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: firstNameTxt)
         lastNametxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: lastNametxt)
         emailTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: emailTxt)
         mobileNumberTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: mobileNumberTxt)
         mobileNumberTxt.isEnabled = false
         cityTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: cityTxt)
         stateTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: stateTxt)
         zipTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        setPlaceholderColor(textfield: zipTxt)
         setTextfieldPadding(textfield: firstNameTxt)
         setTextfieldPadding(textfield: lastNametxt)
         setTextfieldPadding(textfield: emailTxt)
@@ -64,6 +71,13 @@ class EditProfileVC: UIViewController {
         descriptionTxtView.layer.borderWidth = 1.0
         descriptionTxtView.layer.borderColor = UIColor.init(hexString: "#E3E1E1").cgColor
         setUI()
+    }
+    
+    func setPlaceholderColor(textfield:UITextField){
+        textfield.attributedPlaceholder = NSAttributedString(
+            string: textfield.placeholder ?? "",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.black]
+        )
     }
     
     func setTextfieldPadding(textfield:UITextField){
@@ -276,7 +290,7 @@ extension EditProfileVC : UITextFieldDelegate{
         if textField == firstNameTxt || textField == lastNametxt{
             let regex = try! NSRegularExpression(pattern: "[a-zA-Z\\s]+", options: [])
             let range = regex.rangeOfFirstMatch(in: string, options: [], range: NSRange(location: 0, length: string.count))
-            return range.length == string.count
+            return range.length == string.count && updatedText.count <= 30
         }else if textField.keyboardType == .phonePad{
             // make sure the result is under 16 characters
             textField.text = format(with: "(XXX) XXX-XXXX", phone: updatedText)
@@ -284,9 +298,6 @@ extension EditProfileVC : UITextFieldDelegate{
         }else if textField == zipTxt{
            // make sure the result is under 16 characters
            return updatedText.count <= 5
-        }else if textField == firstNameTxt || textField == lastNametxt{
-           // make sure the result is under 30 characters
-           return updatedText.count <= 30
         }
         return true
     }
@@ -322,32 +333,47 @@ extension EditProfileVC : UITextViewDelegate{
         }
     }
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        isUpdated = true
-        return true
-    }
-    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Write something.."
             textView.textColor = textViewPlaceholderColor
         }
     }
-
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        isUpdated = true
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 300    // 300 Limit Value
+    }
 }
 
 extension EditProfileVC{
     
     func alert(){
+        let VC = self.getPopUpVC()
+        VC.titleString = "Unsaved Changes"
+        VC.messageString = MessageHelper.PopupMessage.saveProfileMessage
+        VC.noBtnClick  = { [weak self]  in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            self?.saveBtnClicked(self)
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
+    
+    /*func alert(){
             
         let alert = UIAlertController(title: "Unsaved Changes", message: MessageHelper.PopupMessage.saveProfileMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            self.saveBtnClicked(self)
+            
         }))
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
             self.navigationController?.popViewController(animated: true)
         }))
         self.present(alert, animated: true)
-    }
+    }*/
 
 }

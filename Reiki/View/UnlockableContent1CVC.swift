@@ -1,0 +1,16 @@
+//
+//  UnlockableContent1CVC.swift
+//  Reiki
+//
+//  Created by NewAgeSMB on 05/10/22.
+//
+
+import UIKit
+
+class UnlockableContent1CVC: UICollectionViewCell {
+    
+    @IBOutlet var titleLbl: UILabel!
+    @IBOutlet var imageView: CustomImageView!
+    @IBOutlet var coinLbl: UILabel!
+    
+}

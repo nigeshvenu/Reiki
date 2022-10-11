@@ -104,53 +104,86 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
       // method to run when table view cell is tapped
       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
           print("You tapped cell number \(indexPath.row).")
-          if let menu = navigationController as? SideMenuNavigationController {
-              guard let navController = ParentNavigationController else { return }
+          //if let menu = navigationController as? SideMenuNavigationController {
+              guard let navController = ParentNavigationController else {
+                  self.dismiss(animated: true, completion: nil)
+                  return
+              }
               if indexPath.row == 0{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      navController.viewControllers.append(self.getHomePageVC())
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getHomePageVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
+                  }
+              }else if indexPath.row == 1{
+                  DispatchQueue.main.async {
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getCalendarVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
+                  }
+              }else if indexPath.row == 3{
+                  DispatchQueue.main.async {
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getUnlockablesVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
+                  }
+              }else if indexPath.row == 4{
+                  DispatchQueue.main.async {
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getFavoritesVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 5{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      navController.viewControllers.append(self.getProfileVC())
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getProfileVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 6{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      navController.viewControllers.append(self.getChangePasswordVC())
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getChangePasswordVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 7{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      navController.viewControllers.append(self.getChangeMobileNumberVC())
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getChangeMobileNumberVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 8{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      let VC = self.getWebViewVC()
-                      VC.agreementHeaderTitle = "Terms & Conditions"
-                      navController.viewControllers.append(VC)
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          let VC = self.getWebViewVC()
+                          VC.agreementHeaderTitle = "Terms & Conditions"
+                          navController.viewControllers.append(VC)
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 9{
                   DispatchQueue.main.async {
-                      _ = navController.viewControllers.popLast()
-                      let VC = self.getWebViewVC()
-                      VC.agreementHeaderTitle = "Privacy Policy"
-                      navController.viewControllers.append(VC)
-                      navController.setViewControllers(navController.viewControllers, animated: true)
-                      menu.dismiss(animated: true, completion:nil)
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          let VC = self.getWebViewVC()
+                          VC.agreementHeaderTitle = "Privacy Policy"
+                          navController.viewControllers.append(VC)
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
                   }
               }else if indexPath.row == 10{
                   dismiss(animated: true, completion: {
@@ -163,7 +196,7 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
               }else{
                   dismiss(animated: true, completion:nil)
               }
-          }
+          //}
          
       }
     
