@@ -259,7 +259,7 @@ extension CreateCustomEventVC{
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.updateCustomActivity(id:self.event.eventId,param: param, removeImage: isRemoveImage, image: selectedImage, fileName: "image_file", onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.customEventCreated, type: .success)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.customEventEdited, type: .success)
             self.delegate?.eventEdited(event: self.viewModal.event)
             self.backBtnClicked(self)
         }, onFailure: { error in

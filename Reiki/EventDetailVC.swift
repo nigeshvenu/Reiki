@@ -53,7 +53,6 @@ class EventDetailVC: UIViewController {
             self.setUIEventStatus()
             self.getFavoriteRequest()
         }
-        
         /*let card = CardModal()
         card.goldCoins = "2000"
         card.cardId = "3"
@@ -149,7 +148,12 @@ class EventDetailVC: UIViewController {
     
     @IBAction func completeBtnClicked(_ sender: Any) {
         if event.eventType == .publicType{
-            self.completeUserActivityRequest(point: self.activityPoint)
+            if event.journal.isEmpty{
+                self.completeUserActivityRequest(point: self.activityPoint)
+            }else{
+                let point = Int(self.activityPoint)! + Int(self.journalPoint)!
+                self.editUserActivityRequest(point: String(point))
+            }
         }else{
             self.completeCustomActivityRequest()
         }
@@ -253,6 +257,9 @@ extension EventDetailVC : AddJournalDelegate{
         self.event.isCompleted = isCompleted
         self.event.journal = journal
         self.setUIEventStatus()
+        if event.eventType == .custom && isCompleted{
+           self.extraOptionBtn.isHidden = true
+        }
         if chest != nil{
             self.HiddenChestAlert(card: chest!)
         }
@@ -404,6 +411,25 @@ extension EventDetailVC{
         }
     }
     
+    func editUserActivityRequest(point:String){
+        var param = ["completed_date":Date().toString(dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS"),
+                     "timezone":self.localTimeZoneIdentifier,
+                     "activity_list_id":Int(self.event.eventId)!] as [String:Any]
+        if !point.isEmpty{
+            param.updateValue(Int(point)!, forKey: "point")
+        }
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.editUserActivity(id: self.event.userActivityId, urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.event.isCompleted = true
+            self.setUIEventStatus()
+            self.completAlert(xpPoint: point, isHiddenChest: self.viewModal.card)
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
+    }
+
     func completeCustomActivityRequest(){
         let param = ["status":"Completed"] as [String:Any]
         AppDelegate.shared.showLoading(isShow: true)
@@ -411,6 +437,7 @@ extension EventDetailVC{
             AppDelegate.shared.showLoading(isShow: false)
             self.event.isCompleted = true
             self.setUIEventStatus()
+            self.extraOptionBtn.isHidden = true
             self.completAlert(xpPoint: "", isHiddenChest: self.viewModal.card)
         } onFailure: { (error) in
             AppDelegate.shared.showLoading(isShow: false)

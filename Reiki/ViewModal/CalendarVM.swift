@@ -11,6 +11,7 @@ class CalendarVM: NSObject {
 
     var event = EventModal()
     var eventArray = [EventModal]()
+    var openEventArray = [EventModal]()
     var favoriteId = ""
     var isFavorite = false
     var isActivityCompleted = false
@@ -29,6 +30,7 @@ class CalendarVM: NSObject {
             
             if let data = result["data"] as? [String:Any]{
                 self.eventArray.removeAll()
+                self.openEventArray.removeAll()
                 if let calendarActivity = data["calendar_activity_lists"] as? [[String:Any]]{
                     for i in calendarActivity{
                         let modal = EventModal()
@@ -37,7 +39,42 @@ class CalendarVM: NSObject {
                         self.eventArray.append(modal)
                     }
                 }
-                if let calendarActivity = data["custom"] as? [[String:Any]]{
+                if let calendarActivity = data["open"] as? [[String:Any]]{
+                    for i in calendarActivity{
+                        if let activity = i["activity"] as? [String:Any]{
+                            let modal = EventModal()
+                            modal.createModal(dict: activity)
+                            modal.eventType = .custom
+                            self.openEventArray.append(modal)
+                        }
+                    }
+                }
+            }
+            
+            if let message = result["message"] as? String{
+               onSuccess(message)
+            }
+
+        }, onFailure: {error in
+            onFailure(error)
+        })
+        
+    }
+    
+    func getCustomActivityList(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+       
+        RequestManager.serverRequestWithToken(function: APIFunction.user_custom_activity, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+            if let error = result["error"] as? String{
+                if !(error.isEmpty){
+                    onFailure(error)
+                    return
+                }
+            }
+            print(result)
+            
+            if let data = result["data"] as? [String:Any]{
+                self.eventArray.removeAll()
+                if let calendarActivity = data["user_custom_activities"] as? [[String:Any]]{
                     for i in calendarActivity{
                         let modal = EventModal()
                         modal.createModal(dict: i)
@@ -260,8 +297,14 @@ class CalendarVM: NSObject {
                    }
                }
                 print(result)
-               
                 if let data = result["data"] as? [String:Any]{
+                    if let userActivity = data["user_activity"] as? [String:Any]{
+                        if let card = userActivity["card"] as? [String:Any]{
+                            let modal = CardModal()
+                            modal.createModal(dict: card)
+                            self.card = modal
+                        }
+                    }
                 }
                 if let message = result["message"] as? String{
                     onSuccess(message)

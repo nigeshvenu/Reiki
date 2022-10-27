@@ -125,6 +125,14 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
                           navController.setViewControllers(navController.viewControllers, animated: true)
                       })
                   }
+              }else if indexPath.row == 2{
+                  DispatchQueue.main.async {
+                      self.dismiss(animated: true, completion:{
+                          _ = navController.viewControllers.popLast()
+                          navController.viewControllers.append(self.getCardFinderVC())
+                          navController.setViewControllers(navController.viewControllers, animated: true)
+                      })
+                  }
               }else if indexPath.row == 3{
                   DispatchQueue.main.async {
                       self.dismiss(animated: true, completion:{

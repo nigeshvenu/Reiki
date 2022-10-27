@@ -81,13 +81,14 @@ extension FavoritesVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "FavoritesTVC") as! FavoritesTVC
-        cell.mainView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.init(hexString: "#F9F5F5") : UIColor.white
+        cell.mainView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white : UIColor.init(hexString: "#F9F5F5")
         let favorite = self.viewModal.favoritesArray[indexPath.row]
         cell.eventImageView.ImageViewLoading(mediaUrl: favorite.event.eventImage, placeHolderImage: UIImage(named: "noImageEvent"))
         cell.eventTitle.text = favorite.event.eventTitle
         cell.dateLbl.text = favorite.createdDate
         cell.favoriteBtn.tag = indexPath.row
         cell.favoriteBtn.addTarget(self, action: #selector(unfavorite(btn:)), for: .touchUpInside)
+        cell.customLb.isHidden = favorite.event.eventType == .publicType
         return cell
     }
     
@@ -117,7 +118,7 @@ extension FavoritesVC{
                      "limit":-1,
                      "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!],
                      "populate":["activity","custom_activity"],
-                     "sort":[["created_at","DESC"]]] as [String : Any]
+                     "sort":[["activity","date","desc"],["custom_activity","date","desc"]]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getFavorite(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)

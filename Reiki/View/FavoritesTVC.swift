@@ -14,6 +14,7 @@ class FavoritesTVC: UITableViewCell {
     @IBOutlet var dateLbl: UILabel!
     @IBOutlet var mainView: UIView!
     @IBOutlet var favoriteBtn: UIButton!
+    @IBOutlet var customLb: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

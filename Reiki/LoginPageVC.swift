@@ -198,7 +198,7 @@ extension LoginPageVC{
             self.mobileNumberTxt.text = ""
             self.passwordTxt.text = ""
             self.view.endEditing(true)
-            let VC = self.getHomePageVC()
+            let VC = self.getCalendarVC()
             self.navigationController?.pushViewController(VC, animated: true)
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

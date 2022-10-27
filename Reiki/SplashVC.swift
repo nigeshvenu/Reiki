@@ -46,7 +46,7 @@ extension SplashVC{
         AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
-            let VC = self.getHomePageVC()
+            let VC = self.getCalendarVC()
             self.navigationController?.pushViewController(VC, animated: true)
             self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
         }, onFailure: { error in

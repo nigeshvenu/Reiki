@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58007AA728FE6AE4006FCB28 /* CardFinderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58007AA628FE6AE3006FCB28 /* CardFinderVC.swift */; };
+		58007AA928FE6D43006FCB28 /* Lock_Anime.json in Resources */ = {isa = PBXBuildFile; fileRef = 58007AA828FE6D43006FCB28 /* Lock_Anime.json */; };
 		580B403928EEA255005866B6 /* FavoritesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B403828EEA255005866B6 /* FavoritesVC.swift */; };
 		580B403B28EEA66A005866B6 /* FavoritesTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B403A28EEA66A005866B6 /* FavoritesTVC.swift */; };
 		580B403D28EEB75E005866B6 /* FavoriteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B403C28EEB75E005866B6 /* FavoriteVM.swift */; };
@@ -73,6 +75,8 @@
 		5820CD6328DC354E00D7A312 /* KVKCalendarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */; };
 		5820CD6428DC354E00D7A312 /* CustomDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6228DC354E00D7A312 /* CustomDayCell.swift */; };
 		5820CD6628DC35C700D7A312 /* EventViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6528DC35C700D7A312 /* EventViewer.swift */; };
+		58413DE9290116BB0055DEF4 /* CardFinderVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58413DE8290116BB0055DEF4 /* CardFinderVM.swift */; };
+		58413DEB290124FF0055DEF4 /* skeleton-rectangle.json in Resources */ = {isa = PBXBuildFile; fileRef = 58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */; };
 		5860188A28D1F550005836DF /* loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 5860188928D1F550005836DF /* loader.json */; };
 		586CC12728AFAF4D00E8D6A5 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586CC12628AFAF4D00E8D6A5 /* GradientView.swift */; };
 		587781FF28CB1E36003E219E /* ChangeMobileNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587781FE28CB1E36003E219E /* ChangeMobileNumberVC.swift */; };
@@ -89,6 +93,8 @@
 		5888583F28AE62C7008BA58D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5888583D28AE62C7008BA58D /* Main.storyboard */; };
 		5888584228AE62C7008BA58D /* Reiki.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5888584028AE62C7008BA58D /* Reiki.xcdatamodeld */; };
 		5888584428AE62C8008BA58D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5888584328AE62C8008BA58D /* Assets.xcassets */; };
+		588C0C7729096726004E9B16 /* congratulations.json in Resources */ = {isa = PBXBuildFile; fileRef = 588C0C7629096726004E9B16 /* congratulations.json */; };
+		588C0C7929096913004E9B16 /* congrats.json in Resources */ = {isa = PBXBuildFile; fileRef = 588C0C7829096913004E9B16 /* congrats.json */; };
 		588C1E1F28CF1A9D00DB978D /* countryCodes.json in Resources */ = {isa = PBXBuildFile; fileRef = 588C1E1E28CF1A9D00DB978D /* countryCodes.json */; };
 		588CD69928CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68628CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf */; };
 		588CD69A28CEFE3400DF3EA1 /* Montserrat-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 588CD68728CEFE3400DF3EA1 /* Montserrat-Bold.otf */; };
@@ -172,6 +178,8 @@
 
 /* Begin PBXFileReference section */
 		297A5A0007D973D5E86302F0 /* Pods-Reiki.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Reiki.release.xcconfig"; path = "Target Support Files/Pods-Reiki/Pods-Reiki.release.xcconfig"; sourceTree = "<group>"; };
+		58007AA628FE6AE3006FCB28 /* CardFinderVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardFinderVC.swift; sourceTree = "<group>"; };
+		58007AA828FE6D43006FCB28 /* Lock_Anime.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Lock_Anime.json; sourceTree = "<group>"; };
 		580B403828EEA255005866B6 /* FavoritesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesVC.swift; sourceTree = "<group>"; };
 		580B403A28EEA66A005866B6 /* FavoritesTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTVC.swift; sourceTree = "<group>"; };
 		580B403C28EEB75E005866B6 /* FavoriteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteVM.swift; sourceTree = "<group>"; };
@@ -238,6 +246,8 @@
 		5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVKCalendarSettings.swift; sourceTree = "<group>"; };
 		5820CD6228DC354E00D7A312 /* CustomDayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDayCell.swift; sourceTree = "<group>"; };
 		5820CD6528DC35C700D7A312 /* EventViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewer.swift; sourceTree = "<group>"; };
+		58413DE8290116BB0055DEF4 /* CardFinderVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFinderVM.swift; sourceTree = "<group>"; };
+		58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "skeleton-rectangle.json"; sourceTree = "<group>"; };
 		5860188928D1F550005836DF /* loader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader.json; sourceTree = "<group>"; };
 		586CC12628AFAF4D00E8D6A5 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		587781FE28CB1E36003E219E /* ChangeMobileNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMobileNumberVC.swift; sourceTree = "<group>"; };
@@ -256,6 +266,8 @@
 		5888584128AE62C7008BA58D /* Reiki.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Reiki.xcdatamodel; sourceTree = "<group>"; };
 		5888584328AE62C8008BA58D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5888584828AE62C8008BA58D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		588C0C7629096726004E9B16 /* congratulations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = congratulations.json; sourceTree = "<group>"; };
+		588C0C7829096913004E9B16 /* congrats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = congrats.json; sourceTree = "<group>"; };
 		588C1E1E28CF1A9D00DB978D /* countryCodes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = countryCodes.json; sourceTree = "<group>"; };
 		588CD68628CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-MediumItalic.otf"; sourceTree = "<group>"; };
 		588CD68728CEFE3400DF3EA1 /* Montserrat-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.otf"; sourceTree = "<group>"; };
@@ -478,11 +490,11 @@
 				58C3C58428EABD230004CCAB /* UnlockablesVC.swift */,
 				580B403828EEA255005866B6 /* FavoritesVC.swift */,
 				588DDF4328EF12E600CF5E8D /* ThemeVC.swift */,
+				58007AA628FE6AE3006FCB28 /* CardFinderVC.swift */,
 				58F8E6D928B75A2000EBC659 /* Resources */,
 				58F8E6D628B7515B00EBC659 /* Helper */,
 				58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */,
 				5888583D28AE62C7008BA58D /* Main.storyboard */,
-				5888584328AE62C8008BA58D /* Assets.xcassets */,
 				5888584828AE62C8008BA58D /* Info.plist */,
 				5888584028AE62C7008BA58D /* Reiki.xcdatamodeld */,
 			);
@@ -546,6 +558,7 @@
 				58B15DE928E1DA6A00385723 /* CalendarVM.swift */,
 				580B403C28EEB75E005866B6 /* FavoriteVM.swift */,
 				580B404228EEDB5F005866B6 /* UnlockablesVM.swift */,
+				58413DE8290116BB0055DEF4 /* CardFinderVM.swift */,
 			);
 			path = ViewModal;
 			sourceTree = "<group>";
@@ -594,9 +607,14 @@
 		58F8E6D928B75A2000EBC659 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				588C0C7829096913004E9B16 /* congrats.json */,
+				588C0C7629096726004E9B16 /* congratulations.json */,
+				58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */,
+				58007AA828FE6D43006FCB28 /* Lock_Anime.json */,
 				58B2E1B628ED6E5F00F4542F /* cloud_calligraphy */,
 				5820CCF128DC350E00D7A312 /* KVKCalendar */,
 				588D6CA928D347B10005ADA5 /* alert.json */,
+				5888584328AE62C8008BA58D /* Assets.xcassets */,
 				5860188928D1F550005836DF /* loader.json */,
 				58D3E70028CF66C700766A82 /* splash.png */,
 				58D3E70228CF66C700766A82 /* splash@2x.png */,
@@ -690,6 +708,7 @@
 				588CD69B28CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf in Resources */,
 				588CD6A428CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf in Resources */,
 				58C2E52828CF675900CD3A38 /* Launch Screen.storyboard in Resources */,
+				58413DEB290124FF0055DEF4 /* skeleton-rectangle.json in Resources */,
 				588CD69928CEFE3400DF3EA1 /* Montserrat-MediumItalic.otf in Resources */,
 				588CD69C28CEFE3400DF3EA1 /* Montserrat-BoldItalic.otf in Resources */,
 				588CD6A328CEFE3400DF3EA1 /* Montserrat-Medium.otf in Resources */,
@@ -700,14 +719,17 @@
 				588CD6A628CEFE3400DF3EA1 /* Montserrat-Italic.otf in Resources */,
 				588CD6A028CEFE3400DF3EA1 /* Montserrat-ExtraLight.otf in Resources */,
 				5888584428AE62C8008BA58D /* Assets.xcassets in Resources */,
+				588C0C7929096913004E9B16 /* congrats.json in Resources */,
 				5860188A28D1F550005836DF /* loader.json in Resources */,
 				58B2E1BB28ED6E5F00F4542F /* Cloud-Calligraphy.otf in Resources */,
 				588CD6A928CEFE3400DF3EA1 /* Montserrat-ExtraLightItalic.otf in Resources */,
 				588CD6AA28CEFE3400DF3EA1 /* Montserrat-Black.otf in Resources */,
 				588CD6A128CEFE3400DF3EA1 /* Montserrat-Bold.ttf in Resources */,
 				5888583F28AE62C7008BA58D /* Main.storyboard in Resources */,
+				58007AA928FE6D43006FCB28 /* Lock_Anime.json in Resources */,
 				588CD6A528CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf in Resources */,
 				588CD69D28CEFE3400DF3EA1 /* Montserrat-Light.otf in Resources */,
+				588C0C7729096726004E9B16 /* congratulations.json in Resources */,
 				588D6CAA28D347B10005ADA5 /* alert.json in Resources */,
 				58D3E70328CF66C800766A82 /* splash.png in Resources */,
 				588CD6A228CEFE3400DF3EA1 /* Montserrat-LightItalic.otf in Resources */,
@@ -867,6 +889,7 @@
 				5820CD3428DC350E00D7A312 /* Date+Extension.swift in Sources */,
 				5820CD3B28DC350E00D7A312 /* VerticalLineView.swift in Sources */,
 				58934FAC28D1F14E00793F10 /* ShadowView.swift in Sources */,
+				58413DE9290116BB0055DEF4 /* CardFinderVM.swift in Sources */,
 				586CC12728AFAF4D00E8D6A5 /* GradientView.swift in Sources */,
 				5820CD3E28DC350E00D7A312 /* EventViewGeneral.swift in Sources */,
 				5877820128CB2021003E219E /* OtpVC.swift in Sources */,
@@ -890,6 +913,7 @@
 				58E81C5F28ED588500473575 /* HeaderRView.swift in Sources */,
 				58C3C58928EADB6C0004CCAB /* UnlockablesCVC.swift in Sources */,
 				5820CD5D28DC350E00D7A312 /* CalendarView.swift in Sources */,
+				58007AA728FE6AE4006FCB28 /* CardFinderVC.swift in Sources */,
 				58EB906228BE2663007DD261 /* HomePageVC.swift in Sources */,
 				5820CD5128DC350E00D7A312 /* WeekHeaderView.swift in Sources */,
 				5820CD4C28DC350E00D7A312 /* TimelineView.swift in Sources */,
@@ -1054,7 +1078,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;
@@ -1090,7 +1114,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;

@@ -97,7 +97,7 @@ class UnlockablesVC: UIViewController {
                                      UnlockablesContent(title: "Halo", image: "halo"),
                                      UnlockablesContent(title: "Flower Decor", image: "flowers"),
                                      UnlockablesContent(title: "Robot", image: "robot")]*/
-        setCalendarBackground(date: Date())
+        //setCalendarBackground(date: Date())
     }
 
     func setCalendarBackground(date:Date){
