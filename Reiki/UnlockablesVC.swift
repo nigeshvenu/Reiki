@@ -39,6 +39,8 @@ class UnlockablesVC: UIViewController {
     var petsContentArray = [[UnlockablesContent]]()
     var miscallenouseContentArray = [UnlockablesContent]()
     var viewModal = UnlockablesVM()
+    var themesCategoryId = "2"
+    var selectedCategory = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,7 +158,7 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
         if collectionView == self.collectionView{
            return 1
         }
-        if selectedTab == 3{
+        if selectedTab == Int(themesCategoryId)!{
            return 1
         }
         return self.viewModal.customGearSubArray.count
@@ -166,7 +168,7 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
         if collectionView == self.collectionView{
             return self.viewModal.customGearArray.count
         }else{
-            if selectedTab == 3{
+            if selectedTab == Int(themesCategoryId)!{
                 return self.viewModal.themeArray.count
             }else{
                 return self.viewModal.customGearSubArray[section].itemArray.count
@@ -183,15 +185,30 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                 cell.unlockableTitleLbl.textColor = unlockable.isSelected ? UIColor.white : UIColor.black
                 return cell
             }else{
-                if selectedTab == 3{
+                if selectedTab == Int(themesCategoryId)!{
                         let theme = self.viewModal.themeArray[indexPath.row]
-                       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UnlockableContentCVC", for: indexPath) as! UnlockableContentCVC
+                        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UnlockableContentCVC", for: indexPath) as! UnlockableContentCVC
                         cell.imageView.ImageViewLoading(mediaUrl: theme.image, placeHolderImage: nil)
                         cell.coinLbl.text = theme.coin
                         cell.leadingConst.constant = 0
                         cell.trialConst.constant = 0
                         cell.topConst.constant = 0
                         cell.bottomConst.constant = 0
+                        cell.unlockBtn.tag = indexPath.row
+                        cell.unlockBtn.addTarget(self, action: #selector(unlockBtnClicked(btn:)), for: .touchUpInside)
+                        if theme.isUnlocked{
+                            cell.coinImageView.isHidden = true
+                            cell.coinLbl.isHidden = true
+                            if theme.isApplied{
+                                cell.unlockBtn.setTitle("Remove", for: .normal)
+                            }else{
+                                cell.unlockBtn.setTitle("Apply", for: .normal)
+                            }
+                        }else{
+                            cell.coinImageView.isHidden = false
+                            cell.coinLbl.isHidden = false
+                            cell.unlockBtn.setTitle("Unlock", for: .normal)
+                        }
                        return cell
                 }else{
                     let item = self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row]
@@ -209,11 +226,35 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                         cell.titleLbl.text = item.name
                         cell.imageView.ImageViewLoading(mediaUrl: item.image, placeHolderImage: nil)
                         cell.coinLbl.text = item.coin
+                        cell.unlockBtn.tag = indexPath.row
+                        cell.unlockBtn.addTarget(self, action: #selector(unlockBtnClicked(btn:)), for: .touchUpInside)
                         return cell
                     }
                 }
                 
             }
+    }
+    
+    @objc func unlockBtnClicked(btn:UIButton){
+        if selectedTab == Int(themesCategoryId)!{
+            if let title = btn.titleLabel?.text {
+                let theme = self.viewModal.themeArray[btn.tag]
+                if title == "Unlock"{
+                    self.alertTheme(type: title, id: theme.themeId, index: btn.tag)
+                }else if title == "Apply"{
+                    self.alertTheme(type: title, id: theme.userThemeId, index: btn.tag)
+                }else if title == "Remove"{
+                    self.alertTheme(type: title, id: theme.userThemeId, index: btn.tag)
+                }
+            }
+        }else{
+            let buttonPostion = btn.convert(btn.bounds.origin, to: contentCollectionView)
+            if let indexPath = contentCollectionView.indexPathForItem(at: buttonPostion){
+                print(indexPath)
+                let gear = self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row]
+                self.alertCustomGear(type: "Unlock", id: gear.itemId)
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -225,7 +266,7 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
             
             return CGSize(width: itemSize.width + 30, height: 36)
         }else{
-            if selectedTab == 3 || self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row].name.isEmpty{
+            if selectedTab == Int(themesCategoryId)! || self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row].name.isEmpty{
                 let cellWidth = collectionView.frame.size.width / 2
                 return CGSize(width:  cellWidth - 5, height: cellWidth + (cellWidth*0.30))
             }else{
@@ -238,11 +279,12 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView{
             selectedTab = Int(self.viewModal.customGearArray[indexPath.row].categoryId)!
+            selectedCategory = self.viewModal.customGearArray[indexPath.row].categoryName.dropLast().string
             for index in 0..<self.viewModal.customGearArray.count {
                 self.viewModal.customGearArray[index].isSelected = false
             }
             self.viewModal.customGearArray[indexPath.row].isSelected = true
-            if self.viewModal.customGearArray[indexPath.row].categoryId == "3"{
+            if self.viewModal.customGearArray[indexPath.row].categoryId == themesCategoryId{
                 self.getThemesRequest()
             }else{
                 self.getCustomGearSubRequest(categoryId: self.viewModal.customGearArray[indexPath.row].categoryId)
@@ -280,7 +322,7 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if collectionView == self.contentCollectionView{
-            if selectedTab == 3 || self.viewModal.customGearSubArray[section].name.isEmpty{
+            if selectedTab == Int(themesCategoryId)! || self.viewModal.customGearSubArray[section].name.isEmpty{
                 return .zero
             }
             return CGSize(width: collectionView.frame.width, height: 40)
@@ -302,6 +344,7 @@ extension UnlockablesVC{
             self.collectionView.reloadData()
             if let gear = self.viewModal.customGearArray.first{
                 self.getCustomGearSubRequest(categoryId: gear.categoryId)
+                self.selectedCategory = gear.categoryName.dropLast().string
             }
             
         }, onFailure: { error in
@@ -333,13 +376,124 @@ extension UnlockablesVC{
         viewModal.getThemes(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.contentCollectionView.reloadData()
-            self.contentCollectionView.layoutIfNeeded()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
     }
     
+}
+
+extension UnlockablesVC{ //Themes
+    
+    func unlockThemesRequest(id:String,index:Int){
+        let param = ["theme_id":Int(id)!] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.unlockThemes(urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeUnlocked, type: .success)
+            self.viewModal.themeArray[index].isUnlocked = true
+            self.viewModal.themeArray[index].userThemeId = self.viewModal.userThemeId
+            self.viewModal.userThemeId = ""
+            self.contentCollectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func updateThemesRequest(id:String,status:Bool,index:Int){
+        let param = ["applied":status] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.updateUserTheme(id: id, urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            if status{
+                SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeApplied, type: .success)
+                self.viewModal.themeArray[index].isApplied = true
+            }else{
+                SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeRemove, type: .success)
+                self.viewModal.themeArray[index].isApplied = false
+            }
+            self.contentCollectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+}
+
+extension UnlockablesVC{ //Custom gear
+    func unlockGearRequest(id:String){
+        let param = ["custom_gear_id":Int(id)!] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.unlockCustomGear(urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: "\(self.selectedCategory) \(MessageHelper.SuccessMessage.unlocked)", type: .success)
+            self.getCustomGearSubRequest(categoryId: String(self.selectedTab))
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+}
+
+
+extension UnlockablesVC{
+    func alertTheme(type:String,id:String,index:Int){
+        let VC = self.getPopUpVC()
+        if type == "Unlock"{
+            VC.titleString = "Unlock"
+            VC.messageString = MessageHelper.PopupMessage.unlockThemeMessage
+        }else if type == "Apply"{
+            VC.titleString = "Apply"
+            VC.messageString = MessageHelper.PopupMessage.applyThemeMessage
+        }else if type == "Remove"{
+            VC.titleString = "Remove"
+            VC.messageString = MessageHelper.PopupMessage.removeThemeMessage
+        }
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            if type == "Unlock"{
+                self?.unlockThemesRequest(id: id, index: index)
+            }else if type == "Apply"{
+                self?.updateThemesRequest(id: id, status: true, index: index)
+            }else if type == "Remove"{
+                self?.updateThemesRequest(id: id, status: false, index: index)
+            }
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
+    
+    func alertCustomGear(type:String,id:String){
+        let VC = self.getPopUpVC()
+        if type == "Unlock"{
+            VC.titleString = "Unlock"
+            VC.messageString = "\(MessageHelper.PopupMessage.unlockMessage) \(selectedCategory)?"
+        }else if type == "Apply"{
+            VC.titleString = "Apply"
+            VC.messageString = MessageHelper.PopupMessage.applyThemeMessage
+        }else if type == "Remove"{
+            VC.titleString = "Remove"
+            VC.messageString = MessageHelper.PopupMessage.removeThemeMessage
+        }
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            if type == "Unlock"{
+                self?.unlockGearRequest(id: id)
+            }else if type == "Apply"{
+                //self?.updateThemesRequest(id: id, status: true, index: index)
+            }else if type == "Remove"{
+                //self?.updateThemesRequest(id: id, status: false, index: index)
+            }
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
 }
 
 extension UnlockablesVC : SideMenuDelegate{
@@ -426,4 +580,8 @@ extension UnlockablesVC: SideMenuNavigationControllerDelegate {
     func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
         print("SideMenu Disappeared! (animated: \(animated))")
     }
+}
+
+extension LosslessStringConvertible {
+    var string: String { .init(self) }
 }

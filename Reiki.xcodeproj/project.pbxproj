@@ -85,6 +85,10 @@
 		587971D828BF375D001A282D /* OptionsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587971D728BF375D001A282D /* OptionsTVC.swift */; };
 		588443E328E4177300344433 /* HeaderGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588443E228E4177300344433 /* HeaderGradientView.swift */; };
 		588443E528E46A1D00344433 /* AddJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588443E428E46A1D00344433 /* AddJournalVC.swift */; };
+		58858317290F961F000D8E86 /* GoldCoinVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58858316290F961F000D8E86 /* GoldCoinVC.swift */; };
+		58858319290F9A69000D8E86 /* GoldCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58858318290F9A69000D8E86 /* GoldCoinCell.swift */; };
+		5885831B290F9C1B000D8E86 /* HomePageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885831A290F9C1B000D8E86 /* HomePageVM.swift */; };
+		5885831D290F9C5A000D8E86 /* CoinModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885831C290F9C5A000D8E86 /* CoinModal.swift */; };
 		5887FD6728C72604000400D2 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6628C72604000400D2 /* EditProfileVC.swift */; };
 		5887FD6928C7361C000400D2 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */; };
 		5887FD6B28C76CE5000400D2 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6A28C76CE5000400D2 /* SplashVC.swift */; };
@@ -256,6 +260,10 @@
 		587971D728BF375D001A282D /* OptionsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTVC.swift; sourceTree = "<group>"; };
 		588443E228E4177300344433 /* HeaderGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderGradientView.swift; sourceTree = "<group>"; };
 		588443E428E46A1D00344433 /* AddJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJournalVC.swift; sourceTree = "<group>"; };
+		58858316290F961F000D8E86 /* GoldCoinVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldCoinVC.swift; sourceTree = "<group>"; };
+		58858318290F9A69000D8E86 /* GoldCoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldCoinCell.swift; sourceTree = "<group>"; };
+		5885831A290F9C1B000D8E86 /* HomePageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageVM.swift; sourceTree = "<group>"; };
+		5885831C290F9C5A000D8E86 /* CoinModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModal.swift; sourceTree = "<group>"; };
 		5887FD6628C72604000400D2 /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		5887FD6A28C76CE5000400D2 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
@@ -491,6 +499,7 @@
 				580B403828EEA255005866B6 /* FavoritesVC.swift */,
 				588DDF4328EF12E600CF5E8D /* ThemeVC.swift */,
 				58007AA628FE6AE3006FCB28 /* CardFinderVC.swift */,
+				58858316290F961F000D8E86 /* GoldCoinVC.swift */,
 				58F8E6D928B75A2000EBC659 /* Resources */,
 				58F8E6D628B7515B00EBC659 /* Helper */,
 				58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */,
@@ -545,6 +554,7 @@
 				580B404428EEDC84005866B6 /* CustomGearCategoryModal.swift */,
 				580B404628EEE075005866B6 /* CustomGearSubCategoryModal.swift */,
 				5899190728EEF32C004781EA /* ThemeModal.swift */,
+				5885831C290F9C5A000D8E86 /* CoinModal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -559,6 +569,7 @@
 				580B403C28EEB75E005866B6 /* FavoriteVM.swift */,
 				580B404228EEDB5F005866B6 /* UnlockablesVM.swift */,
 				58413DE8290116BB0055DEF4 /* CardFinderVM.swift */,
+				5885831A290F9C1B000D8E86 /* HomePageVM.swift */,
 			);
 			path = ViewModal;
 			sourceTree = "<group>";
@@ -574,6 +585,7 @@
 				58E81C5E28ED588500473575 /* HeaderRView.swift */,
 				58E81C6028ED5CE400473575 /* UnlockableContentCVC.swift */,
 				580B403A28EEA66A005866B6 /* FavoritesTVC.swift */,
+				58858318290F9A69000D8E86 /* GoldCoinCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -798,6 +810,7 @@
 				58AD190128CB590500A4F715 /* WebViewVC.swift in Sources */,
 				5820CD6328DC354E00D7A312 /* KVKCalendarSettings.swift in Sources */,
 				5820CD5328DC350E00D7A312 /* ListViewHeader.swift in Sources */,
+				58858319290F9A69000D8E86 /* GoldCoinCell.swift in Sources */,
 				58F8E6E728B7604E00EBC659 /* OTPFieldView.swift in Sources */,
 				587781FF28CB1E36003E219E /* ChangeMobileNumberVC.swift in Sources */,
 				58F8E6E128B75E4B00EBC659 /* MessageHelper.swift in Sources */,
@@ -817,6 +830,7 @@
 				580B404728EEE075005866B6 /* CustomGearSubCategoryModal.swift in Sources */,
 				580B403928EEA255005866B6 /* FavoritesVC.swift in Sources */,
 				5820CD5E28DC350E00D7A312 /* KVKCollectionViewCell.swift in Sources */,
+				58858317290F961F000D8E86 /* GoldCoinVC.swift in Sources */,
 				58E81C6128ED5CE400473575 /* UnlockableContentCVC.swift in Sources */,
 				580B404528EEDC84005866B6 /* CustomGearCategoryModal.swift in Sources */,
 				58F8E6DF28B75E2200EBC659 /* SwiftMessagesHelper.swift in Sources */,
@@ -847,6 +861,7 @@
 				5820CD3228DC350E00D7A312 /* SkeletonView.swift in Sources */,
 				5820CD3328DC350E00D7A312 /* Timeline+Extension.swift in Sources */,
 				58EB906028BE1A35007DD261 /* LoginPageVC.swift in Sources */,
+				5885831D290F9C5A000D8E86 /* CoinModal.swift in Sources */,
 				5820CD4328DC350E00D7A312 /* AllDayEventModel.swift in Sources */,
 				58B15DEA28E1DA6A00385723 /* CalendarVM.swift in Sources */,
 				5888583C28AE62C7008BA58D /* ViewController.swift in Sources */,
@@ -902,6 +917,7 @@
 				5820CD4D28DC350E00D7A312 /* YearView.swift in Sources */,
 				5820CD5428DC350E00D7A312 /* Style.swift in Sources */,
 				5820CD4B28DC350E00D7A312 /* ListViewData.swift in Sources */,
+				5885831B290F9C1B000D8E86 /* HomePageVM.swift in Sources */,
 				58EB905328BDD97C007DD261 /* UserDefaultsHelper.swift in Sources */,
 				5899190828EEF32C004781EA /* ThemeModal.swift in Sources */,
 				58EB904928BDD756007DD261 /* RequestManager.swift in Sources */,

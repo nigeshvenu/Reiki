@@ -19,4 +19,5 @@ class ItemModal{
     var name = ""
     var image = ""
     var coin = ""
+    var itemId = ""
 }

@@ -11,6 +11,7 @@ import SideMenu
 class HomePageVC: UIViewController {
 
     @IBOutlet var characterImageView: UIImageView!
+    @IBOutlet var coinLbl: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +22,13 @@ class HomePageVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        self.getConfigurationRequest()
+        //self.getConfigurationRequest()
+        self.getUserRequest()
     }
     
     func initialSettings(){
         characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)")
+        coinLbl.text = UserModal.sharedInstance.coin
         //Sidemenu
         SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
@@ -41,6 +44,12 @@ class HomePageVC: UIViewController {
         settings.presentationStyle = .menuSlideIn
         settings.presentationStyle.presentingEndAlpha = 0.5
         SideMenuManager.default.leftMenuNavigationController?.settings = settings
+    }
+    
+    @IBAction func goldCoinBtnClicked(_ sender: Any) {
+        let VC = self.getGoldCoinVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+        
     }
     
     // MARK: - Navigation
@@ -75,10 +84,22 @@ extension HomePageVC{
         AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
+            //self.getUserRequest()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
             self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
+        })
+    }
+    
+    func getUserRequest(){
+        AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.coinLbl.text = UserModal.sharedInstance.coin
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
     }
     

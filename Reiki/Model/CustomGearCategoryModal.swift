@@ -9,7 +9,7 @@ import UIKit
 
 class CustomGearCategoryModal: NSObject {
 
-    var categoryName = ""
+    var categoryName : String = ""
     var categoryId = ""
     var categoryIdInt = 0
     var isSelected = false

@@ -23,6 +23,7 @@ class EventModal: NSObject {
   var favoriteId = ""
   var isFavorite = false
   var isCompleted = false
+  var isLocked = true
     
     func createModal(dict:[String:Any]){
         eventId = anyToStringConverter(dict: dict, key: "id")

@@ -12,6 +12,7 @@ class UnlockablesVM: NSObject {
     var customGearArray = [CustomGearCategoryModal]()
     var customGearSubArray = [CustomGearSubCategoryModal]()
     var themeArray = [ThemeModal]()
+    var userThemeId = ""
     
     func getCustomGearCategory(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
         let function = APIFunction.customGearCategory
@@ -79,6 +80,7 @@ class UnlockablesVM: NSObject {
                                     itemModal.name = anyToStringConverter(dict: i, key: "name")
                                     itemModal.image = anyToStringConverter(dict: i, key: "image_url")
                                     itemModal.coin = anyToStringConverter(dict: i, key: "required_coin")
+                                    itemModal.itemId = anyToStringConverter(dict: i, key: "id")
                                     itemArray.append(itemModal)
                                 }
                                 modal.itemArray = itemArray
@@ -114,6 +116,12 @@ class UnlockablesVM: NSObject {
                             let modal = ThemeModal()
                             modal.image = anyToStringConverter(dict: i, key: "image_url")
                             modal.coin = anyToStringConverter(dict: i, key: "required_coin")
+                            modal.themeId = anyToStringConverter(dict: i, key: "id")
+                            if let userTheme = i["user_theme"] as? [String:Any]{
+                                modal.isUnlocked = true
+                                modal.isApplied = anyToBoolConverter(dict: userTheme, key: "applied")
+                                modal.userThemeId = anyToStringConverter(dict: userTheme, key: "id")
+                            }
                             self.themeArray.append(modal)
                         }
                     }
@@ -127,4 +135,150 @@ class UnlockablesVM: NSObject {
            
        }
     
+    func getUserThemes(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.userTheme
+        RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                self.themeArray.removeAll()
+                if let data = result["data"] as? [String:Any]{
+                    if let themes = data["user_themes"] as? [[String:Any]]{
+                        for i in themes{
+                            if let userTheme = i["theme"] as? [String:Any]{
+                                let modal = ThemeModal()
+                                modal.themeUrl = anyToStringConverter(dict: userTheme, key: "image_url")
+                                self.themeArray.append(modal)
+                            }
+                        }
+                    }
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func unlockThemes(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.userTheme
+        RequestManager.serverRequestWithToken(function: function, method: .post, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+                    if let userTheme = data["user_theme"] as? [String:Any]{
+                        self.userThemeId = anyToStringConverter(dict: userTheme, key: "id")
+                    }
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func removeTheme(id:String,urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.userTheme + "/" + id
+        RequestManager.serverRequestWithToken(function: function, method: .delete, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+               
+                if let data = result["data"] as? [String:Any]{
+                    
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+        
+    }
+    
+    func updateUserTheme(id:String,urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.userTheme + "/" + id
+        RequestManager.serverRequestWithToken(function: function, method: .put, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func resetUserTheme(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.userThemeReset
+        RequestManager.serverRequestWithToken(function: function, method: .put, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    
+    func unlockCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.user_custom_gear
+        RequestManager.serverRequestWithToken(function: function, method: .post, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+                    if let userTheme = data["user_theme"] as? [String:Any]{
+                        //self.userThemeId = anyToStringConverter(dict: userTheme, key: "id")
+                    }
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
 }

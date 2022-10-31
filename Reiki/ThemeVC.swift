@@ -12,6 +12,7 @@ class ThemeVC: UIViewController {
     @IBOutlet var backgroundImageView: UIImageView!
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var emptyLbl: UILabel!
+    @IBOutlet var moreView: UIView!
     
     var viewModal = UnlockablesVM()
     
@@ -20,6 +21,7 @@ class ThemeVC: UIViewController {
         // Do any additional setup after loading the view.
         //setCalendarBackground(date: Date())
         collectionView.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 5)
+        moreView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -43,6 +45,23 @@ class ThemeVC: UIViewController {
             backgroundImageView.image = UIImage(named: "CalandarAutumn")
         default:
             break
+        }
+    }
+    
+    @IBAction func moreBtnClicked(_ sender: Any) {
+        self.moreView.isHidden = false
+    }
+    
+    @IBAction func resetThemeBtnClicked(_ sender: Any) {
+        self.moreView.isHidden = true
+        self.resetThemesRequest()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            if touch.view == self.moreView {
+                moreView.isHidden = true
+            }
         }
     }
     
@@ -74,7 +93,35 @@ extension ThemeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollec
          cell.trialConst.constant = 0
          cell.topConst.constant = 0
          cell.bottomConst.constant = 0
-        return cell
+         cell.unlockBtn.addTarget(self, action: #selector(btnClicked(btn:)), for: .touchUpInside)
+         cell.unlockBtn.tag = indexPath.row
+         if theme.isUnlocked{
+             cell.coinImageView.isHidden = true
+             cell.coinLbl.isHidden = true
+             if theme.isApplied{
+                 cell.unlockBtn.setTitle("Remove", for: .normal)
+             }else{
+                 cell.unlockBtn.setTitle("Apply", for: .normal)
+             }
+         }else{
+             cell.coinImageView.isHidden = false
+             cell.coinLbl.isHidden = false
+             cell.unlockBtn.setTitle("Unlock", for: .normal)
+         }
+         return cell
+    }
+    
+    @objc func btnClicked(btn:UIButton){
+        if let title = btn.titleLabel{
+            let theme = self.viewModal.themeArray[btn.tag]
+            if title.text == "Unlock"{
+                self.alert(type: "Unlock", id: theme.themeId, index: btn.tag)
+            }else if title.text == "Apply"{
+                self.alert(type: "Apply", id: theme.userThemeId, index: btn.tag)
+            }else if title.text == "Remove"{
+                self.alert(type: "Remove", id: theme.userThemeId, index: btn.tag)
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -86,6 +133,36 @@ extension ThemeVC : UICollectionViewDelegate,UICollectionViewDataSource,UICollec
         
     }
     
+}
+
+extension ThemeVC{
+    func alert(type:String,id:String,index:Int){
+        let VC = self.getPopUpVC()
+        if type == "Unlock"{
+            VC.titleString = "Unlock"
+            VC.messageString = MessageHelper.PopupMessage.unlockThemeMessage
+        }else if type == "Apply"{
+            VC.titleString = "Apply"
+            VC.messageString = MessageHelper.PopupMessage.applyThemeMessage
+        }else if type == "Remove"{
+            VC.titleString = "Remove"
+            VC.messageString = MessageHelper.PopupMessage.removeThemeMessage
+        }
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            if type == "Unlock"{
+                self?.unlockThemesRequest(id: id, index: index)
+            }else if type == "Apply"{
+                self?.updateThemesRequest(id: id, status: true, index: index)
+            }else if type == "Remove"{
+                self?.updateThemesRequest(id: id, status: false, index: index)
+            }
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
 }
 
 extension ThemeVC{
@@ -106,4 +183,64 @@ extension ThemeVC{
         })
     }
     
+    func unlockThemesRequest(id:String,index:Int){
+        let param = ["theme_id":Int(id)!] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.unlockThemes(urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeUnlocked, type: .success)
+            self.viewModal.themeArray[index].isUnlocked = true
+            self.viewModal.themeArray[index].userThemeId = self.viewModal.userThemeId
+            self.viewModal.userThemeId = ""
+            self.collectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func updateThemesRequest(id:String,status:Bool,index:Int){
+        let param = ["applied":status] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.updateUserTheme(id: id, urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            if status{
+                SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeApplied, type: .success)
+                self.viewModal.themeArray[index].isApplied = true
+            }else{
+                SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeRemove, type: .success)
+                self.viewModal.themeArray[index].isApplied = false
+            }
+            self.collectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func resetThemesRequest(){
+        let param = ["applied":false] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.resetUserTheme(urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeReset, type: .success)
+            _ = self.viewModal.themeArray.map({$0.isApplied = false})
+            self.collectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func removeThemesRequest(id:String,index:Int){
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.removeTheme(id: id, urlParams: nil, param: nil, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.viewModal.themeArray[index].isUnlocked = false
+            self.collectionView.reloadData()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
 }

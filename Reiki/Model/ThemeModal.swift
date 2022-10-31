@@ -8,7 +8,11 @@
 import UIKit
 
 class ThemeModal: NSObject {
+    var themeId = ""
     var image = ""
     var coin = ""
-
+    var isUnlocked = false
+    var isApplied = false
+    var userThemeId = ""
+    var themeUrl = ""
 }

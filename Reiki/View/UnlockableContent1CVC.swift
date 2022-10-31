@@ -12,5 +12,7 @@ class UnlockableContent1CVC: UICollectionViewCell {
     @IBOutlet var titleLbl: UILabel!
     @IBOutlet var imageView: CustomImageView!
     @IBOutlet var coinLbl: UILabel!
+    @IBOutlet var unlockBtn: UIButton!
+    @IBOutlet var coinImageView: UIImageView!
     
 }

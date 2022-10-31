@@ -41,12 +41,12 @@ class CalendarVM: NSObject {
                 }
                 if let calendarActivity = data["open"] as? [[String:Any]]{
                     for i in calendarActivity{
-                        if let activity = i["activity"] as? [String:Any]{
+                        //if let activity = i["activity"] as? [String:Any]{
                             let modal = EventModal()
-                            modal.createModal(dict: activity)
-                            modal.eventType = .custom
+                            modal.createModal(dict: i)
+                            modal.eventType = .publicType
                             self.openEventArray.append(modal)
-                        }
+                       // }
                     }
                 }
             }

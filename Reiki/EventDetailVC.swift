@@ -141,8 +141,7 @@ class EventDetailVC: UIViewController {
             VC.point = String(point)
         }
         VC.delegate = self
-        let order = NSCalendar.current.compare(event.eventdateAsDate, to: Date(), toGranularity: .day)
-        VC.isExpired = order == .orderedAscending
+        VC.isExpired = isDateExpired()
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
@@ -160,8 +159,10 @@ class EventDetailVC: UIViewController {
     }
     
     func setUIEventStatus(){
-        let order = NSCalendar.current.compare(event.eventdateAsDate, to: Date(), toGranularity: .day)
-        if event.isCompleted {
+       
+        let futureDate = NSCalendar.current.compare(event.eventdateAsDate, to: Date(), toGranularity: .day)
+        
+        if event.isCompleted{
             statusView.isHidden = false
             statusView.backgroundColor = UIColor.init(hexString: "42980A")
             journalInfoView.isHidden = true
@@ -173,7 +174,18 @@ class EventDetailVC: UIViewController {
             if !event.journal.isEmpty{
                 jouranlLbl.attributedText = "View Journal".withFont(FontHelper.montserratFontSize(fontType: .semiBold, size: 14.0))
             }
-        }else if event.eventType == .publicType && order == .orderedAscending{
+        }else if event.eventType == .publicType && futureDate == .orderedDescending{ // Future Dates - (Hide complete Now)
+            statusView.isHidden = true
+            journalInfoView.isHidden = false
+            useJournalView.isHidden = false
+            orLbl.isHidden = false
+            completeNowBtn.isHidden = false
+            completeNowBtn.isEnabled = false
+            completeNowBtn.backgroundColor = UIColor.lightGray
+            if !event.journal.isEmpty{
+                jouranlLbl.attributedText = "View Journal".withFont(FontHelper.montserratFontSize(fontType: .semiBold, size: 14.0))
+            }
+        }else if event.eventType == .publicType && isDateExpired(){ //Expired : Days before yesterday
             statusView.isHidden = false
             statusView.backgroundColor = UIColor.init(hexString: "#DE4040")
             journalInfoView.isHidden = true
@@ -192,6 +204,13 @@ class EventDetailVC: UIViewController {
             orLbl.isHidden = false
             completeNowBtn.isHidden = false
         }
+    }
+    
+    func isDateExpired()->Bool{
+        let calendar = Calendar.current
+        let oneDaysAgo = calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+        let order = NSCalendar.current.compare(event.eventdateAsDate, to: oneDaysAgo, toGranularity: .day)
+        return order == .orderedAscending
     }
     
     @IBAction func extraOptionBtnClicked(_ sender: Any) {
