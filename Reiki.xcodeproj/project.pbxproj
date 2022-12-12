@@ -17,6 +17,9 @@
 		580B404328EEDB5F005866B6 /* UnlockablesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B404228EEDB5F005866B6 /* UnlockablesVM.swift */; };
 		580B404528EEDC84005866B6 /* CustomGearCategoryModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B404428EEDC84005866B6 /* CustomGearCategoryModal.swift */; };
 		580B404728EEE075005866B6 /* CustomGearSubCategoryModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580B404628EEE075005866B6 /* CustomGearSubCategoryModal.swift */; };
+		580BEB6A292B469C00C8C259 /* LevelImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580BEB69292B469C00C8C259 /* LevelImageHelper.swift */; };
+		5814B14D293DB64B0027FCD0 /* LevelHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814B14C293DB64B0027FCD0 /* LevelHeader.swift */; };
+		5814B14F293DB6800027FCD0 /* LevelHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5814B14E293DB6800027FCD0 /* LevelHeader.xib */; };
 		5820CCF028DC2B7700D7A312 /* CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CCEF28DC2B7700D7A312 /* CalendarVC.swift */; };
 		5820CD2A28DC350E00D7A312 /* DefaultTimelineEventLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CCF228DC350E00D7A312 /* DefaultTimelineEventLayout.swift */; };
 		5820CD2B28DC350E00D7A312 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CCF328DC350E00D7A312 /* DividerView.swift */; };
@@ -75,6 +78,8 @@
 		5820CD6328DC354E00D7A312 /* KVKCalendarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */; };
 		5820CD6428DC354E00D7A312 /* CustomDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6228DC354E00D7A312 /* CustomDayCell.swift */; };
 		5820CD6628DC35C700D7A312 /* EventViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6528DC35C700D7A312 /* EventViewer.swift */; };
+		5827E2A8291122A400DA0F57 /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5827E2A7291122A400DA0F57 /* TimeFormatter.swift */; };
+		5828E93F292BA2CD0043D7E4 /* BadgesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */; };
 		58413DE9290116BB0055DEF4 /* CardFinderVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58413DE8290116BB0055DEF4 /* CardFinderVM.swift */; };
 		58413DEB290124FF0055DEF4 /* skeleton-rectangle.json in Resources */ = {isa = PBXBuildFile; fileRef = 58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */; };
 		5860188A28D1F550005836DF /* loader.json in Resources */ = {isa = PBXBuildFile; fileRef = 5860188928D1F550005836DF /* loader.json */; };
@@ -133,6 +138,10 @@
 		58A0DA9F28E2D22300C5E409 /* AllEventsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A0DA9E28E2D22300C5E409 /* AllEventsVC.swift */; };
 		58A0DAA128E2D30100C5E409 /* AllEventsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A0DAA028E2D30100C5E409 /* AllEventsTVC.swift */; };
 		58A0DAA328E31F6700C5E409 /* EventDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A0DAA228E31F6700C5E409 /* EventDetailVC.swift */; };
+		58A4E215292C92F800F5CE25 /* BadgeVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A4E214292C92F800F5CE25 /* BadgeVM.swift */; };
+		58A4E217292C933100F5CE25 /* BadgeModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A4E216292C933100F5CE25 /* BadgeModal.swift */; };
+		58A4E219292CA2A000F5CE25 /* PurchaseHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A4E218292CA2A000F5CE25 /* PurchaseHistoryVC.swift */; };
+		58A4E21B292CA67300F5CE25 /* PurchaseHistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A4E21A292CA67300F5CE25 /* PurchaseHistoryCell.swift */; };
 		58AD18FF28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */; };
 		58AD190128CB590500A4F715 /* WebViewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD190028CB590500A4F715 /* WebViewVC.swift */; };
 		58B15DEA28E1DA6A00385723 /* CalendarVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B15DE928E1DA6A00385723 /* CalendarVM.swift */; };
@@ -142,6 +151,11 @@
 		58C2E52828CF675900CD3A38 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */; };
 		58C3C58528EABD230004CCAB /* UnlockablesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C3C58428EABD230004CCAB /* UnlockablesVC.swift */; };
 		58C3C58928EADB6C0004CCAB /* UnlockablesCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C3C58828EADB6C0004CCAB /* UnlockablesCVC.swift */; };
+		58C622DF2924EA4E002C560F /* LevelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C622DE2924EA4E002C560F /* LevelVC.swift */; };
+		58C622E12924F86E002C560F /* LevelVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C622E02924F86E002C560F /* LevelVM.swift */; };
+		58D346392925FB0A00156044 /* LevelModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D346382925FB0A00156044 /* LevelModal.swift */; };
+		58D3463B2926108400156044 /* LevelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3463A2926108400156044 /* LevelCell.swift */; };
+		58D3463D292611B900156044 /* LevelHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3463C292611B900156044 /* LevelHeaderCell.swift */; };
 		58D3E70328CF66C800766A82 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70028CF66C700766A82 /* splash.png */; };
 		58D3E70428CF66C800766A82 /* splash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70128CF66C700766A82 /* splash@3x.png */; };
 		58D3E70528CF66C800766A82 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70228CF66C700766A82 /* splash@2x.png */; };
@@ -192,6 +206,9 @@
 		580B404228EEDB5F005866B6 /* UnlockablesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockablesVM.swift; sourceTree = "<group>"; };
 		580B404428EEDC84005866B6 /* CustomGearCategoryModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGearCategoryModal.swift; sourceTree = "<group>"; };
 		580B404628EEE075005866B6 /* CustomGearSubCategoryModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGearSubCategoryModal.swift; sourceTree = "<group>"; };
+		580BEB69292B469C00C8C259 /* LevelImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelImageHelper.swift; sourceTree = "<group>"; };
+		5814B14C293DB64B0027FCD0 /* LevelHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHeader.swift; sourceTree = "<group>"; };
+		5814B14E293DB6800027FCD0 /* LevelHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LevelHeader.xib; sourceTree = "<group>"; };
 		5820CCEF28DC2B7700D7A312 /* CalendarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarVC.swift; sourceTree = "<group>"; };
 		5820CCF228DC350E00D7A312 /* DefaultTimelineEventLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTimelineEventLayout.swift; sourceTree = "<group>"; };
 		5820CCF328DC350E00D7A312 /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
@@ -250,6 +267,8 @@
 		5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVKCalendarSettings.swift; sourceTree = "<group>"; };
 		5820CD6228DC354E00D7A312 /* CustomDayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDayCell.swift; sourceTree = "<group>"; };
 		5820CD6528DC35C700D7A312 /* EventViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewer.swift; sourceTree = "<group>"; };
+		5827E2A7291122A400DA0F57 /* TimeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
+		5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesVC.swift; sourceTree = "<group>"; };
 		58413DE8290116BB0055DEF4 /* CardFinderVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFinderVM.swift; sourceTree = "<group>"; };
 		58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "skeleton-rectangle.json"; sourceTree = "<group>"; };
 		5860188928D1F550005836DF /* loader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loader.json; sourceTree = "<group>"; };
@@ -310,6 +329,10 @@
 		58A0DA9E28E2D22300C5E409 /* AllEventsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllEventsVC.swift; sourceTree = "<group>"; };
 		58A0DAA028E2D30100C5E409 /* AllEventsTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllEventsTVC.swift; sourceTree = "<group>"; };
 		58A0DAA228E31F6700C5E409 /* EventDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailVC.swift; sourceTree = "<group>"; };
+		58A4E214292C92F800F5CE25 /* BadgeVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeVM.swift; sourceTree = "<group>"; };
+		58A4E216292C933100F5CE25 /* BadgeModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeModal.swift; sourceTree = "<group>"; };
+		58A4E218292CA2A000F5CE25 /* PurchaseHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseHistoryVC.swift; sourceTree = "<group>"; };
+		58A4E21A292CA67300F5CE25 /* PurchaseHistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseHistoryCell.swift; sourceTree = "<group>"; };
 		58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordSetPwdVC.swift; sourceTree = "<group>"; };
 		58AD190028CB590500A4F715 /* WebViewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewVC.swift; sourceTree = "<group>"; };
 		58B15DE928E1DA6A00385723 /* CalendarVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarVM.swift; sourceTree = "<group>"; };
@@ -319,6 +342,11 @@
 		58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		58C3C58428EABD230004CCAB /* UnlockablesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockablesVC.swift; sourceTree = "<group>"; };
 		58C3C58828EADB6C0004CCAB /* UnlockablesCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockablesCVC.swift; sourceTree = "<group>"; };
+		58C622DE2924EA4E002C560F /* LevelVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelVC.swift; sourceTree = "<group>"; };
+		58C622E02924F86E002C560F /* LevelVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelVM.swift; sourceTree = "<group>"; };
+		58D346382925FB0A00156044 /* LevelModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModal.swift; sourceTree = "<group>"; };
+		58D3463A2926108400156044 /* LevelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCell.swift; sourceTree = "<group>"; };
+		58D3463C292611B900156044 /* LevelHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHeaderCell.swift; sourceTree = "<group>"; };
 		58D3E70028CF66C700766A82 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
 		58D3E70128CF66C700766A82 /* splash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@3x.png"; sourceTree = "<group>"; };
 		58D3E70228CF66C700766A82 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
@@ -500,6 +528,9 @@
 				588DDF4328EF12E600CF5E8D /* ThemeVC.swift */,
 				58007AA628FE6AE3006FCB28 /* CardFinderVC.swift */,
 				58858316290F961F000D8E86 /* GoldCoinVC.swift */,
+				58C622DE2924EA4E002C560F /* LevelVC.swift */,
+				5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */,
+				58A4E218292CA2A000F5CE25 /* PurchaseHistoryVC.swift */,
 				58F8E6D928B75A2000EBC659 /* Resources */,
 				58F8E6D628B7515B00EBC659 /* Helper */,
 				58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */,
@@ -555,6 +586,8 @@
 				580B404628EEE075005866B6 /* CustomGearSubCategoryModal.swift */,
 				5899190728EEF32C004781EA /* ThemeModal.swift */,
 				5885831C290F9C5A000D8E86 /* CoinModal.swift */,
+				58D346382925FB0A00156044 /* LevelModal.swift */,
+				58A4E216292C933100F5CE25 /* BadgeModal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -570,6 +603,8 @@
 				580B404228EEDB5F005866B6 /* UnlockablesVM.swift */,
 				58413DE8290116BB0055DEF4 /* CardFinderVM.swift */,
 				5885831A290F9C1B000D8E86 /* HomePageVM.swift */,
+				58C622E02924F86E002C560F /* LevelVM.swift */,
+				58A4E214292C92F800F5CE25 /* BadgeVM.swift */,
 			);
 			path = ViewModal;
 			sourceTree = "<group>";
@@ -586,6 +621,11 @@
 				58E81C6028ED5CE400473575 /* UnlockableContentCVC.swift */,
 				580B403A28EEA66A005866B6 /* FavoritesTVC.swift */,
 				58858318290F9A69000D8E86 /* GoldCoinCell.swift */,
+				58D3463A2926108400156044 /* LevelCell.swift */,
+				58D3463C292611B900156044 /* LevelHeaderCell.swift */,
+				58A4E21A292CA67300F5CE25 /* PurchaseHistoryCell.swift */,
+				5814B14C293DB64B0027FCD0 /* LevelHeader.swift */,
+				5814B14E293DB6800027FCD0 /* LevelHeader.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -593,6 +633,7 @@
 		58F8E6D628B7515B00EBC659 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				5827E2A7291122A400DA0F57 /* TimeFormatter.swift */,
 				588CD6AC28CF08AF00DF3EA1 /* CountryCallingCode.swift */,
 				58F8E6E928B7606E00EBC659 /* VCExtensionHelper.swift */,
 				58F8E6E428B7604E00EBC659 /* OTPFieldView */,
@@ -612,6 +653,7 @@
 				58A0DA9C28E2C36600C5E409 /* DateHelper.swift */,
 				58934FAB28D1F14E00793F10 /* ShadowView.swift */,
 				588443E228E4177300344433 /* HeaderGradientView.swift */,
+				580BEB69292B469C00C8C259 /* LevelImageHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -726,6 +768,7 @@
 				588CD6A328CEFE3400DF3EA1 /* Montserrat-Medium.otf in Resources */,
 				588CD6AB28CEFE3400DF3EA1 /* Montserrat-SemiBold.otf in Resources */,
 				588CD6A828CEFE3400DF3EA1 /* Montserrat-ExtraBold.otf in Resources */,
+				5814B14F293DB6800027FCD0 /* LevelHeader.xib in Resources */,
 				588CD69F28CEFE3400DF3EA1 /* Montserrat-Thin.otf in Resources */,
 				58D3E70528CF66C800766A82 /* splash@2x.png in Resources */,
 				588CD6A628CEFE3400DF3EA1 /* Montserrat-Italic.otf in Resources */,
@@ -806,6 +849,7 @@
 				58EB905C28BDED3A007DD261 /* CharacterCVC.swift in Sources */,
 				58A0DAA328E31F6700C5E409 /* EventDetailVC.swift in Sources */,
 				58F8E6D828B7517000EBC659 /* FontHelper.swift in Sources */,
+				58A4E21B292CA67300F5CE25 /* PurchaseHistoryCell.swift in Sources */,
 				5820CD3828DC350E00D7A312 /* TimelineModel.swift in Sources */,
 				58AD190128CB590500A4F715 /* WebViewVC.swift in Sources */,
 				5820CD6328DC354E00D7A312 /* KVKCalendarSettings.swift in Sources */,
@@ -825,6 +869,8 @@
 				58ECA1FA28C5E108003332D6 /* ProfileVC.swift in Sources */,
 				5820CD5528DC350E00D7A312 /* DayCell.swift in Sources */,
 				5820CD4E28DC350E00D7A312 /* YearData.swift in Sources */,
+				58D346392925FB0A00156044 /* LevelModal.swift in Sources */,
+				5827E2A8291122A400DA0F57 /* TimeFormatter.swift in Sources */,
 				5820CD2A28DC350E00D7A312 /* DefaultTimelineEventLayout.swift in Sources */,
 				5820CD3628DC350E00D7A312 /* ScrollableWeekHeaderTitleView.swift in Sources */,
 				580B404728EEE075005866B6 /* CustomGearSubCategoryModal.swift in Sources */,
@@ -840,13 +886,17 @@
 				58F8E6DD28B75D0000EBC659 /* ValidationHelper.swift in Sources */,
 				5820CD3728DC350E00D7A312 /* AllDayView.swift in Sources */,
 				5820CD5F28DC350E00D7A312 /* EventViewList.swift in Sources */,
+				58C622DF2924EA4E002C560F /* LevelVC.swift in Sources */,
 				580B403F28EEBA79005866B6 /* FavoriteModal.swift in Sources */,
+				580BEB6A292B469C00C8C259 /* LevelImageHelper.swift in Sources */,
 				58F8E6DB28B75B3B00EBC659 /* ColorExtensionHelper.swift in Sources */,
 				58EB905528BDDABF007DD261 /* ActivityVC.swift in Sources */,
 				58FC79D528C5D1EA00426EF8 /* ForgotPasswordVC.swift in Sources */,
 				588CD6AD28CF08AF00DF3EA1 /* CountryCallingCode.swift in Sources */,
+				58A4E217292C933100F5CE25 /* BadgeModal.swift in Sources */,
 				5820CD2D28DC350E00D7A312 /* CalendarModel.swift in Sources */,
 				58F3912D28CAF7DF009B4776 /* EditProfileVM.swift in Sources */,
+				58A4E219292CA2A000F5CE25 /* PurchaseHistoryVC.swift in Sources */,
 				5820CD3128DC350E00D7A312 /* EventView.swift in Sources */,
 				5820CD2B28DC350E00D7A312 /* DividerView.swift in Sources */,
 				5887FD6B28C76CE5000400D2 /* SplashVC.swift in Sources */,
@@ -881,6 +931,7 @@
 				5820CD4128DC350E00D7A312 /* CalendarView+Extension.swift in Sources */,
 				5820CD5228DC350E00D7A312 /* AllDayEventView.swift in Sources */,
 				5820CD4028DC350E00D7A312 /* KVKTableViewHeaderFooterView.swift in Sources */,
+				58D3463B2926108400156044 /* LevelCell.swift in Sources */,
 				5820CD6628DC35C700D7A312 /* EventViewer.swift in Sources */,
 				58A0DAA128E2D30100C5E409 /* AllEventsTVC.swift in Sources */,
 				588DDF4428EF12E600CF5E8D /* ThemeVC.swift in Sources */,
@@ -893,6 +944,7 @@
 				5820CD3028DC350E00D7A312 /* Calendar+Extension.swift in Sources */,
 				5820CD4F28DC350E00D7A312 /* YearCell.swift in Sources */,
 				5820CD4828DC350E00D7A312 /* StubStackView.swift in Sources */,
+				58D3463D292611B900156044 /* LevelHeaderCell.swift in Sources */,
 				58F8E6EA28B7606E00EBC659 /* VCExtensionHelper.swift in Sources */,
 				58EB905E28BE14F9007DD261 /* SignupSuccessVC.swift in Sources */,
 				5820CD6428DC354E00D7A312 /* CustomDayCell.swift in Sources */,
@@ -913,6 +965,7 @@
 				5820CD2E28DC350E00D7A312 /* TimelineLabel.swift in Sources */,
 				580B403D28EEB75E005866B6 /* FavoriteVM.swift in Sources */,
 				5820CD5928DC350E00D7A312 /* WeekData.swift in Sources */,
+				58C622E12924F86E002C560F /* LevelVM.swift in Sources */,
 				58C3C58528EABD230004CCAB /* UnlockablesVC.swift in Sources */,
 				5820CD4D28DC350E00D7A312 /* YearView.swift in Sources */,
 				5820CD5428DC350E00D7A312 /* Style.swift in Sources */,
@@ -925,9 +978,11 @@
 				5820CD5C28DC350E00D7A312 /* TimelineEventLayout.swift in Sources */,
 				5820CD2F28DC350E00D7A312 /* ResizeEventView.swift in Sources */,
 				589D77F928E56BF90053867A /* DatePickerVC.swift in Sources */,
+				5828E93F292BA2CD0043D7E4 /* BadgesVC.swift in Sources */,
 				580B404128EED126005866B6 /* CardModal.swift in Sources */,
 				58E81C5F28ED588500473575 /* HeaderRView.swift in Sources */,
 				58C3C58928EADB6C0004CCAB /* UnlockablesCVC.swift in Sources */,
+				5814B14D293DB64B0027FCD0 /* LevelHeader.swift in Sources */,
 				5820CD5D28DC350E00D7A312 /* CalendarView.swift in Sources */,
 				58007AA728FE6AE4006FCB28 /* CardFinderVC.swift in Sources */,
 				58EB906228BE2663007DD261 /* HomePageVC.swift in Sources */,
@@ -936,6 +991,7 @@
 				58F8E6F028B79B7400EBC659 /* SignupCharacterVC.swift in Sources */,
 				5888584228AE62C7008BA58D /* Reiki.xcdatamodeld in Sources */,
 				589D77FB28E5A7710053867A /* EventCompletVC.swift in Sources */,
+				58A4E215292C92F800F5CE25 /* BadgeVM.swift in Sources */,
 				58A0DA9F28E2D22300C5E409 /* AllEventsVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1094,7 +1150,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;
@@ -1130,7 +1186,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.4.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;

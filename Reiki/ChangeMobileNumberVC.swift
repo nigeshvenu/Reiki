@@ -16,6 +16,7 @@ class ChangeMobileNumberVC: UIViewController {
     
     var viewModal = LoginVM()
     var signupViewModal = SignupVM()
+    var delegate : ChangeMobileNumberDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,13 +31,18 @@ class ChangeMobileNumberVC: UIViewController {
         setPlaceholderColor(textfield: mobileTxt)
         setTextfieldPadding(textfield: mobileTxt)
         //sidemenu
-        SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
+        /*SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
         sideMenuSettings()
-        SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
+        SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self*/
         let countryCode = CountryCallingCode.countryNamesByCode(code: Locale.current.regionCode ?? "")
         //let countryCode = CountryCallingCode.countryNamesByCode(code: "IN")
         countryCodeTxt.text = countryCode
+    }
+    
+    
+    @IBAction func backBtnClicked(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func setPlaceholderColor(textfield:UITextField){
@@ -193,6 +199,7 @@ extension ChangeMobileNumberVC{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.otpSent, type: .success)
             let VC = self.getOtpVC()
             VC.isEditProfile = true
+            VC.delegate = self.delegate
             VC.countryCode = phoneCode
             VC.mobileNumber = phoneNumber
             self.navigationController?.pushViewController(VC, animated: true)
@@ -205,7 +212,7 @@ extension ChangeMobileNumberVC{
 
 extension ChangeMobileNumberVC : SideMenuDelegate{
     func selectedIndex(row: Int) {
-        if row == 11{
+        if row == 9{
             logoutAlert()
         }else{
             deleteAccountAlert()
@@ -250,6 +257,7 @@ extension ChangeMobileNumberVC : SideMenuDelegate{
     
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
+        UserModal.sharedInstance.reset()
         self.goToLogin()
     }
     

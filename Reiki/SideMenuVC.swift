@@ -46,14 +46,14 @@ class SideMenuVC: UIViewController {
         let home = CharacterStruct(name: "Home", image: "home", isSelected: false)
         let calendar = CharacterStruct(name: "Calendar", image: "calendar", isSelected: false)
         let cardFinder = CharacterStruct(name: "Card Finder", image: "cardfinder", isSelected: false)
-        let unlockables = CharacterStruct(name: "Unlockables", image: "unlockables", isSelected: false)
+        let unlockables = CharacterStruct(name: "Unlockables", image: "UnlockableSideMenu", isSelected: false)
         let favorites = CharacterStruct(name: "Favorites", image: "favorites", isSelected: false)
         let profile = CharacterStruct(name: "Profile", image: "profile", isSelected: false)
         let changePassword = CharacterStruct(name: "Change Password", image: "changepassword", isSelected: false)
-        let changeMobile = CharacterStruct(name: "Change mobile number", image: "ChangeMobile", isSelected: false)
+        //let changeMobile = CharacterStruct(name: "Change mobile number", image: "ChangeMobile", isSelected: false)
         let terms = CharacterStruct(name: "Terms & Conditions", image: "terms", isSelected: false)
         let privacy = CharacterStruct(name: "Privacy Policy", image: "privacy", isSelected: false)
-        let deleteAccount = CharacterStruct(name: "Delete Account", image: "AccountDelete", isSelected: false)
+        //let deleteAccount = CharacterStruct(name: "Delete Account", image: "AccountDelete", isSelected: false)
         let logout = CharacterStruct(name: "Logout", image: "logout", isSelected: false)
         optionsArray.append(home)
         optionsArray.append(calendar)
@@ -62,10 +62,10 @@ class SideMenuVC: UIViewController {
         optionsArray.append(favorites)
         optionsArray.append(profile)
         optionsArray.append(changePassword)
-        optionsArray.append(changeMobile)
+        //optionsArray.append(changeMobile)
         optionsArray.append(terms)
         optionsArray.append(privacy)
-        optionsArray.append(deleteAccount)
+        //optionsArray.append(deleteAccount)
         optionsArray.append(logout)
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
            self.versionLbl.text = "App Version " + version
@@ -165,7 +165,7 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
                           navController.setViewControllers(navController.viewControllers, animated: true)
                       })
                   }
-              }else if indexPath.row == 7{
+              }/*else if indexPath.row == 7{
                   DispatchQueue.main.async {
                       self.dismiss(animated: true, completion:{
                           _ = navController.viewControllers.popLast()
@@ -173,7 +173,7 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
                           navController.setViewControllers(navController.viewControllers, animated: true)
                       })
                   }
-              }else if indexPath.row == 8{
+              }*/else if indexPath.row == 7{
                   DispatchQueue.main.async {
                       self.dismiss(animated: true, completion:{
                           _ = navController.viewControllers.popLast()
@@ -183,7 +183,7 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
                           navController.setViewControllers(navController.viewControllers, animated: true)
                       })
                   }
-              }else if indexPath.row == 9{
+              }else if indexPath.row == 8{
                   DispatchQueue.main.async {
                       self.dismiss(animated: true, completion:{
                           _ = navController.viewControllers.popLast()
@@ -193,11 +193,11 @@ extension SideMenuVC : UITableViewDelegate,UITableViewDataSource{
                           navController.setViewControllers(navController.viewControllers, animated: true)
                       })
                   }
-              }else if indexPath.row == 10{
+              }/*else if indexPath.row == 10{
                   dismiss(animated: true, completion: {
                       self.delegate?.selectedIndex(row: indexPath.row)
                   })
-              }else if indexPath.row == optionsArray.count - 1{
+              }*/else if indexPath.row == optionsArray.count - 1{
                   dismiss(animated: true, completion: {
                       self.delegate?.selectedIndex(row: indexPath.row)
                   })

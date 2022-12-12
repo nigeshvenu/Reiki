@@ -52,7 +52,7 @@ class EditProfileVC: UIViewController {
         setPlaceholderColor(textfield: emailTxt)
         mobileNumberTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         setPlaceholderColor(textfield: mobileNumberTxt)
-        mobileNumberTxt.isEnabled = false
+        //mobileNumberTxt.isEnabled = false
         cityTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         setPlaceholderColor(textfield: cityTxt)
         stateTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
@@ -257,7 +257,23 @@ extension EditProfileVC{
     }
 }
 
+extension EditProfileVC : ChangeMobileNumberDelegate{
+    func phoneChanged() {
+        let user = UserModal.sharedInstance
+        self.mobileNumberTxt.text = "(\(user.phoneCode)) \(user.phone.applyPatternOnNumbers(pattern: "(###) ###-####", replacmentCharacter: "#"))"
+    }
+}
+
 extension EditProfileVC : UITextFieldDelegate{
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+       if textField == mobileNumberTxt{
+            self.view.endEditing(true)
+            let VC = self.getChangeMobileNumberVC()
+            VC.delegate = self
+            self.navigationController?.pushViewController(VC, animated: true)
+        }
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == firstNameTxt{
@@ -265,7 +281,7 @@ extension EditProfileVC : UITextFieldDelegate{
         }else if textField == lastNametxt{
             emailTxt.becomeFirstResponder()
         }else if textField == emailTxt{
-            mobileNumberTxt.becomeFirstResponder()
+            textField.resignFirstResponder()
         }else if textField == mobileNumberTxt{
             cityTxt.becomeFirstResponder()
         }else if textField == cityTxt{

@@ -33,6 +33,8 @@ class FavoritesVC: UIViewController {
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
         sideMenuSettings()
         SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
+        tableView.contentInsetAdjustmentBehavior = .never
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
     
     func sideMenuSettings(){
@@ -81,7 +83,6 @@ extension FavoritesVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "FavoritesTVC") as! FavoritesTVC
-        cell.mainView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white : UIColor.init(hexString: "#F9F5F5")
         let favorite = self.viewModal.favoritesArray[indexPath.row]
         cell.eventImageView.ImageViewLoading(mediaUrl: favorite.event.eventImage, placeHolderImage: UIImage(named: "noImageEvent"))
         cell.eventTitle.text = favorite.event.eventTitle
@@ -89,6 +90,8 @@ extension FavoritesVC : UITableViewDelegate,UITableViewDataSource{
         cell.favoriteBtn.tag = indexPath.row
         cell.favoriteBtn.addTarget(self, action: #selector(unfavorite(btn:)), for: .touchUpInside)
         cell.customLb.isHidden = favorite.event.eventType == .publicType
+        cell.setCorner(numberOfRows: self.viewModal.favoritesArray.count, indexPath: indexPath)
+        cell.mainView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white : UIColor.init(hexString: "#F9F5F5")
         return cell
     }
     
@@ -147,7 +150,7 @@ extension FavoritesVC{
 
 extension FavoritesVC : SideMenuDelegate{
     func selectedIndex(row: Int) {
-        if row == 11{
+        if row == 9{
             logoutAlert()
         }else{
             deleteAccountAlert()
@@ -161,8 +164,7 @@ extension FavoritesVC : SideMenuDelegate{
         VC.noBtnClick  = { [weak self]  in
         }
         VC.yesBtnClick  = { [weak self]  in
-            self?.finalStep()
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+            self?.logoutRequest()
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
@@ -179,6 +181,19 @@ extension FavoritesVC : SideMenuDelegate{
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
+    }
+    
+    func logoutRequest(){
+        let param = ["session_id":UserDefaultsHelper().getSessionId()]
+        AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().logout(urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.finalStep()
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
     }
     
     func deleteUserRequest(){
@@ -204,6 +219,7 @@ extension FavoritesVC : SideMenuDelegate{
     
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
+        UserModal.sharedInstance.reset()
         self.goToLogin()
     }
 }

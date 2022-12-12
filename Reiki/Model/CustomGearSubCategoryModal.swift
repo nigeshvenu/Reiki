@@ -20,4 +20,8 @@ class ItemModal{
     var image = ""
     var coin = ""
     var itemId = ""
+    var userCustomGearId = ""
+    var isUnlocked = false
+    var isApplied = false
+    var createdDate = ""
 }

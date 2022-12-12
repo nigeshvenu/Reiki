@@ -28,7 +28,7 @@ class GoldCoinVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         getUserThemes()
-        getCoinsRequest()
+        
     }
 
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -79,12 +79,13 @@ extension GoldCoinVC{
                      "limit":-1,
                      "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
                      "populate":["theme"]] as [String : Any]
-        //AppDelegate.shared.showLoading(isShow: true)
+        AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
+            self.getCoinsRequest()
             self.setCalendarBackground(date: Date())
         }, onFailure: { error in
-            //AppDelegate.shared.showLoading(isShow: false)
+            AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
     }
@@ -94,7 +95,7 @@ extension GoldCoinVC{
                      "limit":-1,
                      "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!],
                      "sort":[["created_at","DESC"]]] as [String : Any]
-        AppDelegate.shared.showLoading(isShow: true)
+        //AppDelegate.shared.showLoading(isShow: true)
         viewModal.getUserCoin(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.tableView.reloadData()
@@ -118,11 +119,21 @@ extension GoldCoinVC : UITableViewDelegate,UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create a new cell if needed or reuse an old one
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "GoldCoinCell") as! GoldCoinCell
+        let numberOfRows = self.viewModal.coinArray.count
+        if numberOfRows == 1{
+            cell.contentView.setRoundCorners([.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMinXMinYCorner], radius: 16)
+        }else if (indexPath.row == numberOfRows - 1) { // bottom cell
+            cell.contentView.setRoundCorners([.layerMinXMaxYCorner,.layerMaxXMaxYCorner], radius: 16)
+        }else if (indexPath.row == 0) { // top cell
+            cell.contentView.setRoundCorners([.layerMinXMinYCorner,.layerMaxXMinYCorner], radius: 16)
+        }else{
+            cell.contentView.setRoundCorners([.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMinXMinYCorner], radius: 0)
+        }
         cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white.withAlphaComponent(0.39) : UIColor.white.withAlphaComponent(0.50)
         let coin = self.viewModal.coinArray[indexPath.row]
         cell.titleLbl.text = coin.type
         cell.dateLbl.text = coin.date
-        cell.coinLbl.text = "+" + coin.coin
+        cell.coinLbl.text = coin.coin
         return cell
     }
     

@@ -174,7 +174,8 @@ class EventDetailVC: UIViewController {
             if !event.journal.isEmpty{
                 jouranlLbl.attributedText = "View Journal".withFont(FontHelper.montserratFontSize(fontType: .semiBold, size: 14.0))
             }
-        }else if event.eventType == .publicType && futureDate == .orderedDescending{ // Future Dates - (Hide complete Now)
+        }
+        else if event.eventType == .publicType && futureDate == .orderedDescending{ // Future Dates - (Hide complete Now)
             statusView.isHidden = true
             journalInfoView.isHidden = false
             useJournalView.isHidden = false
@@ -203,6 +204,9 @@ class EventDetailVC: UIViewController {
             useJournalView.isHidden = false
             orLbl.isHidden = false
             completeNowBtn.isHidden = false
+            if !event.journal.isEmpty{
+                jouranlLbl.attributedText = "View Journal".withFont(FontHelper.montserratFontSize(fontType: .semiBold, size: 14.0))
+            }
         }
     }
     

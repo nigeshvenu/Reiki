@@ -6,6 +6,9 @@
 //
 
 import UIKit
+protocol ChangeMobileNumberDelegate {
+    func phoneChanged()
+}
 
 class OtpVC: UIViewController {
     @IBOutlet weak var otpTextFieldView: OTPFieldView!
@@ -24,6 +27,7 @@ class OtpVC: UIViewController {
     var editViewModal = EditProfileVM()
     var VC = ""
     var isEditProfile = false
+    var delegate : ChangeMobileNumberDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +116,15 @@ class OtpVC: UIViewController {
         self.resendOTP()
     }
     
+    func goToEditProfile(){
+        let controllers = self.navigationController?.viewControllers
+          for vc in controllers! {
+            if vc.isKind(of: EditProfileVC.self) {
+              _ = self.navigationController?.popToViewController(vc , animated: true)
+            }
+         }
+    }
+    
     /*
     // MARK: - Navigation
 
@@ -186,9 +199,11 @@ extension OtpVC{
         editViewModal.updateUser(urlParams: nil, param: param, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.mobileUpdated, type: .success)
-            self.navigationController?.popViewController(animated: true)
             UserModal.sharedInstance.phoneCode = self.countryCode
             UserModal.sharedInstance.phone = self.mobileNumber
+            self.delegate?.phoneChanged()
+            self.goToEditProfile()
+            //self.navigationController?.popViewController(animated: true)
             self.view.endEditing(true)
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

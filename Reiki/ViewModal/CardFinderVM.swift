@@ -25,7 +25,9 @@ class CardFinderVM: NSObject {
                     if let activity = data["activity"] as? [String:Any]{
                         let modal = EventModal()
                         modal.createModal(dict: activity)
-                        self.event = modal
+                        if !modal.eventId.isEmpty{
+                            self.event = modal
+                        }
                     }
                     if let cards = data["cards"] as? [[String:Any]]{
                         self.cardArray.removeAll()

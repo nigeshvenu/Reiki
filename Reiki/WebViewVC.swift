@@ -113,7 +113,7 @@ extension WebViewVC : WKNavigationDelegate{
 extension WebViewVC : SideMenuDelegate{
     
     func selectedIndex(row: Int) {
-        if row == 11{
+        if row == 9{
             logoutAlert()
         }else{
             deleteAccountAlert()
@@ -127,8 +127,7 @@ extension WebViewVC : SideMenuDelegate{
         VC.noBtnClick  = { [weak self]  in
         }
         VC.yesBtnClick  = { [weak self]  in
-            self?.finalStep()
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+            self?.logoutRequest()
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
@@ -158,7 +157,21 @@ extension WebViewVC : SideMenuDelegate{
     
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
+        UserModal.sharedInstance.reset()
         self.goToLogin()
+    }
+    
+    func logoutRequest(){
+        let param = ["session_id":UserDefaultsHelper().getSessionId()]
+        AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().logout(urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.finalStep()
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
     }
     
     func deleteUserRequest(){

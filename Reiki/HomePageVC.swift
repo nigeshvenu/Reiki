@@ -7,11 +7,19 @@
 
 import UIKit
 import SideMenu
+import Lightbox
 
 class HomePageVC: UIViewController {
 
     @IBOutlet var characterImageView: UIImageView!
     @IBOutlet var coinLbl: UILabel!
+    @IBOutlet var menuBtn: UIButton!
+    @IBOutlet var levelImageMainView: UIImageView!
+    @IBOutlet var levelImage: UIImageView!
+    @IBOutlet var levelNumberLbl: UILabel!
+    @IBOutlet var prestigeIcon: UIImageView!
+    
+    var viewModal = UnlockablesVM()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +35,7 @@ class HomePageVC: UIViewController {
     }
     
     func initialSettings(){
+        levelImageMainView.layer.cornerRadius = 36/2
         characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)")
         coinLbl.text = UserModal.sharedInstance.coin
         //Sidemenu
@@ -34,6 +43,14 @@ class HomePageVC: UIViewController {
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
         sideMenuSettings()
         SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
+        
+    }
+    
+    func setUI(){
+        coinLbl.text = UserModal.sharedInstance.coin
+        levelNumberLbl.text = "LVL " + UserModal.sharedInstance.levelNumber
+        levelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
+        prestigeIcon.isHidden = !UserModal.sharedInstance.prestige
     }
 
     func sideMenuSettings(){
@@ -46,11 +63,33 @@ class HomePageVC: UIViewController {
         SideMenuManager.default.leftMenuNavigationController?.settings = settings
     }
     
+    @IBAction func levelBtnClicked(_ sender: Any) {
+        let VC = self.getLevelVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     @IBAction func goldCoinBtnClicked(_ sender: Any) {
         let VC = self.getGoldCoinVC()
         self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    @IBAction func badgeBtnClicked(_ sender: Any) {
+        let VC = self.getBadgeVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    @IBAction func cardFinderBtnClicked(_ sender: Any) {
+        let VC = self.getCardFinderVC()
+        VC.showBackBtn = true
+        self.navigationController?.pushViewController(VC, animated: true)
         
     }
+    
+    @IBAction func purchaseBtnClicked(_ sender: Any) {
+        
+        self.userCustomGearRequest()
+    }
+    
     
     // MARK: - Navigation
 
@@ -80,23 +119,73 @@ class HomePageVC: UIViewController {
 
 extension HomePageVC{
     
-    func getConfigurationRequest(){
+    func presentImage(){
+        var images = [LightboxImage]()
+        for image in self.viewModal.purchaseHistoryArray{
+            if let url = URL(string: image.image){
+                print(image.name)
+                images.append(LightboxImage(imageURL: url,text: image.name))
+            }
+        }
+        if images.count > 0{
+            // Create an instance of LightboxController.
+            let controller = LightboxController(images: images)
+            //LightboxConfig.CloseButton.self.text = ""
+            //LightboxConfig.CloseButton.self.size = CGSize(width: 20, height: 20)
+            //LightboxConfig.CloseButton.self.image = UIImage(named: "closewhite")
+            // Set delegates.
+            //controller.pageDelegate = self
+            //controller.dismissalDelegate = self
+            // Use dynamic background.
+            controller.dynamicBackground = true
+            // Present your controller.
+            present(controller, animated: true, completion: nil)
+        }else{
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.purchaseElementsEmpty, type: .success)
+        }
+    }
+}
+
+extension HomePageVC{
+    
+    func userCustomGearRequest(){
+        let param = ["offset":0,
+                     "limit":-1,
+                     "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
+                     "sort":[["created_at","DESC"]],
+                     "populate":["custom_gear"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
+        viewModal.getCustomGear(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
-            //self.getUserRequest()
+            self.presentImage()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
-            self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
+        })
+    }
+}
+
+extension HomePageVC{
+    
+    func getConfigurationRequest(){
+        //AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
+            //AppDelegate.shared.showLoading(isShow: false)
+            //self.getUserRequest()
+        }, onFailure: { error in
+            //AppDelegate.shared.showLoading(isShow: false)
+            //SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+            //self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
         })
     }
     
     func getUserRequest(){
+        let param = ["populate":["level"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
+        LoginVM().getUser(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
-            self.coinLbl.text = UserModal.sharedInstance.coin
+            self.setUI()
+            self.getConfigurationRequest()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -118,7 +207,7 @@ extension HomePageVC{
 
 extension HomePageVC : SideMenuDelegate{
     func selectedIndex(row: Int) {
-        if row == 11{
+        if row == 9{
             logoutAlert()
         }else{
             deleteAccountAlert()
@@ -132,11 +221,23 @@ extension HomePageVC : SideMenuDelegate{
         VC.noBtnClick  = { [weak self]  in
         }
         VC.yesBtnClick  = { [weak self]  in
-            self?.finalStep()
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+            self?.logoutRequest()
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
+    }
+    
+    func logoutRequest(){
+        let param = ["session_id":UserDefaultsHelper().getSessionId()]
+        AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().logout(urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.finalStep()
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
     }
     
     func deleteAccountAlert(){
@@ -163,6 +264,7 @@ extension HomePageVC : SideMenuDelegate{
     
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
+        UserModal.sharedInstance.reset()
         self.goToLogin()
     }
 }

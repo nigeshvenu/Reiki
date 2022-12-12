@@ -9,9 +9,10 @@ import UIKit
 import SideMenu
 import EventKit
 import FSCalendar
+import Switches
 
 class CalendarVC: UIViewController,KVKCalendarSettings {
-    var selectDate = Date()
+    
     
     @IBOutlet var backgroundImageView: CustomImageView!
     @IBOutlet var titleLbl: UILabel!
@@ -24,6 +25,7 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     @IBOutlet var createCustomView: UIView!
     @IBOutlet var seperateView: UIView!
     
+    var selectDate = Date()
     var events = [Event]() {
         didSet {
             calendarView.reloadData()
@@ -45,6 +47,16 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         return calendar
     }()
     
+    @IBOutlet weak var randomE: YapSwitch! {
+        didSet {
+            randomE.onThumbTintColor = UIColor.init(hexString: "#703FCC")
+            randomE.offThumbTintColor = UIColor.white.withAlphaComponent(0.39)
+            randomE.onTintColor = UIColor.init(hexString: "#703FCC").withAlphaComponent(0.43)
+            randomE.offTintColor = UIColor.white.withAlphaComponent(0.43)
+            randomE.isOn = false
+        }
+    }
+    
     var selectedTab = 0
     var calendarVM = CalendarVM()
     var unlockablesVM = UnlockablesVM()
@@ -62,6 +74,7 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     }
 
     func initialSettings(){
+       
         //sidemenu
         SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
@@ -72,7 +85,7 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         setUpMonthCalendar()
         //Year calendar
         manView.addSubview(calendarView)
-        setSwitch()
+        //setSwitch()
     }
     
     func setUpMonthCalendar(){
@@ -109,12 +122,13 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        commonSettings(date: selectDate)
+        getConfigurationRequest()
+        getUserThemes()
+        commonSettings(date: selectDate,setCalendarImage: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        getConfigurationRequest()
         setUpYearCalendar()
     }
     
@@ -204,16 +218,18 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         titleLbl.text = dateLbl
     }
     
-    func commonSettings(date:Date){
+    func commonSettings(date:Date,setCalendarImage:Bool = true){
         setTitleLbl(date: date, isMonth: selectedTab == 0)
-        //setCalendarBackground(date: date)
-        if calendarSwitch.isOn{
+        if setCalendarImage{
+            setCalendarBackground(date: date)
+        }
+        if randomE.isOn{
             self.getCustomActivityList(date: self.monthCalendarView.currentPage)
         }else{
             self.getActivityList(date: self.monthCalendarView.currentPage)
         }
     }
-    
+
     func goToEventPage(event:EventModal){
         let VC = self.getEventDetailVC()
         VC.event = event
@@ -231,13 +247,18 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     }
     
     @IBAction func switchClicked(_ sender: UISwitch) {
-        setSwitch()
+        
+    }
+    
+    @IBAction func switchAction(_ sender: YapSwitch) {
+        //setSwitch()
         if sender.isOn{
             self.getCustomActivityList(date: self.monthCalendarView.currentPage)
             self.createCustomView.isHidden = false
             self.seperateView.isHidden = false
             //self.publicTitle.alpha = 0.5
             self.publicTitle.text = "Custom"
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: "Switched to custom events", type: .success)
             
         }else{
             self.getActivityList(date: self.monthCalendarView.currentPage)
@@ -245,8 +266,10 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
             self.seperateView.isHidden = true
             //self.publicTitle.alpha = 1.0
             self.publicTitle.text = "Public"
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: "Switched to public events", type: .success)
         }
     }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
@@ -382,7 +405,7 @@ extension CalendarVC: CalendarDataSource {
 
 extension CalendarVC : SideMenuDelegate{
     func selectedIndex(row: Int) {
-        if row == 11{
+        if row == 9{
             logoutAlert()
         }else{
             deleteAccountAlert()
@@ -396,8 +419,7 @@ extension CalendarVC : SideMenuDelegate{
         VC.noBtnClick  = { [weak self]  in
         }
         VC.yesBtnClick  = { [weak self]  in
-            self?.finalStep()
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+            self?.logoutRequest()
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
@@ -427,7 +449,21 @@ extension CalendarVC : SideMenuDelegate{
     
     func finalStep(){
         UserDefaultsHelper().clearUserdefaults()
+        UserModal.sharedInstance.reset()
         self.goToLogin()
+    }
+    
+    func logoutRequest(){
+        let param = ["session_id":UserDefaultsHelper().getSessionId()]
+        AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().logout(urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.finalStep()
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.logoutSuccess, type: .success)
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
     }
     
     func deleteUserRequest(){
@@ -469,6 +505,7 @@ extension CalendarVC: SideMenuNavigationControllerDelegate {
 extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalendarDelegate{
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        selectDate = calendar.currentPage
         commonSettings(date: calendar.currentPage)
     }
     
@@ -494,15 +531,15 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-        return colorForDate(date: date, color: calendarSwitch.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
+        return colorForDate(date: date, color: randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-       return colorForDate(date: date, color: calendarSwitch.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
+       return colorForDate(date: date, color: randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        if calendarSwitch.isOn{
+        if randomE.isOn{
             return true
         }
         return isLockedDate(date: date) ? false : true
@@ -513,13 +550,16 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        if calendarSwitch.isOn{
+        if randomE.isOn{
             return nil
         }
         return isLockedDate(date: date) ? UIImage(named: "calendarLock") : nil
     }
     
     func isLockedDate(date:Date)->Bool{
+        if randomE.isOn{
+            return false
+        }
         var isLocked = false
         for i in calendarVM.eventArray{
             let order = NSCalendar.current.compare(i.eventdateAsDate, to: date, toGranularity: .day)
@@ -575,6 +615,7 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
         let events = getEventsForDate(date: date)
         if events.count > 0{
+            
             return isLockedDate(date: date) ? nil : getString(str: events.first!.eventTitle)
         }
         return nil
@@ -644,6 +685,12 @@ extension CalendarVC{
     }
     
     func createCalendarEventArray(){
+        let orderMonth = NSCalendar.current.compare(monthCalendarView.currentPage, to: Date(), toGranularity: .month)
+        if orderMonth == .orderedAscending || orderMonth == .orderedSame{
+            _ = self.calendarVM.eventArray.map({$0.isLocked = false})
+            return
+        }
+        print("Future Month")
         for i in self.calendarVM.eventArray{
             for j in self.calendarVM.openEventArray{
                 let order = NSCalendar.current.compare(i.eventdateAsDate, to: j.eventdateAsDate, toGranularity: .day)
@@ -653,7 +700,7 @@ extension CalendarVC{
                 }
             }
         }
-        if self.calendarVM.openEventArray.count == 0{
+        /*if self.calendarVM.openEventArray.count == 0{
             let order = NSCalendar.current.compare(monthCalendarView.currentPage, to: Date(), toGranularity: .month)
             //print(monthCalendarView.currentPage.toString(dateFormat: "dd/MM/yyyy"))
             if order == .orderedAscending || order == .orderedSame{
@@ -661,7 +708,7 @@ extension CalendarVC{
             }else{
                 _ = self.calendarVM.eventArray.map({$0.isLocked = true})
             }
-        }
+        }*/
     }
     
     func getCustomActivityList(date:Date){
@@ -669,7 +716,7 @@ extension CalendarVC{
         let endDate = date.kvkEndOfMonth ?? Date()
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]]] as [String : Any]
+                     "where":["user_id":Int(UserModal.sharedInstance.userId)!,"active":true,"date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         calendarVM.getCustomActivityList(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
@@ -684,7 +731,6 @@ extension CalendarVC{
         //AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
-            self.getUserThemes()
         }, onFailure: { error in
             //AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)

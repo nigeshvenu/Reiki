@@ -225,6 +225,7 @@ extension ThemeVC{
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.themeReset, type: .success)
             _ = self.viewModal.themeArray.map({$0.isApplied = false})
+            UserModal.sharedInstance.userThemes = []
             self.collectionView.reloadData()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

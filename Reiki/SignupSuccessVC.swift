@@ -16,7 +16,7 @@ class SignupSuccessVC: UIViewController {
     }
     
     @IBAction func goToHomeBtnClicked(_ sender: Any) {
-        let VC = self.getCalendarVC()
+        let VC = self.getHomePageVC()
         self.navigationController?.pushViewController(VC, animated: true)
     }
     @IBAction func closeBtnClicked(_ sender: Any) {

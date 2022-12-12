@@ -13,6 +13,8 @@ class UnlockablesVM: NSObject {
     var customGearSubArray = [CustomGearSubCategoryModal]()
     var themeArray = [ThemeModal]()
     var userThemeId = ""
+    var isPageEmptyReached = false
+    var purchaseHistoryArray = [ItemModal]()
     
     func getCustomGearCategory(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
         let function = APIFunction.customGearCategory
@@ -81,6 +83,11 @@ class UnlockablesVM: NSObject {
                                     itemModal.image = anyToStringConverter(dict: i, key: "image_url")
                                     itemModal.coin = anyToStringConverter(dict: i, key: "required_coin")
                                     itemModal.itemId = anyToStringConverter(dict: i, key: "id")
+                                    if let user_custom_gear = i["user_custom_gear"] as? [String:Any]{
+                                        itemModal.isUnlocked = true
+                                        itemModal.isApplied = anyToBoolConverter(dict: user_custom_gear, key: "applied")
+                                        itemModal.userCustomGearId = anyToStringConverter(dict: user_custom_gear, key: "id")
+                                    }
                                     itemArray.append(itemModal)
                                 }
                                 modal.itemArray = itemArray
@@ -155,6 +162,7 @@ class UnlockablesVM: NSObject {
                                 self.themeArray.append(modal)
                             }
                         }
+                        //UserModal.sharedInstance.userThemes = self.themeArray
                     }
                 }
                 if let message = result["message"] as? String{
@@ -281,4 +289,102 @@ class UnlockablesVM: NSObject {
            })
            
        }
+    
+    func updateCustomGear(id:String,urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.user_custom_gear + "/" + id
+        RequestManager.serverRequestWithToken(function: function, method: .put, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func getPurchaseHistory(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.purchaseHistory
+        RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+                    if let purchaseHistory = data["purchase_histories"] as? [[String:Any]]{
+                        if purchaseHistory.count == 0{
+                            self.isPageEmptyReached = true
+                        }else{
+                            for i in purchaseHistory{
+                                let modal = ItemModal()
+                                if let customGear = i["custom_gear"] as? [String:Any]{
+                                    modal.name = anyToStringConverter(dict: customGear, key: "name")
+                                    modal.image = anyToStringConverter(dict: customGear, key: "image_url")
+                                    modal.coin = anyToStringConverter(dict: customGear, key: "required_coin")
+                                }
+                                if let customGear = i["theme"] as? [String:Any]{
+                                    modal.name = "Theme"
+                                    modal.image = anyToStringConverter(dict: customGear, key: "image_url")
+                                    modal.coin = anyToStringConverter(dict: customGear, key: "required_coin")
+                                }
+                                let date = anyToStringConverter(dict: i, key: "created_at")
+                                modal.createdDate = date.UTCToLocal(incomingFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", outGoingFormat: "MMMM d yyyy")
+                                self.purchaseHistoryArray.append(modal)
+                            }
+                        }
+                    }
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func getCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.user_custom_gear
+        RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                if let data = result["data"] as? [String:Any]{
+                    self.purchaseHistoryArray.removeAll()
+                    if let customGearsArray = data["user_custom_gears"] as? [[String:Any]]{
+                        for i in customGearsArray{
+                            if let customGear = i["custom_gear"] as? [String:Any]{
+                                let modal = ItemModal()
+                                modal.name = anyToStringConverter(dict: customGear, key: "name")
+                                modal.image = anyToStringConverter(dict: customGear, key: "image_url")
+                                self.purchaseHistoryArray.append(modal)
+                            }
+                        }
+                    }
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
 }
+

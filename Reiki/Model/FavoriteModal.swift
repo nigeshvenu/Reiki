@@ -25,6 +25,8 @@ class FavoriteModal: NSObject {
             modal.createModal(dict: eventDict)
             let created = anyToStringConverter(dict: eventDict, key: "date")
             createdDate = created.UTCToUTC(incomingFormat: "yyyy-MM-dd", outGoingFormat: "MMMM d yyyy")
+            print("Event : \(modal.eventTitle)")
+            print("Date : \(createdDate)")
             modal.eventType = self.type == "Normal" ? .publicType : .custom
             self.event = modal
         }
