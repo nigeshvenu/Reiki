@@ -18,6 +18,7 @@ class HomePageVC: UIViewController {
     @IBOutlet var levelImage: UIImageView!
     @IBOutlet var levelNumberLbl: UILabel!
     @IBOutlet var prestigeIcon: UIImageView!
+    @IBOutlet var purchaseView: UIView!
     
     var viewModal = UnlockablesVM()
     
@@ -36,14 +37,16 @@ class HomePageVC: UIViewController {
     
     func initialSettings(){
         levelImageMainView.layer.cornerRadius = 36/2
-        characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)")
+        characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)Pose1")
         coinLbl.text = UserModal.sharedInstance.coin
+        self.slideShowImages()
         //Sidemenu
         SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
         sideMenuSettings()
         SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
-        
+        purchaseView.backgroundColor = UIColor.black.withAlphaComponent(0.38)
+        purchaseView.setRoundCorners([.layerMinXMaxYCorner,.layerMinXMinYCorner], radius: 25)
     }
     
     func setUI(){
@@ -115,6 +118,22 @@ class HomePageVC: UIViewController {
     }
     */
 
+}
+
+extension HomePageVC{
+    
+    func slideShowImages(){
+        var images = [UIImage]()
+        let count = UserModal.sharedInstance.avatar == "Micheal" ? 3 : 8
+        let duration = UserModal.sharedInstance.avatar == "Micheal" ? 9.0 : 24.0
+        for i in 1...count{
+           images.append(UIImage(named: "C\(UserModal.sharedInstance.avatar)Pose\(i)")!)
+        }
+        characterImageView.animationImages = images
+        characterImageView.animationDuration = duration
+        characterImageView.startAnimating()
+    }
+    
 }
 
 extension HomePageVC{

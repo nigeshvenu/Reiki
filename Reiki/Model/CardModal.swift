@@ -12,11 +12,13 @@ class CardModal: NSObject {
     var goldCoins = ""
     var name = ""
     var occurance = ""
+    var random = "1"
     
     func createModal(dict:[String:Any]){
         self.cardId = anyToStringConverter(dict: dict, key: "id")
         self.goldCoins = anyToStringConverter(dict: dict, key: "gold_coins")
         self.name = anyToStringConverter(dict: dict, key: "name")
         self.occurance = anyToStringConverter(dict: dict, key: "occurrence")
+        self.random = anyToStringConverter(dict: dict, key: "random")
     }
 }

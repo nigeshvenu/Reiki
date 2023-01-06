@@ -148,6 +148,11 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
+    @IBAction func manageNotificationBtnClicked(_ sender: Any) {
+        self.moreView.isHidden = true
+        let VC = self.getManageNotificationVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
     
     @IBAction func monthBtnClicked(_ sender: UIButton) {
        selectDate = Date()
@@ -731,11 +736,49 @@ extension CalendarVC{
         //AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
+              if newNotification != nil{
+                if let userInfoDict = newNotification as? [String:Any]{
+                        if let type = userInfoDict["type"] as? String{
+                            if type == "public"{
+                                if let event = self.getObject(userInfo: userInfoDict){
+                                    let modal = EventModal()
+                                    modal.createModal(dict: event)
+                                    modal.eventType = .publicType
+                                    self.getEventDetail(event: modal)
+                                }
+                            }else{
+                                if let event = self.getObject(userInfo: userInfoDict){
+                                   let modal = EventModal()
+                                    modal.createModal(dict: event)
+                                    modal.eventType = .custom
+                                    self.getEventDetail(event: modal)
+                                }
+                           }
+                      }
+                  }
+             }
+            newNotification = nil
         }, onFailure: { error in
             //AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
-            self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
         })
+    }
+    
+    func getEventDetail(event:EventModal){
+        let VC = self.getEventDetailVC()
+        VC.event = event
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
+    func getObject(userInfo:[String:Any])->[String:Any]?{
+        do {
+          let dd =  userInfo["event"] as! String
+          let con = try JSONSerialization.jsonObject(with: dd.data(using: .utf8)!, options: []) as! [String:Any]
+          return con
+        }catch {
+           print(error)
+            return nil
+        }
     }
     
     func getUserThemes(){

@@ -12,6 +12,13 @@ protocol ProfileEditDelegate {
     func profileEdited()
 }
 
+struct PickerModal {
+    var id = ""
+    var name = ""
+    var uniqueId = ""
+    
+}
+
 class EditProfileVC: UIViewController {
     
     @IBOutlet var gradientView: GradientView!
@@ -23,7 +30,10 @@ class EditProfileVC: UIViewController {
     @IBOutlet var cityTxt: UITextField!
     @IBOutlet var stateTxt: UITextField!
     @IBOutlet var zipTxt: UITextField!
+    @IBOutlet var timeZoneTxt: UITextField!
     @IBOutlet var descriptionTxtView: UITextView!
+    @IBOutlet var pickerView: UIPickerView!
+    @IBOutlet var toolBar: UIToolbar!
     
     var delegate:ProfileEditDelegate?
     var imagePicker : ImagePicker!
@@ -33,6 +43,8 @@ class EditProfileVC: UIViewController {
     var isUpdated = false
     var textViewPlaceholderColor = UIColor.lightGray
     var textViewTextColor = UIColor.black
+    var pickerData = [PickerModal]()
+    var selectedTimeZone : PickerModal?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,10 +78,12 @@ class EditProfileVC: UIViewController {
         setTextfieldPadding(textfield: cityTxt)
         setTextfieldPadding(textfield: stateTxt)
         setTextfieldPadding(textfield: zipTxt)
+        setTextfieldPadding(textfield: timeZoneTxt)
         descriptionTxtView.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         descriptionTxtView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         descriptionTxtView.layer.borderWidth = 1.0
         descriptionTxtView.layer.borderColor = UIColor.init(hexString: "#E3E1E1").cgColor
+        timeZoneTxt.inputView = pickerView
         setUI()
     }
     
@@ -82,7 +96,7 @@ class EditProfileVC: UIViewController {
     
     func setTextfieldPadding(textfield:UITextField){
         let btnViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 50))
-        let btnViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 50))
+        let btnViewRight = UIView(frame: CGRect(x: 0, y: 0, width: textfield == timeZoneTxt ? 45 : 10, height: 50))
         textfield.rightViewMode = .always
         textfield.rightView = btnViewRight
         textfield.leftView = btnViewLeft
@@ -101,6 +115,14 @@ class EditProfileVC: UIViewController {
         zipTxt.text = user.zip
         descriptionTxtView.text = user.aboutMe.isEmpty ? "Write something.." : user.aboutMe
         descriptionTxtView.textColor = user.aboutMe.isEmpty ? textViewPlaceholderColor : textViewTextColor
+        if user.timeZone != nil{
+            var modal = PickerModal()
+            modal.id = user.timeZone!.id
+            modal.name = user.timeZone!.name
+            modal.uniqueId = user.timeZone!.value
+            selectedTimeZone = modal
+            timeZoneTxt.text = user.timeZone!.name
+        }
     }
     
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -156,6 +178,10 @@ class EditProfileVC: UIViewController {
         }
         if zipTxt.text!.count < 5{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.zipeCodeInvalid, type: .danger)
+            return false
+        }
+        guard let timeZone = timeZoneTxt.text,!timeZone.trimmingCharacters(in: .whitespaces).isEmpty else {
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.timeZoneEmpty, type: .danger)
             return false
         }
         guard let aboutMe = descriptionTxtView.text,!aboutMe.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
@@ -218,6 +244,20 @@ extension EditProfileVC : ImagePickerDelegate,TOCropViewControllerDelegate{
 
 extension EditProfileVC{
     
+    func timeZoneRequest(){
+        let param = ["sort":[["name","ASC"]],"offset":0,"limit":-1,"active":true] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.getTimeZones(urlParams: param, param: nil, onSuccess: { message in
+           AppDelegate.shared.showLoading(isShow: false)
+            if self.viewModal.timeZoneArray.count > 0{
+                self.timeZoneTxt.becomeFirstResponder()
+            }
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
     func editProfileRequest(){
         let param = getParam()
         AppDelegate.shared.showLoading(isShow: true)
@@ -252,6 +292,9 @@ extension EditProfileVC{
         param.updateValue(cityTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "city")
         param.updateValue(stateTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "state")
         param.updateValue(zipTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "zip")
+        if selectedTimeZone != nil{
+            param.updateValue(Int(selectedTimeZone!.id)!, forKey: "timezone_id")
+        }
         param.updateValue(descriptionTxtView.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "", forKey: "about_me")
         return param
     }
@@ -264,7 +307,61 @@ extension EditProfileVC : ChangeMobileNumberDelegate{
     }
 }
 
+extension EditProfileVC : UIPickerViewDataSource,UIPickerViewDelegate{
+    
+    //MARK: - Pickerview method
+   func numberOfComponents(in pickerView: UIPickerView) -> Int {
+       return 1
+   }
+   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+       return pickerData.count
+   }
+   
+   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+       return pickerData[row].name
+   }
+   
+   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.timeZoneTxt.text = pickerData[row].name
+        self.selectedTimeZone = pickerData[row]
+   }
+    
+    func setupTimeZonePickerView(){
+        self.pickerData.removeAll()
+        for i in self.viewModal.timeZoneArray{
+            var modal = PickerModal()
+            modal.id = i.id
+            modal.name = i.name
+            modal.uniqueId = i.value
+            self.pickerData.append(modal)
+        }
+        self.pickerView.reloadAllComponents()
+        if self.selectedTimeZone == nil{
+            self.selectedTimeZone = self.self.pickerData[0]
+            self.timeZoneTxt.text = self.pickerData[0].name
+            self.pickerView.selectRow(0, inComponent: 0, animated: false)
+        }else{
+            if let indexState = self.pickerData.firstIndex(where: { ( $0.id == self.selectedTimeZone?.id ) }){
+                self.pickerView.selectRow(indexState, inComponent: 0, animated: false)
+            }
+        }
+    }
+    
+}
+
 extension EditProfileVC : UITextFieldDelegate{
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == timeZoneTxt{
+            if viewModal.timeZoneArray.count == 0{
+                self.timeZoneRequest()
+                return false
+            }else{
+                self.setupTimeZonePickerView()
+            }
+        }
+        return true
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
        if textField == mobileNumberTxt{

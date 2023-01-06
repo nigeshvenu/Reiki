@@ -16,5 +16,10 @@
 		<string>Montserrat-SemiBold.otf</string>
 		<string>Montserrat-Medium.otf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

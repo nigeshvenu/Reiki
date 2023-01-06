@@ -21,11 +21,12 @@ class UnlockHiddenChestVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         // Do any additional setup after loading the view.
-        setUI()
+        setUI(random: card.random)
     }
     
-    func setUI(){
-        let randomNumber = String(Int.random(in: 1..<3))
+    func setUI(random:String){
+        //let randomNumber = String(Int.random(in: 1..<3))
+        let randomNumber = Int(random) ?? 1
         if card.cardId == "1"{
             imageView.image = UIImage(named: "ReikiParticle\(randomNumber)")
         }else if card.cardId == "2"{
@@ -51,12 +52,15 @@ class UnlockHiddenChestVC: UIViewController {
     }
     
     @IBAction func closeBtnClicked(_ sender: Any) {
-        self.dismiss(animated: false)
+        self.dismiss(animated: false) {
+            self.doneBtnClick!()
+        }
     }
     
-    
     @IBAction func okBtnClicked(_ sender: Any) {
-        self.dismiss(animated: false)
+        self.dismiss(animated: false) {
+            self.doneBtnClick!()
+        }
     }
     
     /*

@@ -16,7 +16,7 @@ class CalendarVM: NSObject {
     var isFavorite = false
     var isActivityCompleted = false
     var card : CardModal?
-    
+    var useractivityId = ""
     func getCalendarActivityList(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
        
         RequestManager.serverRequestWithToken(function: APIFunction.calendarActivityList, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
@@ -271,6 +271,7 @@ class CalendarVM: NSObject {
                
                 if let data = result["data"] as? [String:Any]{
                     if let userActivity = data["user_activity"] as? [String:Any]{
+                        self.useractivityId = anyToStringConverter(dict: userActivity, key: "_id")
                         if let card = userActivity["card"] as? [String:Any]{
                             let modal = CardModal()
                             modal.createModal(dict: card)

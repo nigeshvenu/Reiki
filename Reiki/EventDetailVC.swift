@@ -27,7 +27,6 @@ class EventDetailVC: UIViewController {
     @IBOutlet var extraOptionBtn: UIButton!
     @IBOutlet var moreView: UIView!
     
-    
     var event = EventModal()
     var viewModal = CalendarVM()
     var localTimeZoneIdentifier: String {
@@ -45,20 +44,16 @@ class EventDetailVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        if self.event.eventType == .publicType{
-            self.updateUserActivityRequest()
-            self.getActivityStatusRequest()
-        }else{
-            self.extraOptionBtn.isHidden = event.isCompleted
-            self.setUIEventStatus()
-            self.getFavoriteRequest()
-        }
-        /*let card = CardModal()
-        card.goldCoins = "2000"
-        card.cardId = "3"
-        card.name = "Gold"
-        card.occurance = "Rare"
-        self.HiddenChestAlert(card: card)*/
+        //getConfigurationRequest(completion: {
+            if self.event.eventType == .publicType{
+                self.updateUserActivityRequest()
+                self.getActivityStatusRequest()
+            }else{
+                self.extraOptionBtn.isHidden = self.event.isCompleted
+                self.setUIEventStatus()
+                self.getFavoriteRequest()
+            }
+        //})
     }
     
     func initialSettings(){
@@ -137,7 +132,8 @@ class EventDetailVC: UIViewController {
         let VC = self.getAddJournalVC()
         VC.event = self.event
         if event.eventType == .publicType{
-            let point = ((Int(activityPoint) ?? 0) + (Int(journalPoint) ?? 0))
+            //let point = ((Int(activityPoint) ?? 0) + (Int(journalPoint) ?? 0))
+            let point = (Int(journalPoint) ?? 0)
             VC.point = String(point)
         }
         VC.delegate = self
@@ -165,8 +161,8 @@ class EventDetailVC: UIViewController {
         if event.isCompleted{
             statusView.isHidden = false
             statusView.backgroundColor = UIColor.init(hexString: "42980A")
-            journalInfoView.isHidden = true
-            useJournalView.isHidden = event.journal.isEmpty
+            journalInfoView.isHidden = false
+            useJournalView.isHidden = false
             orLbl.isHidden = true
             completeNowBtn.isHidden = true
             statusLbl.text = "COMPLETED"
@@ -297,6 +293,8 @@ extension EventDetailVC{
             if isHiddenChest != nil{
                 self?.HiddenChestAlert(card: isHiddenChest!)
                 self?.viewModal.card = nil
+            }else{
+                NotificationCenter.default.post(name: Notification.Name("Notification"), object: nil)
             }
         }
         VC.modalPresentationStyle = .overFullScreen
@@ -309,7 +307,7 @@ extension EventDetailVC{
         let VC = self.getUnlockHiddenChestVC()
         VC.card = card
         VC.doneBtnClick  = { [weak self]  in
-            
+            NotificationCenter.default.post(name: Notification.Name("Notification"), object: nil)
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
@@ -330,6 +328,17 @@ extension EventDetailVC{
 }
 
 extension EventDetailVC{
+    
+    func getConfigurationRequest(completion: @escaping () -> Void){
+        //AppDelegate.shared.showLoading(isShow: true)
+        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
+            //AppDelegate.shared.showLoading(isShow: false)
+            completion()
+        }, onFailure: { error in
+            //AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
     
     func updateUserActivityRequest(){
         let param = ["activity_list_id":Int(self.event.eventId)!,
@@ -425,6 +434,8 @@ extension EventDetailVC{
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.createUserActivity(urlParams: nil, param: param) { (message) in
             AppDelegate.shared.showLoading(isShow: false)
+            self.event.userActivityId = self.viewModal.useractivityId
+            self.viewModal.useractivityId = ""
             self.event.isCompleted = true
             self.setUIEventStatus()
             self.completAlert(xpPoint: point, isHiddenChest: self.viewModal.card)

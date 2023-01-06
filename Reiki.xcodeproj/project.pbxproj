@@ -78,6 +78,7 @@
 		5820CD6328DC354E00D7A312 /* KVKCalendarSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */; };
 		5820CD6428DC354E00D7A312 /* CustomDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6228DC354E00D7A312 /* CustomDayCell.swift */; };
 		5820CD6628DC35C700D7A312 /* EventViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820CD6528DC35C700D7A312 /* EventViewer.swift */; };
+		582610F82953175300B8CFA4 /* TimeZoneModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582610F72953175300B8CFA4 /* TimeZoneModal.swift */; };
 		5827E2A8291122A400DA0F57 /* TimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5827E2A7291122A400DA0F57 /* TimeFormatter.swift */; };
 		5828E93F292BA2CD0043D7E4 /* BadgesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */; };
 		58413DE9290116BB0055DEF4 /* CardFinderVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58413DE8290116BB0055DEF4 /* CardFinderVM.swift */; };
@@ -94,6 +95,7 @@
 		58858319290F9A69000D8E86 /* GoldCoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58858318290F9A69000D8E86 /* GoldCoinCell.swift */; };
 		5885831B290F9C1B000D8E86 /* HomePageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885831A290F9C1B000D8E86 /* HomePageVM.swift */; };
 		5885831D290F9C5A000D8E86 /* CoinModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5885831C290F9C5A000D8E86 /* CoinModal.swift */; };
+		5886A38F29489F570088DB01 /* NotificationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5886A38E29489F570088DB01 /* NotificationModal.swift */; };
 		5887FD6728C72604000400D2 /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6628C72604000400D2 /* EditProfileVC.swift */; };
 		5887FD6928C7361C000400D2 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */; };
 		5887FD6B28C76CE5000400D2 /* SplashVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5887FD6A28C76CE5000400D2 /* SplashVC.swift */; };
@@ -129,7 +131,10 @@
 		588DDF4428EF12E600CF5E8D /* ThemeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588DDF4328EF12E600CF5E8D /* ThemeVC.swift */; };
 		58934FAA28D1E51F00793F10 /* PopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58934FA928D1E51F00793F10 /* PopUpVC.swift */; };
 		58934FAC28D1F14E00793F10 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58934FAB28D1F14E00793F10 /* ShadowView.swift */; };
+		5893D042294C89E300B371B0 /* CardHistoryModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893D041294C89E300B371B0 /* CardHistoryModal.swift */; };
+		5893D044294C8B8500B371B0 /* CardCoinCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893D043294C8B8500B371B0 /* CardCoinCVC.swift */; };
 		5899190828EEF32C004781EA /* ThemeModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5899190728EEF32C004781EA /* ThemeModal.swift */; };
+		58997A512954289E00E86AC4 /* ManageNotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58997A502954289E00E86AC4 /* ManageNotificationVC.swift */; };
 		589D77F728E55A650053867A /* CreateCustomEventVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D77F628E55A650053867A /* CreateCustomEventVC.swift */; };
 		589D77F928E56BF90053867A /* DatePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D77F828E56BF90053867A /* DatePickerVC.swift */; };
 		589D77FB28E5A7710053867A /* EventCompletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589D77FA28E5A7710053867A /* EventCompletVC.swift */; };
@@ -148,11 +153,16 @@
 		58B2E1BB28ED6E5F00F4542F /* Cloud-Calligraphy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 58B2E1B828ED6E5F00F4542F /* Cloud-Calligraphy.otf */; };
 		58B2E1BE28ED840400F4542F /* UnlockableContent1CVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B2E1BD28ED840400F4542F /* UnlockableContent1CVC.swift */; };
 		58B2E1C028ED90F100F4542F /* UnlockHiddenChestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B2E1BF28ED90F100F4542F /* UnlockHiddenChestVC.swift */; };
+		58BA138429475B0C005E2B70 /* LevelUPPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BA138329475B0C005E2B70 /* LevelUPPopUpVC.swift */; };
+		58BC2AD729484AE60021E87B /* confetti.json in Resources */ = {isa = PBXBuildFile; fileRef = 58BC2AD629484AE60021E87B /* confetti.json */; };
+		58BC2AD929484B3D0021E87B /* confetti_1.json in Resources */ = {isa = PBXBuildFile; fileRef = 58BC2AD829484B3C0021E87B /* confetti_1.json */; };
+		58BC2ADB29485CA00021E87B /* NewBadgePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BC2ADA29485CA00021E87B /* NewBadgePopUpVC.swift */; };
 		58C2E52828CF675900CD3A38 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */; };
 		58C3C58528EABD230004CCAB /* UnlockablesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C3C58428EABD230004CCAB /* UnlockablesVC.swift */; };
 		58C3C58928EADB6C0004CCAB /* UnlockablesCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C3C58828EADB6C0004CCAB /* UnlockablesCVC.swift */; };
 		58C622DF2924EA4E002C560F /* LevelVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C622DE2924EA4E002C560F /* LevelVC.swift */; };
 		58C622E12924F86E002C560F /* LevelVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C622E02924F86E002C560F /* LevelVM.swift */; };
+		58CC28042946F7BC005867BE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 58CC28032946F7BC005867BE /* GoogleService-Info.plist */; };
 		58D346392925FB0A00156044 /* LevelModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D346382925FB0A00156044 /* LevelModal.swift */; };
 		58D3463B2926108400156044 /* LevelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3463A2926108400156044 /* LevelCell.swift */; };
 		58D3463D292611B900156044 /* LevelHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3463C292611B900156044 /* LevelHeaderCell.swift */; };
@@ -161,6 +171,8 @@
 		58D3E70528CF66C800766A82 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D3E70228CF66C700766A82 /* splash@2x.png */; };
 		58E81C5F28ED588500473575 /* HeaderRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E81C5E28ED588500473575 /* HeaderRView.swift */; };
 		58E81C6128ED5CE400473575 /* UnlockableContentCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E81C6028ED5CE400473575 /* UnlockableContentCVC.swift */; };
+		58EA924F294B317A001040F0 /* CardHistoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EA924E294B317A001040F0 /* CardHistoryVC.swift */; };
+		58EA9251294B35B2001040F0 /* CardDateCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EA9250294B35B2001040F0 /* CardDateCVC.swift */; };
 		58EB904728BDD71F007DD261 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904628BDD71F007DD261 /* ApiHelper.swift */; };
 		58EB904928BDD756007DD261 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904828BDD756007DD261 /* RequestManager.swift */; };
 		58EB904B28BDD778007DD261 /* APIResponseParserHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EB904A28BDD778007DD261 /* APIResponseParserHelper.swift */; };
@@ -267,6 +279,7 @@
 		5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KVKCalendarSettings.swift; sourceTree = "<group>"; };
 		5820CD6228DC354E00D7A312 /* CustomDayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDayCell.swift; sourceTree = "<group>"; };
 		5820CD6528DC35C700D7A312 /* EventViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventViewer.swift; sourceTree = "<group>"; };
+		582610F72953175300B8CFA4 /* TimeZoneModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeZoneModal.swift; sourceTree = "<group>"; };
 		5827E2A7291122A400DA0F57 /* TimeFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFormatter.swift; sourceTree = "<group>"; };
 		5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgesVC.swift; sourceTree = "<group>"; };
 		58413DE8290116BB0055DEF4 /* CardFinderVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFinderVM.swift; sourceTree = "<group>"; };
@@ -283,6 +296,7 @@
 		58858318290F9A69000D8E86 /* GoldCoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldCoinCell.swift; sourceTree = "<group>"; };
 		5885831A290F9C1B000D8E86 /* HomePageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageVM.swift; sourceTree = "<group>"; };
 		5885831C290F9C5A000D8E86 /* CoinModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModal.swift; sourceTree = "<group>"; };
+		5886A38E29489F570088DB01 /* NotificationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModal.swift; sourceTree = "<group>"; };
 		5887FD6628C72604000400D2 /* EditProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		5887FD6828C7361C000400D2 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		5887FD6A28C76CE5000400D2 /* SplashVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashVC.swift; sourceTree = "<group>"; };
@@ -320,7 +334,10 @@
 		588DDF4328EF12E600CF5E8D /* ThemeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeVC.swift; sourceTree = "<group>"; };
 		58934FA928D1E51F00793F10 /* PopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpVC.swift; sourceTree = "<group>"; };
 		58934FAB28D1F14E00793F10 /* ShadowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		5893D041294C89E300B371B0 /* CardHistoryModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardHistoryModal.swift; sourceTree = "<group>"; };
+		5893D043294C8B8500B371B0 /* CardCoinCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCoinCVC.swift; sourceTree = "<group>"; };
 		5899190728EEF32C004781EA /* ThemeModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModal.swift; sourceTree = "<group>"; };
+		58997A502954289E00E86AC4 /* ManageNotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageNotificationVC.swift; sourceTree = "<group>"; };
 		589D77F628E55A650053867A /* CreateCustomEventVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCustomEventVC.swift; sourceTree = "<group>"; };
 		589D77F828E56BF90053867A /* DatePickerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerVC.swift; sourceTree = "<group>"; };
 		589D77FA28E5A7710053867A /* EventCompletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCompletVC.swift; sourceTree = "<group>"; };
@@ -339,11 +356,17 @@
 		58B2E1B828ED6E5F00F4542F /* Cloud-Calligraphy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cloud-Calligraphy.otf"; sourceTree = "<group>"; };
 		58B2E1BD28ED840400F4542F /* UnlockableContent1CVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockableContent1CVC.swift; sourceTree = "<group>"; };
 		58B2E1BF28ED90F100F4542F /* UnlockHiddenChestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockHiddenChestVC.swift; sourceTree = "<group>"; };
+		58BA13822947027E005E2B70 /* Reiki.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Reiki.entitlements; sourceTree = "<group>"; };
+		58BA138329475B0C005E2B70 /* LevelUPPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelUPPopUpVC.swift; sourceTree = "<group>"; };
+		58BC2AD629484AE60021E87B /* confetti.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = confetti.json; sourceTree = "<group>"; };
+		58BC2AD829484B3C0021E87B /* confetti_1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = confetti_1.json; sourceTree = "<group>"; };
+		58BC2ADA29485CA00021E87B /* NewBadgePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBadgePopUpVC.swift; sourceTree = "<group>"; };
 		58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		58C3C58428EABD230004CCAB /* UnlockablesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockablesVC.swift; sourceTree = "<group>"; };
 		58C3C58828EADB6C0004CCAB /* UnlockablesCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockablesCVC.swift; sourceTree = "<group>"; };
 		58C622DE2924EA4E002C560F /* LevelVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelVC.swift; sourceTree = "<group>"; };
 		58C622E02924F86E002C560F /* LevelVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelVM.swift; sourceTree = "<group>"; };
+		58CC28032946F7BC005867BE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		58D346382925FB0A00156044 /* LevelModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModal.swift; sourceTree = "<group>"; };
 		58D3463A2926108400156044 /* LevelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelCell.swift; sourceTree = "<group>"; };
 		58D3463C292611B900156044 /* LevelHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHeaderCell.swift; sourceTree = "<group>"; };
@@ -352,6 +375,8 @@
 		58D3E70228CF66C700766A82 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
 		58E81C5E28ED588500473575 /* HeaderRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderRView.swift; sourceTree = "<group>"; };
 		58E81C6028ED5CE400473575 /* UnlockableContentCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockableContentCVC.swift; sourceTree = "<group>"; };
+		58EA924E294B317A001040F0 /* CardHistoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardHistoryVC.swift; sourceTree = "<group>"; };
+		58EA9250294B35B2001040F0 /* CardDateCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDateCVC.swift; sourceTree = "<group>"; };
 		58EB904628BDD71F007DD261 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
 		58EB904828BDD756007DD261 /* RequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		58EB904A28BDD778007DD261 /* APIResponseParserHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIResponseParserHelper.swift; sourceTree = "<group>"; };
@@ -488,6 +513,7 @@
 		5888583628AE62C7008BA58D /* Reiki */ = {
 			isa = PBXGroup;
 			children = (
+				58BA13822947027E005E2B70 /* Reiki.entitlements */,
 				58EB905A28BDED0B007DD261 /* View */,
 				58EB904F28BDD91D007DD261 /* ViewModal */,
 				58EB904C28BDD8F6007DD261 /* Model */,
@@ -498,8 +524,8 @@
 				58F8E6E228B75FF800EBC659 /* SignupOtpVC.swift */,
 				58F8E6EB28B7994A00EBC659 /* SignupSetPasswordVC.swift */,
 				58F8E6ED28B79A4700EBC659 /* SignupAboutMeVC.swift */,
-				58F8E6EF28B79B7400EBC659 /* SignupCharacterVC.swift */,
 				58EB905D28BE14F9007DD261 /* SignupSuccessVC.swift */,
+				58F8E6EF28B79B7400EBC659 /* SignupCharacterVC.swift */,
 				58FC79D428C5D1EA00426EF8 /* ForgotPasswordVC.swift */,
 				58AD18FE28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift */,
 				58EB905428BDDABF007DD261 /* ActivityVC.swift */,
@@ -519,9 +545,9 @@
 				5820CD6128DC354D00D7A312 /* KVKCalendarSettings.swift */,
 				58A0DAA228E31F6700C5E409 /* EventDetailVC.swift */,
 				588443E428E46A1D00344433 /* AddJournalVC.swift */,
-				58B2E1BF28ED90F100F4542F /* UnlockHiddenChestVC.swift */,
 				589D77F628E55A650053867A /* CreateCustomEventVC.swift */,
 				589D77F828E56BF90053867A /* DatePickerVC.swift */,
+				58B2E1BF28ED90F100F4542F /* UnlockHiddenChestVC.swift */,
 				589D77FA28E5A7710053867A /* EventCompletVC.swift */,
 				58C3C58428EABD230004CCAB /* UnlockablesVC.swift */,
 				580B403828EEA255005866B6 /* FavoritesVC.swift */,
@@ -531,6 +557,10 @@
 				58C622DE2924EA4E002C560F /* LevelVC.swift */,
 				5828E93E292BA2CD0043D7E4 /* BadgesVC.swift */,
 				58A4E218292CA2A000F5CE25 /* PurchaseHistoryVC.swift */,
+				58BA138329475B0C005E2B70 /* LevelUPPopUpVC.swift */,
+				58BC2ADA29485CA00021E87B /* NewBadgePopUpVC.swift */,
+				58EA924E294B317A001040F0 /* CardHistoryVC.swift */,
+				58997A502954289E00E86AC4 /* ManageNotificationVC.swift */,
 				58F8E6D928B75A2000EBC659 /* Resources */,
 				58F8E6D628B7515B00EBC659 /* Helper */,
 				58C2E52728CF675900CD3A38 /* Launch Screen.storyboard */,
@@ -588,6 +618,9 @@
 				5885831C290F9C5A000D8E86 /* CoinModal.swift */,
 				58D346382925FB0A00156044 /* LevelModal.swift */,
 				58A4E216292C933100F5CE25 /* BadgeModal.swift */,
+				5886A38E29489F570088DB01 /* NotificationModal.swift */,
+				5893D041294C89E300B371B0 /* CardHistoryModal.swift */,
+				582610F72953175300B8CFA4 /* TimeZoneModal.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -626,6 +659,8 @@
 				58A4E21A292CA67300F5CE25 /* PurchaseHistoryCell.swift */,
 				5814B14C293DB64B0027FCD0 /* LevelHeader.swift */,
 				5814B14E293DB6800027FCD0 /* LevelHeader.xib */,
+				58EA9250294B35B2001040F0 /* CardDateCVC.swift */,
+				5893D043294C8B8500B371B0 /* CardCoinCVC.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -661,6 +696,9 @@
 		58F8E6D928B75A2000EBC659 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				58BC2AD829484B3C0021E87B /* confetti_1.json */,
+				58BC2AD629484AE60021E87B /* confetti.json */,
+				58CC28032946F7BC005867BE /* GoogleService-Info.plist */,
 				588C0C7829096913004E9B16 /* congrats.json */,
 				588C0C7629096726004E9B16 /* congratulations.json */,
 				58413DEA290124FF0055DEF4 /* skeleton-rectangle.json */,
@@ -758,6 +796,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				588CD69A28CEFE3400DF3EA1 /* Montserrat-Bold.otf in Resources */,
+				58BC2AD729484AE60021E87B /* confetti.json in Resources */,
 				588C1E1F28CF1A9D00DB978D /* countryCodes.json in Resources */,
 				588CD69B28CEFE3400DF3EA1 /* Montserrat-BlackItalic.otf in Resources */,
 				588CD6A428CEFE3400DF3EA1 /* Montserrat-SemiBoldItalic.otf in Resources */,
@@ -781,9 +820,11 @@
 				588CD6AA28CEFE3400DF3EA1 /* Montserrat-Black.otf in Resources */,
 				588CD6A128CEFE3400DF3EA1 /* Montserrat-Bold.ttf in Resources */,
 				5888583F28AE62C7008BA58D /* Main.storyboard in Resources */,
+				58BC2AD929484B3D0021E87B /* confetti_1.json in Resources */,
 				58007AA928FE6D43006FCB28 /* Lock_Anime.json in Resources */,
 				588CD6A528CEFE3400DF3EA1 /* Montserrat-ExtraBoldItalic.otf in Resources */,
 				588CD69D28CEFE3400DF3EA1 /* Montserrat-Light.otf in Resources */,
+				58CC28042946F7BC005867BE /* GoogleService-Info.plist in Resources */,
 				588C0C7729096726004E9B16 /* congratulations.json in Resources */,
 				588D6CAA28D347B10005ADA5 /* alert.json in Resources */,
 				58D3E70328CF66C800766A82 /* splash.png in Resources */,
@@ -875,6 +916,7 @@
 				5820CD3628DC350E00D7A312 /* ScrollableWeekHeaderTitleView.swift in Sources */,
 				580B404728EEE075005866B6 /* CustomGearSubCategoryModal.swift in Sources */,
 				580B403928EEA255005866B6 /* FavoritesVC.swift in Sources */,
+				58BA138429475B0C005E2B70 /* LevelUPPopUpVC.swift in Sources */,
 				5820CD5E28DC350E00D7A312 /* KVKCollectionViewCell.swift in Sources */,
 				58858317290F961F000D8E86 /* GoldCoinVC.swift in Sources */,
 				58E81C6128ED5CE400473575 /* UnlockableContentCVC.swift in Sources */,
@@ -908,10 +950,12 @@
 				5820CD4728DC350E00D7A312 /* MonthHeaderView.swift in Sources */,
 				5820CD3A28DC350E00D7A312 /* ListView.swift in Sources */,
 				5820CD5628DC350E00D7A312 /* DayData.swift in Sources */,
+				5893D042294C89E300B371B0 /* CardHistoryModal.swift in Sources */,
 				5820CD3228DC350E00D7A312 /* SkeletonView.swift in Sources */,
 				5820CD3328DC350E00D7A312 /* Timeline+Extension.swift in Sources */,
 				58EB906028BE1A35007DD261 /* LoginPageVC.swift in Sources */,
 				5885831D290F9C5A000D8E86 /* CoinModal.swift in Sources */,
+				58EA9251294B35B2001040F0 /* CardDateCVC.swift in Sources */,
 				5820CD4328DC350E00D7A312 /* AllDayEventModel.swift in Sources */,
 				58B15DEA28E1DA6A00385723 /* CalendarVM.swift in Sources */,
 				5888583C28AE62C7008BA58D /* ViewController.swift in Sources */,
@@ -922,6 +966,7 @@
 				589D77F728E55A650053867A /* CreateCustomEventVC.swift in Sources */,
 				5820CD6028DC350E00D7A312 /* DayView.swift in Sources */,
 				580B404328EEDB5F005866B6 /* UnlockablesVM.swift in Sources */,
+				582610F82953175300B8CFA4 /* TimeZoneModal.swift in Sources */,
 				5820CD5728DC350E00D7A312 /* CalendarData.swift in Sources */,
 				5820CD3528DC350E00D7A312 /* ScrollableWeekView.swift in Sources */,
 				58F3912F28CAFAC5009B4776 /* CustomImageView.swift in Sources */,
@@ -947,6 +992,7 @@
 				58D3463D292611B900156044 /* LevelHeaderCell.swift in Sources */,
 				58F8E6EA28B7606E00EBC659 /* VCExtensionHelper.swift in Sources */,
 				58EB905E28BE14F9007DD261 /* SignupSuccessVC.swift in Sources */,
+				5886A38F29489F570088DB01 /* NotificationModal.swift in Sources */,
 				5820CD6428DC354E00D7A312 /* CustomDayCell.swift in Sources */,
 				58AD18FF28CB400A00A4F715 /* ForgotPasswordSetPwdVC.swift in Sources */,
 				58B2E1BE28ED840400F4542F /* UnlockableContent1CVC.swift in Sources */,
@@ -960,10 +1006,13 @@
 				586CC12728AFAF4D00E8D6A5 /* GradientView.swift in Sources */,
 				5820CD3E28DC350E00D7A312 /* EventViewGeneral.swift in Sources */,
 				5877820128CB2021003E219E /* OtpVC.swift in Sources */,
+				5893D044294C8B8500B371B0 /* CardCoinCVC.swift in Sources */,
+				58EA924F294B317A001040F0 /* CardHistoryVC.swift in Sources */,
 				58EB905728BDDCD8007DD261 /* Extensions.swift in Sources */,
 				5820CD3D28DC350E00D7A312 /* KVKTableViewCell.swift in Sources */,
 				5820CD2E28DC350E00D7A312 /* TimelineLabel.swift in Sources */,
 				580B403D28EEB75E005866B6 /* FavoriteVM.swift in Sources */,
+				58BC2ADB29485CA00021E87B /* NewBadgePopUpVC.swift in Sources */,
 				5820CD5928DC350E00D7A312 /* WeekData.swift in Sources */,
 				58C622E12924F86E002C560F /* LevelVM.swift in Sources */,
 				58C3C58528EABD230004CCAB /* UnlockablesVC.swift in Sources */,
@@ -986,6 +1035,7 @@
 				5820CD5D28DC350E00D7A312 /* CalendarView.swift in Sources */,
 				58007AA728FE6AE4006FCB28 /* CardFinderVC.swift in Sources */,
 				58EB906228BE2663007DD261 /* HomePageVC.swift in Sources */,
+				58997A512954289E00E86AC4 /* ManageNotificationVC.swift in Sources */,
 				5820CD5128DC350E00D7A312 /* WeekHeaderView.swift in Sources */,
 				5820CD4C28DC350E00D7A312 /* TimelineView.swift in Sources */,
 				58F8E6F028B79B7400EBC659 /* SignupCharacterVC.swift in Sources */,
@@ -1130,6 +1180,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Reiki/Reiki.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1166,6 +1217,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Reiki/Reiki.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;

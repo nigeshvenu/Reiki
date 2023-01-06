@@ -20,6 +20,7 @@ class ProfileVC: UIViewController {
     @IBOutlet var emailLbl: UILabel!
     @IBOutlet var mobileNumberLbl: UILabel!
     @IBOutlet var aboutMeLbl: UILabel!
+    @IBOutlet var timezoneLbl: UILabel!
     
     
     override func viewDidLoad() {
@@ -31,6 +32,7 @@ class ProfileVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        self.getUserRequest()
         setUI()
     }
     
@@ -54,6 +56,9 @@ class ProfileVC: UIViewController {
         address = address.filter({!$0.isEmpty})
         userAddressLbl.text = address.joined(separator: ", ")
         userAddressLbl.isHidden = address.count == 0
+        if user.timeZone != nil{
+            self.timezoneLbl.text = user.timeZone!.name
+        }
     }
     
     @IBAction func editProfileBtnClicked(_ sender: Any) {
@@ -61,7 +66,6 @@ class ProfileVC: UIViewController {
         VC.delegate = self
         self.navigationController?.pushViewController(VC, animated: true)
     }
-    
     
     @IBAction func deleteAccountBtnClicked(_ sender: Any) {
         self.deleteAccountAlert()
@@ -109,8 +113,9 @@ extension ProfileVC : ProfileEditDelegate{
 
 extension ProfileVC{
     func getUserRequest(){
+        let param = ["populate":["timezone"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
+        LoginVM().getUser(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.setUI()
         }, onFailure: { error in

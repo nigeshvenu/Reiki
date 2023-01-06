@@ -7,10 +7,10 @@
 
 import UIKit
 
+
 class EventCompletVC: UIViewController {
 
     @IBOutlet var messageLbl: UILabel!
-    
     var xpPoint = ""
     open var doneBtnClick: (() -> Void)?
     
@@ -31,12 +31,15 @@ class EventCompletVC: UIViewController {
     }
     
     @IBAction func closeBtnClicked(_ sender: Any) {
-        self.dismiss(animated: false)
+        self.dismiss(animated: false) {
+            self.doneBtnClick!()
+        }
     }
     
     @IBAction func doneBtnClicked(_ sender: Any) {
-        self.dismiss(animated: false)
-        doneBtnClick!()
+        self.dismiss(animated: false) {
+            self.doneBtnClick!()
+        }
     }
     /*
     // MARK: - Navigation

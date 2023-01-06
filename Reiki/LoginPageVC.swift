@@ -190,7 +190,7 @@ extension LoginPageVC{
         let mobile = mobileNumberTxt.text!.replacingOccurrences( of:"[^0-9]", with: "", options: .regularExpression)
         let param = ["username":countryCode+mobile,
                      "password":passwordTxt.text!,
-                     "info":["device_token":""]] as [String : Any]
+                     "info":["device_token":AppDelegate.shared.FCMToken]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.login(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
