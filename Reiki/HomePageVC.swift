@@ -21,25 +21,34 @@ class HomePageVC: UIViewController {
     @IBOutlet var purchaseView: UIView!
     
     var viewModal = UnlockablesVM()
+    var timer: Timer?
+    var timerIntervalHour : CGFloat = 3600 * 1
+    var timerIntervalSeconds : CGFloat = 3600 * 11
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         initialSettings()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        //self.getConfigurationRequest()
+        self.setAvatarImage()
         self.getUserRequest()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        invalidateTimer()
     }
     
     func initialSettings(){
         levelImageMainView.layer.cornerRadius = 36/2
-        characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)Pose1")
+        //characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)Pose1")
         coinLbl.text = UserModal.sharedInstance.coin
-        self.slideShowImages()
+        //self.slideShowImages()
         //Sidemenu
         SideMenuManager.default.leftMenuNavigationController = storyboard?.instantiateViewController(withIdentifier: "LeftMenuNavigationController") as? SideMenuNavigationController
         SideMenuManager.default.addScreenEdgePanGesturesToPresent(toView: view, forMenu: .left)
@@ -47,6 +56,11 @@ class HomePageVC: UIViewController {
         SideMenuManager.default.leftMenuNavigationController?.sideMenuDelegate = self
         purchaseView.backgroundColor = UIColor.black.withAlphaComponent(0.38)
         purchaseView.setRoundCorners([.layerMinXMaxYCorner,.layerMinXMinYCorner], radius: 25)
+        if let interval = UserModal.sharedInstance.configuration.filter({$0.type == "avatar_interval"}).first{
+            if let n = NumberFormatter().number(from: interval.point) {
+                timerIntervalSeconds = CGFloat(truncating: n)
+            }
+        }
     }
     
     func setUI(){
@@ -54,6 +68,32 @@ class HomePageVC: UIViewController {
         levelNumberLbl.text = "LVL " + UserModal.sharedInstance.levelNumber
         levelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
         prestigeIcon.isHidden = !UserModal.sharedInstance.prestige
+    }
+    
+    func startTimer(interval:CGFloat){
+        timer = Timer.scheduledTimer(timeInterval: interval,
+                                             target: self,
+                                             selector: #selector(eventWith(timer:)),
+                                             userInfo: nil,
+                                             repeats: true)
+    }
+    
+    @objc func eventWith(timer: Timer!) {
+        setAvatarImage()
+    }
+    
+    func invalidateTimer(){
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    func setAvatarImage(){
+        let avatarIndex = UserDefaultsHelper().getAvatarIndex(withInterval: timerIntervalSeconds)
+        //print("C\(UserModal.sharedInstance.avatar)Pose\(avatarIndex.0.string)")
+        characterImageView.image = UIImage(named: "C\(UserModal.sharedInstance.avatar)Pose\(avatarIndex.0.string)")!
+        invalidateTimer()
+        //print("Timer started with Remaining time : \(avatarIndex.1)")
+        self.startTimer(interval: avatarIndex.1)
     }
 
     func sideMenuSettings(){
@@ -172,7 +212,7 @@ extension HomePageVC{
                      "limit":-1,
                      "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
                      "sort":[["created_at","DESC"]],
-                     "populate":["custom_gear"]] as [String : Any]
+                     "populate":["+custom_gear"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getCustomGear(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
@@ -186,25 +226,12 @@ extension HomePageVC{
 
 extension HomePageVC{
     
-    func getConfigurationRequest(){
-        //AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
-            //AppDelegate.shared.showLoading(isShow: false)
-            //self.getUserRequest()
-        }, onFailure: { error in
-            //AppDelegate.shared.showLoading(isShow: false)
-            //SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
-            //self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
-        })
-    }
-    
     func getUserRequest(){
         let param = ["populate":["level"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getUser(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.setUI()
-            self.getConfigurationRequest()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)

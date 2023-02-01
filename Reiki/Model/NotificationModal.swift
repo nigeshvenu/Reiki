@@ -11,5 +11,6 @@ class NotificationModal: NSObject {
     var type = ""
     var levelNo = ""
     var bageNo = ""
+    var isprestige = false
     
 }

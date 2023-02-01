@@ -118,19 +118,29 @@ extension SignupCharacterVC: UICollectionViewDelegate,UICollectionViewDataSource
 extension SignupCharacterVC{
     
     func signupRequest(){
-         let sessionId = UserDefaults.standard.string(forKey: "sessionId") ?? ""
+        let sessionId = UserDefaults.standard.string(forKey: "sessionId") ?? ""
         let param = ["first_name":self.firstName,
                      "last_name":self.lastName,
         "email":email,
         "password":password,
                      "about_me":self.aboutMe,
                      "avatar":selectedIndex?.name ?? "",
-        "session_id":sessionId] as [String : Any]
+        "session_id":sessionId,
+                     "info":["device_token":AppDelegate.shared.FCMToken]] as [String : Any]
          AppDelegate.shared.showLoading(isShow: true)
         viewModal.signup(urlParams: param, param: nil, onSuccess: { message in
+            self.getConfigurationRequest(successMessage: message)
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func getConfigurationRequest(successMessage:String){
+        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             UserDefaults.standard.removeObject(forKey: "sessionId")
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: message, type: .success)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: successMessage, type: .success)
             let VC = self.getSignupSuccessVC()
             self.navigationController?.pushViewController(VC, animated: true)
         }, onFailure: { error in

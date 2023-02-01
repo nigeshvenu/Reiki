@@ -193,17 +193,30 @@ extension LoginPageVC{
                      "info":["device_token":AppDelegate.shared.FCMToken]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.login(urlParams: param, param: nil, onSuccess: { message in
-            AppDelegate.shared.showLoading(isShow: false)
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.loginSuccess, type: .success)
-            self.mobileNumberTxt.text = ""
-            self.passwordTxt.text = ""
-            self.view.endEditing(true)
-            let VC = self.getCalendarVC()
-            self.navigationController?.pushViewController(VC, animated: true)
+            self.getConfigurationRequest()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
     }
   
+    func getConfigurationRequest(){
+        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.loginSuccess()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func loginSuccess(){
+        SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.loginSuccess, type: .success)
+        self.mobileNumberTxt.text = ""
+        self.passwordTxt.text = ""
+        self.view.endEditing(true)
+        let VC = self.getCalendarVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
 }

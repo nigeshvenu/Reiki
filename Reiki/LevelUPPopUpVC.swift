@@ -14,9 +14,11 @@ class LevelUPPopUpVC: UIViewController {
     @IBOutlet var lvlImageView: UIImageView!
     @IBOutlet var lvlLbl: UILabel!
     @IBOutlet var lvlDescLbl: UILabel!
+    @IBOutlet var prestigeImgView: UIImageView!
     
     private let skeletonAnimationView = AnimationView()
     var level = ""
+    var isprestige = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +38,8 @@ class LevelUPPopUpVC: UIViewController {
     func setUI(){
         lvlImageView.image = LevelImageHelper.getImage(leveNumber: level)
         lvlLbl.text = "LVL \(level)"
-        lvlDescLbl.text = "You gave reached lvl \(level) now."
+        lvlDescLbl.text = "You have reached lvl \(level) now."
+        prestigeImgView.isHidden = !isprestige
     }
     
     func addCongratsAnimation(){

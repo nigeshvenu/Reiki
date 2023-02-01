@@ -45,6 +45,16 @@ extension SplashVC{
     func getUserRequest(){
         AppDelegate.shared.showLoading(isShow: true)
         LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
+            self.getConfigurationRequest()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+            self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
+        })
+    }
+    
+    func getConfigurationRequest(){
+        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             let VC = self.getCalendarVC()
             self.navigationController?.pushViewController(VC, animated: true)
@@ -55,4 +65,6 @@ extension SplashVC{
             self.navigationController?.viewControllers.insert(self.getLoginPageVC(), at: 1)
         })
     }
+    
+    
 }

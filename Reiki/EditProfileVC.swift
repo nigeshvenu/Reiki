@@ -133,6 +133,14 @@ class EditProfileVC: UIViewController {
         }
     }
     
+    @IBAction func timeZoneBtnClicked(_ sender: Any) {
+        
+        if !timeZoneTxt.isFirstResponder{
+            timeZoneTxt.becomeFirstResponder()
+        }
+    }
+    
+    
     @IBAction func cameraBtnClicked(_ sender: UIButton) {
         imagePicker.present(from: sender)
     }

@@ -22,15 +22,7 @@ class SignupSuccessVC: UIViewController {
     @IBAction func closeBtnClicked(_ sender: Any) {
         goToHomeBtnClicked(self)
     }
-    
-    func goToLogin(){
-        let controllers = self.navigationController?.viewControllers
-          for vc in controllers! {
-            if vc.isKind(of: LoginPageVC.self) {
-              _ = self.navigationController?.popToViewController(vc , animated: true)
-            }
-         }
-    }
+  
     /*
     // MARK: - Navigation
 

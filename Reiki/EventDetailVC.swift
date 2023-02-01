@@ -329,17 +329,6 @@ extension EventDetailVC{
 
 extension EventDetailVC{
     
-    func getConfigurationRequest(completion: @escaping () -> Void){
-        //AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getConfiguration(urlParams: nil, param: nil, onSuccess: { message in
-            //AppDelegate.shared.showLoading(isShow: false)
-            completion()
-        }, onFailure: { error in
-            //AppDelegate.shared.showLoading(isShow: false)
-            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
-        })
-    }
-    
     func updateUserActivityRequest(){
         let param = ["activity_list_id":Int(self.event.eventId)!,
                      "completed_date":Date().toString(dateFormat: "yyyy-MM-dd'T'HH:mm:ss.SSS"),

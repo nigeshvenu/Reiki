@@ -186,9 +186,11 @@ extension AppDelegate  : MessagingDelegate ,UNUserNotificationCenterDelegate {
         if let type = userInfo["type"] as? String{
             if type == "level"{
                 let level = (userInfo["level_number"] as? String) ?? ""
+                let prestige = (userInfo["prestige"] as? String) ?? ""
                 let modal = NotificationModal()
                 modal.type = type
                 modal.levelNo = level
+                modal.isprestige = prestige == "true" ? true : false
                 notificationArray.append(modal)
             }else if type == "badge"{
                 if let badge = getArray(userInfo: userInfo){
@@ -227,12 +229,13 @@ extension AppDelegate  : MessagingDelegate ,UNUserNotificationCenterDelegate {
         }
     }
     
-    func getlevelPopup(level:String){
+    func getlevelPopup(level:String,prestige:Bool){
       if let rootViewController = self.window!.rootViewController as? UINavigationController {
           let storyboard = UIStoryboard(name: "Main", bundle: nil)
           if let viewcontroller = storyboard.instantiateViewController(withIdentifier: "LevelUPPopUpVC") as? LevelUPPopUpVC {
              viewcontroller.modalPresentationStyle = .overFullScreen
              viewcontroller.level = level
+             viewcontroller.isprestige = prestige
              rootViewController.present(viewcontroller, animated: false)
           }
        }
@@ -268,7 +271,7 @@ extension AppDelegate{
                 if topController.presentedViewController == nil{
                     for i in notificationArray{
                         if i.type == "level"{
-                            self.getlevelPopup(level: i.levelNo)
+                            self.getlevelPopup(level: i.levelNo, prestige: i.isprestige)
                             self.notificationArray.remove(at: 0)
                             return
                         }else if i.type == "badge"{
