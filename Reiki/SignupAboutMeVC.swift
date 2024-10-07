@@ -61,6 +61,7 @@ class SignupAboutMeVC: UIViewController {
         //Clear textfield
         descriptionTxtView.text = "Write something.."
         descriptionTxtView.textColor = textViewPlaceholderColor
+        VC.selectedCharacter = "Micheal"
         self.navigationController?.pushViewController(VC, animated: true)
     }
     

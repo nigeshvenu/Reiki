@@ -19,7 +19,7 @@ class CreateCustomEventVC: UIViewController {
     @IBOutlet var dateTxt: UITextField!
     @IBOutlet var descTxtView: UITextView!
     
-    var imagePicker : ImagePicker!
+    var imagePicker : ImagePicker?
     var selectedImage : UIImage?
     var isRemoveImage = false
     var selectedDate:Date?
@@ -36,17 +36,25 @@ class CreateCustomEventVC: UIViewController {
         initialSettings()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if imagePicker == nil{
+            imagePicker = ImagePicker(presentationController: self,editing: false, delegate: self)
+        }
+    }
+    
     func initialSettings(){
         eventImageView.roundCorners(cornerRadius: 25.0, cornerMask: [.layerMinXMaxYCorner,.layerMaxXMaxYCorner])
         eventImageView.layer.borderWidth = 1.0
         eventImageView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.2).cgColor
         changePhotoView.layer.cornerRadius = 35/2
         changePhotoView.backgroundColor = UIColor.init(hexString: "#F6F1F1").withAlphaComponent(0.6)
-        imagePicker = ImagePicker(presentationController: self,editing: false, delegate: self)
         eventTitleTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         setTextfieldPadding(textfield: eventTitleTxt, leftWidth: 10, rightWidth: 10)
         setPlaceholderColor(textfield: eventTitleTxt)
         dateTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
+        dateTxt.text = Date().toString(dateFormat: "MM/dd/YYYY")
+        selectedDate = Date()
         setPlaceholderColor(textfield: dateTxt)
         setTextfieldPadding(textfield: dateTxt, leftWidth: 10, rightWidth: 50)
         descTxtView.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
@@ -93,7 +101,7 @@ class CreateCustomEventVC: UIViewController {
     }
     
     @IBAction func changePhotoBtnClicked(_ sender: UIButton) {
-        imagePicker.present(from: sender)
+        imagePicker?.present(from: sender)
     }
     
     @IBAction func saveBtnClicked(_ sender: Any) {
@@ -107,10 +115,10 @@ class CreateCustomEventVC: UIViewController {
     }
     
     func validateFieldValues()->Bool{
-        if selectedImage == nil && event.eventImage.isEmpty{
+        /*if selectedImage == nil && event.eventImage.isEmpty{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.eventImageEmpty, type: .danger)
             return false
-        }
+        }*/
         guard let eventTitle = eventTitleTxt.text,!eventTitle.trimmingCharacters(in: .whitespaces).isEmpty else {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.eventTitleEmpty, type: .danger)
             return false
@@ -119,14 +127,14 @@ class CreateCustomEventVC: UIViewController {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.dateEmpty, type: .danger)
             return false
         }
-        guard let desc = descTxtView.text,!desc.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        /*guard let desc = descTxtView.text,!desc.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.eventDescEmpty, type: .danger)
             return false
-        }
-        if descTxtView.textColor == textViewPlaceholderColor{
+        }*/
+        /*if descTxtView.textColor == textViewPlaceholderColor{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.eventDescEmpty, type: .danger)
             return false
-        }
+        }*/
         return true
     }
     /*
@@ -147,8 +155,13 @@ extension CreateCustomEventVC{
         eventTitleTxt.text = event.eventTitle
         dateTxt.text = event.eventdateAsDate.toString(dateFormat: "MM/dd/YYYY")
         selectedDate = event.eventdateAsDate
-        descTxtView.text = event.eventdesc
-        descTxtView.textColor = .black
+        if event.eventdesc.isEmpty {
+            descTxtView.text = "Write something.."
+            descTxtView.textColor = textViewPlaceholderColor
+        }else{
+            descTxtView.text = event.eventdesc
+            descTxtView.textColor = .black
+        }
     }
 }
 
@@ -238,9 +251,13 @@ extension CreateCustomEventVC : UITextViewDelegate{
 extension CreateCustomEventVC{
     
     func customActivityRequest(){
+        var desc = ""
+        if descTxtView.textColor != textViewPlaceholderColor{
+            desc = descTxtView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         let param = ["title":eventTitleTxt.text!.trimmingCharacters(in: .whitespaces),
                      "date":selectedDate!.toString(dateFormat: "yyyy-MM-dd"),
-                     "description":descTxtView.text.trimmingCharacters(in: .whitespacesAndNewlines)] as [String:Any]
+                     "description":desc] as [String:Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.createCustomActivity(param: param, removeImage: isRemoveImage, image: selectedImage, fileName: "image_file", onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
@@ -253,9 +270,13 @@ extension CreateCustomEventVC{
     }
     
     func editCustomActivityRequest(){
+        var desc = ""
+        if descTxtView.textColor != textViewPlaceholderColor{
+            desc = descTxtView.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
         let param = ["title":eventTitleTxt.text!.trimmingCharacters(in: .whitespaces),
                      "date":selectedDate!.toString(dateFormat: "yyyy-MM-dd"),
-                     "description":descTxtView.text.trimmingCharacters(in: .whitespacesAndNewlines)] as [String:Any]
+                     "description":desc] as [String:Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.updateCustomActivity(id:self.event.eventId,param: param, removeImage: isRemoveImage, image: selectedImage, fileName: "image_file", onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)

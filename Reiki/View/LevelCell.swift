@@ -13,6 +13,8 @@ class LevelCell: UITableViewCell {
     @IBOutlet var dateLbl: UILabel!
     @IBOutlet var pointLbl: UILabel!
     @IBOutlet var badgeLbl: UILabel!
+    @IBOutlet weak var badgeCriteriaLbl: UILabel!
+    
     
     
     override func awakeFromNib() {

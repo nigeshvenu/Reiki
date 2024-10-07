@@ -16,6 +16,15 @@ class LevelUPPopUpVC: UIViewController {
     @IBOutlet var lvlDescLbl: UILabel!
     @IBOutlet var prestigeImgView: UIImageView!
     
+    //Prestige
+    
+    @IBOutlet weak var star1ImageView: UIImageView!
+    @IBOutlet weak var star2ImageView: UIImageView!
+    @IBOutlet weak var star3ImageView: UIImageView!
+    @IBOutlet weak var star4View: UIView!
+    @IBOutlet weak var star4CountLbl: UILabel!
+    
+    
     private let skeletonAnimationView = AnimationView()
     var level = ""
     var isprestige = false
@@ -40,6 +49,21 @@ class LevelUPPopUpVC: UIViewController {
         lvlLbl.text = "LVL \(level)"
         lvlDescLbl.text = "You have reached lvl \(level) now."
         prestigeImgView.isHidden = !isprestige
+        
+        //prestige
+        if !UserModal.sharedInstance.prestige{
+            star1ImageView.isHidden = true
+            star2ImageView.isHidden = true
+            star3ImageView.isHidden = true
+            star4View.isHidden = true
+        }else{
+            let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
+            star1ImageView.isHidden = prestigeTotalRestart == 0
+            star2ImageView.isHidden = prestigeTotalRestart < 2
+            star3ImageView.isHidden = prestigeTotalRestart < 3
+            star4View.isHidden = prestigeTotalRestart < 4
+            star4CountLbl.text = String(prestigeTotalRestart)
+        }
     }
     
     func addCongratsAnimation(){

@@ -16,12 +16,18 @@ class CustomGearSubCategoryModal: NSObject {
 }
 
 class ItemModal{
+    var id = ""
     var name = ""
     var image = ""
-    var coin = ""
+    var animationUrl = ""
+    var requiredCoin = ""
     var itemId = ""
     var userCustomGearId = ""
     var isUnlocked = false
     var isApplied = false
     var createdDate = ""
+    var completedPlaying = false
+    var isDeleted = ""
+    var isActive = true
+    var levelNo = ""
 }

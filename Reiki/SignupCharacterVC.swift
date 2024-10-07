@@ -25,6 +25,10 @@ class SignupCharacterVC: UIViewController {
     var password = ""
     var aboutMe = ""
     var viewModal = SignupVM()
+    var selectedCharacter = ""
+    var isSignup = true
+    var editViewModal = EditProfileVM()
+    var delegate:ProfileEditDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,21 +43,25 @@ class SignupCharacterVC: UIViewController {
     }
     
     func initialSettings(){
-        let char1 = CharacterStruct(name: "Micheal", image: "Micheal",isSelected: true)
-        selectedIndex = char1
-        let char2 = CharacterStruct(name: "Thomas", image: "Thomas",isSelected: false)
-        let char3 = CharacterStruct(name: "Jessie", image: "Jessie",isSelected: false)
-        let char4 = CharacterStruct(name: "Linda", image: "Linda",isSelected: false)
-        let char5 = CharacterStruct(name: "Ana", image: "Ana",isSelected: false)
+        let char1 = CharacterStruct(name: "Micheal", image: "Micheal",isSelected: selectedCharacter == "Micheal")
+        let char2 = CharacterStruct(name: "Thomas", image: "Thomas",isSelected: selectedCharacter == "Thomas")
+        let char3 = CharacterStruct(name: "Jessie", image: "Jessie",isSelected: selectedCharacter == "Jessie")
+        let char4 = CharacterStruct(name: "Linda", image: "Linda",isSelected: selectedCharacter == "Linda")
+        let char5 = CharacterStruct(name: "Ana", image: "Ana",isSelected: selectedCharacter == "Ana")
         self.characterArray.append(char1)
         self.characterArray.append(char2)
         self.characterArray.append(char3)
         self.characterArray.append(char4)
         self.characterArray.append(char5)
+        selectedIndex = characterArray.filter({$0.isSelected}).first
     }
     
     @IBAction func continueBtnClicked(_ sender: Any) {
-        self.signupRequest()
+        if isSignup{
+            self.signupRequest()
+        }else{
+            self.editProfileRequest()
+        }
     }
     
     /*
@@ -147,5 +155,23 @@ extension SignupCharacterVC{
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
+    }
+}
+
+extension SignupCharacterVC{
+    
+    func editProfileRequest(){
+        let param = ["avatar":selectedIndex?.name ?? ""]
+        AppDelegate.shared.showLoading(isShow: true)
+        editViewModal.updateUser(urlParams: nil, param: param, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.profileUpdated, type: .success)
+            self.navigationController?.popViewController(animated: true)
+            self.delegate?.profileEdited()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+   
     }
 }

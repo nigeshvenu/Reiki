@@ -12,6 +12,7 @@ class CalendarVM: NSObject {
     var event = EventModal()
     var eventArray = [EventModal]()
     var openEventArray = [EventModal]()
+    var holidayArray = [HolidayModal]()
     var favoriteId = ""
     var isFavorite = false
     var isActivityCompleted = false
@@ -79,7 +80,40 @@ class CalendarVM: NSObject {
                         let modal = EventModal()
                         modal.createModal(dict: i)
                         modal.eventType = .custom
+                        modal.isLocked = false
                         self.eventArray.append(modal)
+                    }
+                }
+            }
+            
+            if let message = result["message"] as? String{
+               onSuccess(message)
+            }
+
+        }, onFailure: {error in
+            onFailure(error)
+        })
+        
+    }
+    
+    func getHolidayList(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+       
+        RequestManager.serverRequestWithToken(function: APIFunction.holiday, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+            if let error = result["error"] as? String{
+                if !(error.isEmpty){
+                    onFailure(error)
+                    return
+                }
+            }
+            print(result)
+            
+            if let data = result["data"] as? [String:Any]{
+                self.holidayArray.removeAll()
+                if let holidays = data["holidays"] as? [[String:Any]]{
+                    for i in holidays{
+                        let modal = HolidayModal()
+                        modal.createModal(dict: i)
+                        self.holidayArray.append(modal)
                     }
                 }
             }
@@ -137,6 +171,7 @@ class CalendarVM: NSObject {
                         let modal = EventModal()
                         modal.createModal(dict: user_custom_activity)
                         modal.eventType = .custom
+                        modal.isLocked = false
                         self.event = modal
                     }
                 }
@@ -410,6 +445,7 @@ extension CalendarVM{
                     let modal = EventModal()
                     modal.createModal(dict: userActivity)
                     modal.eventType = .custom
+                    modal.isLocked = false
                     self.event = modal
                 }
             }
@@ -445,4 +481,37 @@ extension CalendarVM{
         
     }
     
+}
+
+extension CalendarVM{
+    
+    func createCustomPublicRequest(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+       
+        RequestManager.serverRequestWithToken(function: APIFunction.customPublicRequest, method: .post, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+               
+                if let data = result["data"] as? [String:Any]{
+                    /*if let userActivity = data["user_activity"] as? [String:Any]{
+                        self.useractivityId = anyToStringConverter(dict: userActivity, key: "_id")
+                        if let card = userActivity["card"] as? [String:Any]{
+                            let modal = CardModal()
+                            modal.createModal(dict: card)
+                            self.card = modal
+                        }
+                    }*/
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
 }

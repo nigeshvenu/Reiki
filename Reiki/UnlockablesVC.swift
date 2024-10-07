@@ -100,24 +100,8 @@ class UnlockablesVC: UIViewController {
                                      UnlockablesContent(title: "Halo", image: "halo"),
                                      UnlockablesContent(title: "Flower Decor", image: "flowers"),
                                      UnlockablesContent(title: "Robot", image: "robot")]*/
-        //setCalendarBackground(date: Date())
     }
 
-    func setCalendarBackground(date:Date){
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
-    }
-    
     @IBAction func moreBtnClicked(_ sender: Any) {
         self.moreView.isHidden = false
     }
@@ -159,6 +143,7 @@ class UnlockablesVC: UIViewController {
              }
          //}
      }
+    
     
     /*
     // MARK: - Navigation
@@ -234,7 +219,7 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                     if item.name.isEmpty{
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UnlockableContentCVC", for: indexPath) as! UnlockableContentCVC
                         cell.imageView.ImageViewLoading(mediaUrl: item.image, placeHolderImage: nil)
-                        cell.coinLbl.text = item.coin
+                        cell.coinLbl.text = item.requiredCoin
                         cell.leadingConst.constant = 20
                         cell.topConst.constant = 20
                         cell.trialConst.constant = 20
@@ -257,12 +242,13 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UnlockableContent1CVC", for: indexPath) as! UnlockableContent1CVC
                         cell.titleLbl.text = item.name
                         cell.imageView.ImageViewLoading(mediaUrl: item.image, placeHolderImage: nil)
-                        cell.coinLbl.text = item.coin
+                        cell.coinLbl.text = item.requiredCoin
                         cell.unlockBtn.tag = indexPath.row
                         cell.unlockBtn.addTarget(self, action: #selector(unlockBtnClicked(btn:)), for: .touchUpInside)
                         if item.isUnlocked{
                             cell.coinImageView.isHidden = true
                             cell.coinLbl.isHidden = true
+                            cell.levelView.isHidden = true
                             if item.isApplied{
                                 cell.unlockBtn.setTitle("Remove", for: .normal)
                             }else{
@@ -271,13 +257,33 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                         }else{
                             cell.coinImageView.isHidden = false
                             cell.coinLbl.isHidden = false
+                            cell.levelView.isHidden = item.levelNo.isEmpty
+                            cell.levelNameLbl.text = "LVL \(item.levelNo)"
+                            cell.levelImageView.image = LevelImageHelper.getImage(leveNumber: item.levelNo)
                             cell.unlockBtn.setTitle("Unlock", for: .normal)
                         }
+                        cell.previewBtn.tag = indexPath.row
+                        cell.previewBtn.addTarget(self, action: #selector(previewBtnClicked(btn:)), for: .touchUpInside)
                         return cell
                     }
                 }
                 
             }
+    }
+    
+    @objc func previewBtnClicked(btn:UIButton){
+        let buttonPostion = btn.convert(btn.bounds.origin, to: contentCollectionView)
+        if let indexPath = contentCollectionView.indexPathForItem(at: buttonPostion){
+            let gear = self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row]
+            guard let url = URL(string: gear.animationUrl), !gear.animationUrl.isEmpty else {
+                SwiftMessagesHelper.showSwiftMessage(title: "", body: "\(MessageHelper.ErrorMessage.animationEmpty)", type: .success)
+                return
+            }
+            let VC = self.getAnimationPreviewVC()
+            VC.animationUrl = url
+            let nav = UINavigationController(rootViewController: VC)
+            self.present(nav, animated: true)
+        }
     }
     
     @objc func unlockBtnClicked(btn:UIButton){
@@ -299,7 +305,11 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                 let gear = self.viewModal.customGearSubArray[indexPath.section].itemArray[indexPath.row]
                 if let title = btn.titleLabel?.text {
                     if title == "Unlock"{
-                        self.alertCustomGear(type: "Unlock", id: gear.itemId, indexPath: indexPath)
+                        if Int(UserModal.sharedInstance.levelNumber) ?? 0 <  Int(gear.levelNo) ?? 0{
+                            alertLevelNoReached(level: gear.levelNo)
+                        }else{
+                            self.alertCustomGear(type: "Unlock", id: gear.itemId, indexPath: indexPath)
+                        }
                     }else if title == "Apply"{
                         self.alertCustomGear(type: "Apply", id: gear.userCustomGearId, indexPath: indexPath)
                     }else if title == "Remove"{
@@ -331,6 +341,10 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == self.collectionView{
+            collectionView.reloadData()
+            DispatchQueue.main.async {
+                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            }
             selectedTab = Int(self.viewModal.customGearArray[indexPath.row].categoryId)!
             let categoryName = self.viewModal.customGearArray[indexPath.row].categoryName
             if categoryName == "Miscellaneous"{
@@ -342,20 +356,11 @@ extension UnlockablesVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
                 self.viewModal.customGearArray[index].isSelected = false
             }
             self.viewModal.customGearArray[indexPath.row].isSelected = true
-            if self.viewModal.customGearArray[indexPath.row].categoryId == themesCategoryId{
+            /*if self.viewModal.customGearArray[indexPath.row].categoryId == themesCategoryId{
                 self.getThemesRequest()
             }else{
-                self.getCustomGearSubRequest(categoryId: self.viewModal.customGearArray[indexPath.row].categoryId)
-            }
-            collectionView.reloadData()
-            DispatchQueue.main.async {
-                collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            }
-            DispatchQueue.main.async {
-                self.contentCollectionView.setContentOffset(CGPoint(x:-5,y:0), animated: false)
-            }
-        }else{
-            
+                self.getCustomGearSubRequest(categoryId: self.viewModal.customGearArray[indexPath.row].categoryId, scrolltoTop: true)
+            }*/
         }
     
     }
@@ -401,7 +406,7 @@ extension UnlockablesVC{
             AppDelegate.shared.showLoading(isShow: false)
             self.collectionView.reloadData()
             if let gear = self.viewModal.customGearArray.first{
-                self.getCustomGearSubRequest(categoryId: gear.categoryId)
+                self.getCustomGearSubRequest(categoryId: gear.categoryId, scrolltoTop: false)
                 self.selectedCategory = gear.categoryName.dropLast().string
                 self.selectedTab = Int(gear.categoryId)!
             }
@@ -412,15 +417,21 @@ extension UnlockablesVC{
         })
     }
 
-    func getCustomGearSubRequest(categoryId:String){
+    func getCustomGearSubRequest(categoryId:String,scrolltoTop:Bool){
         let param = ["offset":0,
                      "limit":-1,
-                     "populate":["custom_gear_sub_category"],
-                     "where":["active":true,"custom_gear_category_id":Int(categoryId)!]] as [String : Any]
+                     "populate":["level"],
+                     "where":["custom_gear_category_id":Int(categoryId)!]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getCustomGearCategorySub(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.contentCollectionView.reloadData()
+            if scrolltoTop{
+                //DispatchQueue.main.async {
+                    self.contentCollectionView.setContentOffset(CGPoint(x:-5,y:0), animated: false)
+                //}
+            }
+           
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -430,11 +441,14 @@ extension UnlockablesVC{
     func getThemesRequest(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true]] as [String : Any]
+                     "where":[]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getThemes(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             self.contentCollectionView.reloadData()
+            //DispatchQueue.main.async {
+                self.contentCollectionView.setContentOffset(CGPoint(x:-5,y:0), animated: false)
+            //}
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -488,7 +502,7 @@ extension UnlockablesVC{ //Custom gear
         viewModal.unlockCustomGear(urlParams: nil, param: param, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: "\(self.selectedCategory) \(MessageHelper.SuccessMessage.unlocked)", type: .success)
-            self.getCustomGearSubRequest(categoryId: String(self.selectedTab))
+            self.getCustomGearSubRequest(categoryId: String(self.selectedTab), scrolltoTop: false)
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -508,6 +522,7 @@ extension UnlockablesVC{ //Custom gear
                 self.viewModal.customGearSubArray[index.section].itemArray[index.row].isApplied = false
             }
             self.contentCollectionView.reloadData()
+            UserDefaults.standard.removeObject(forKey: "customGear")
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -568,6 +583,19 @@ extension UnlockablesVC{
             }else if type == "Remove"{
                 self?.updateCustomGearRequest(id: id, status: false, index: indexPath)
             }
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
+    
+    func alertLevelNoReached(level:String){
+        let VC = self.getPopUpVC()
+        VC.titleString = "Level Not Reached"
+        VC.messageString = "You need to reach level \(level) to unlock this item."
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
         }
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)

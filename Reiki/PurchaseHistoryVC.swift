@@ -61,7 +61,7 @@ extension PurchaseHistoryVC : UITableViewDelegate,UITableViewDataSource{
         cell.itemImage.ImageViewLoading(mediaUrl: history.image, placeHolderImage: nil)
         cell.nameLbl.text = history.name
         cell.dateLbl.text = history.createdDate
-        cell.coinLbl.text = history.coin
+        cell.coinLbl.text = history.requiredCoin
         cell.setCorner(numberOfRows: self.unlockableViewModal.purchaseHistoryArray.count, indexPath: indexPath)
         cell.viewContents.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white : UIColor.init(hexString: "#F9F5F5")
         return cell

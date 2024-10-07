@@ -18,6 +18,16 @@ class GoldCoinVC: UIViewController {
     var viewModal = HomePageVM()
     var unlockablesVM = UnlockablesVM()
     
+    private var backgroundTimer: Timer?
+    
+    var previouslySelectedThemes: [ThemeModal] = []
+    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    
+    // Invalidate the timer when the view controller is deallocated
+    deinit {
+        backgroundTimer?.invalidate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,26 +50,6 @@ class GoldCoinVC: UIViewController {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    func setCalendarBackground(date:Date){
-        if self.unlockablesVM.themeArray.count > 0{
-            let themes = self.unlockablesVM.themeArray.randomElement()
-            backgroundImageView.ImageViewLoading(mediaUrl: themes?.themeUrl ?? "", placeHolderImage: nil)
-            return
-        }
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
-    }
-    
     /*
     // MARK: - Navigation
 
@@ -72,13 +62,83 @@ class GoldCoinVC: UIViewController {
 
 }
 
+//Themes
+extension GoldCoinVC{
+    
+    func getRandomUniqueTheme() -> ThemeModal? {
+        let availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        guard let selectedTheme = availableThemes.randomElement() else {
+            previouslySelectedThemes.removeAll() // Reset if all themes have been used
+            return getRandomUniqueTheme()
+        }
+        
+        previouslySelectedThemes.append(selectedTheme)
+        return selectedTheme
+    }
+    
+    func setCalendarBackground(date:Date){
+        if self.unlockablesVM.themeArray.count > 0 {
+            if self.unlockablesVM.themeArray.count == 1{
+                updateBackgroundImage()
+            }else{
+                updateBackgroundImageWithTimer()
+            }
+        } else {
+            // Set background based on the current season
+            switch date.kvkMonth {
+            case 12, 1, 2:
+                backgroundImageView.image = UIImage(named: "CalandarWinter")
+            case 3, 4, 5:
+                backgroundImageView.image = UIImage(named: "CalandarSpring")
+            case 6, 7, 8:
+                backgroundImageView.image = UIImage(named: "CalandarSummer")
+            case 9, 10, 11:
+                backgroundImageView.image = UIImage(named: "CalandarAutumn")
+            default:
+                break
+            }
+        }
+    }
+    
+    private func updateBackgroundImageWithTimer() {
+        // Update background image immediately
+        updateBackgroundImage()
+        
+        // Invalidate any existing timer
+        backgroundTimer?.invalidate()
+        
+        // Start a new timer to update the background every 20 seconds
+        backgroundTimer = Timer.scheduledTimer(withTimeInterval: themeDurationSeconds, repeats: true) { [weak self] _ in
+            self?.updateBackgroundImage()
+        }
+    }
+    
+    @objc private func updateBackgroundImage() {
+        if let themes = getRandomUniqueTheme() {
+            // Fade out the current image
+            UIView.animate(withDuration: 0.5, animations: {
+                self.backgroundImageView.alpha = 0
+            }, completion: { _ in
+                // Once the fade-out is complete, update the image
+                self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
+                
+                // Fade in the new image
+                UIView.animate(withDuration: 0.5) {
+                    self.backgroundImageView.alpha = 1
+                }
+            })
+        }
+    }
+}
+
 extension GoldCoinVC{
     
     func getUserThemes(){
         let param = ["offset":0,
                      "limit":-1,
                      "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["theme"]] as [String : Any]
+                     "populate":["+theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)

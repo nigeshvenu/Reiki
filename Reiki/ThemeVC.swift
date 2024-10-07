@@ -19,7 +19,6 @@ class ThemeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        //setCalendarBackground(date: Date())
         collectionView.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 5)
         moreView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
@@ -31,21 +30,6 @@ class ThemeVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.getThemesRequest()
-    }
-    
-    func setCalendarBackground(date:Date){
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
     }
     
     @IBAction func moreBtnClicked(_ sender: Any) {
@@ -170,7 +154,7 @@ extension ThemeVC{
     func getThemesRequest(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true]] as [String : Any]
+                     "where":[]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getThemes(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)

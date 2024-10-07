@@ -13,7 +13,6 @@ import Switches
 
 class CalendarVC: UIViewController,KVKCalendarSettings {
     
-    
     @IBOutlet var backgroundImageView: CustomImageView!
     @IBOutlet var titleLbl: UILabel!
     @IBOutlet var monthBtn: UIButton!
@@ -46,6 +45,10 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         calendar.dataSource = self
         return calendar
     }()
+    private var backgroundTimer: Timer?
+    
+    var previouslySelectedThemes: [ThemeModal] = []
+    var themeDurationSeconds : CGFloat = 45.0 //Seconds
     
     @IBOutlet weak var randomE: YapSwitch! {
         didSet {
@@ -66,6 +69,21 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     let switchOffColor = "#FFFFFF"
     let publicEventFillColorCode = "#AA3270"
     let customEventFillColorCode = "#703FCC"
+    
+    //Date View
+    let titleColor = UIColor.white
+    let titleFont = FontHelper.montserratFontSize(fontType: .semiBold, size: 13.0)
+    let subtitleColor = UIColor.white
+    let todayColor = UIColor.white.withAlphaComponent(0.3)
+    let previousMonthAndFutureMonthDateColor = UIColor.white.withAlphaComponent(0.6)
+    //Header View
+    let calendarWeekdayViewBackgroundColor = UIColor.white.withAlphaComponent(0.5)
+    let weekDayFont = FontHelper.montserratFontSize(fontType: .Bold, size: 15.0)
+    
+    // Invalidate the timer when the view controller is deallocated
+    deinit {
+        backgroundTimer?.invalidate()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,15 +107,19 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     }
     
     func setUpMonthCalendar(){
-        monthCalendarView.appearance.subtitleDefaultColor = .white
+        //Date View
+        monthCalendarView.appearance.titleDefaultColor = titleColor
+        monthCalendarView.appearance.subtitleDefaultColor = subtitleColor
         monthCalendarView.appearance.selectionColor = UIColor.clear
-        monthCalendarView.appearance.todayColor = UIColor.white.withAlphaComponent(0.3)
-        monthCalendarView.appearance.calendar.calendarWeekdayView.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        monthCalendarView.appearance.titlePlaceholderColor = UIColor.white.withAlphaComponent(0.6)
-        monthCalendarView.appearance.titleFont = FontHelper.montserratFontSize(fontType: .semiBold, size: 13.0)
+        monthCalendarView.appearance.todayColor = todayColor
+        monthCalendarView.appearance.titlePlaceholderColor = previousMonthAndFutureMonthDateColor // previous month and future month dates color
+        monthCalendarView.appearance.titleFont = titleFont
+        //Header View
         monthCalendarView.headerHeight = 0.0
+        monthCalendarView.appearance.calendar.calendarWeekdayView.backgroundColor = calendarWeekdayViewBackgroundColor
         monthCalendarView.appearance.caseOptions = .weekdayUsesSingleUpperCase
-        monthCalendarView.appearance.weekdayFont = FontHelper.montserratFontSize(fontType: .Bold, size: 15.0)
+        monthCalendarView.appearance.weekdayFont = weekDayFont
+        //Set calendar Delegate & DataSource
         monthCalendarView.delegate = self
         monthCalendarView.dataSource = self
     }
@@ -190,32 +212,13 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     }
     
     func scrolltoMonth(animate:Bool){
-        monthCalendarView.select(selectDate, scrollToDate: animate)
-        monthCalendarView.deselect(selectDate)
+        monthCalendarView.setCurrentPage(selectDate, animated: animate)
+        //monthCalendarView.select(selectDate, scrollToDate: animate)
+        //monthCalendarView.deselect(selectDate)
         monthCalendarView.reloadData()
     }
     
-    func setCalendarBackground(date:Date){
-        if self.unlockablesVM.themeArray.count > 0{
-            let themes = self.unlockablesVM.themeArray.randomElement()
-            backgroundImageView.ImageViewLoading(mediaUrl: themes?.themeUrl ?? "", placeHolderImage: nil)
-            return
-        }
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
-    }
-    
-    
+
     func setTitleLbl(date:Date?,isMonth:Bool){
         let month = (date ?? Date()).titleForLocale(style.locale, formatter: style.month.titleFormatterHyphen)
         let year = (date ?? Date()).titleForLocale(style.locale, formatter: style.year.titleFormatter)
@@ -228,7 +231,7 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         if setCalendarImage{
             setCalendarBackground(date: date)
         }
-        if randomE.isOn{
+        if !randomE.isOn{
             self.getCustomActivityList(date: self.monthCalendarView.currentPage)
         }else{
             self.getActivityList(date: self.monthCalendarView.currentPage)
@@ -257,8 +260,12 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     
     @IBAction func switchAction(_ sender: YapSwitch) {
         //setSwitch()
-        if sender.isOn{
-            self.getCustomActivityList(date: self.monthCalendarView.currentPage)
+        if !sender.isOn{
+            self.view.isUserInteractionEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.view.isUserInteractionEnabled = true
+                self.getCustomActivityList(date: self.monthCalendarView.currentPage)
+            }
             self.createCustomView.isHidden = false
             self.seperateView.isHidden = false
             //self.publicTitle.alpha = 0.5
@@ -266,7 +273,11 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: "Switched to custom events", type: .success)
             
         }else{
-            self.getActivityList(date: self.monthCalendarView.currentPage)
+            self.view.isUserInteractionEnabled = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.view.isUserInteractionEnabled = true
+                self.getActivityList(date: self.monthCalendarView.currentPage)
+            }
             self.createCustomView.isHidden = true
             self.seperateView.isHidden = true
             //self.publicTitle.alpha = 1.0
@@ -295,6 +306,8 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
             }
         //}
     }
+    
+    
     /*
     // MARK: - Navigation
 
@@ -305,6 +318,76 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     }
     */
 
+}
+
+//Themes
+extension CalendarVC{
+    
+    func getRandomUniqueTheme() -> ThemeModal? {
+        let availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        guard let selectedTheme = availableThemes.randomElement() else {
+            previouslySelectedThemes.removeAll() // Reset if all themes have been used
+            return getRandomUniqueTheme()
+        }
+        
+        previouslySelectedThemes.append(selectedTheme)
+        return selectedTheme
+    }
+    
+    func setCalendarBackground(date:Date){
+        if self.unlockablesVM.themeArray.count > 0 {
+            if self.unlockablesVM.themeArray.count == 1{
+                updateBackgroundImage()
+            }else{
+                updateBackgroundImageWithTimer()
+            }
+        } else {
+            // Set background based on the current season
+            switch date.kvkMonth {
+            case 12, 1, 2:
+                backgroundImageView.image = UIImage(named: "CalandarWinter")
+            case 3, 4, 5:
+                backgroundImageView.image = UIImage(named: "CalandarSpring")
+            case 6, 7, 8:
+                backgroundImageView.image = UIImage(named: "CalandarSummer")
+            case 9, 10, 11:
+                backgroundImageView.image = UIImage(named: "CalandarAutumn")
+            default:
+                break
+            }
+        }
+    }
+    
+    private func updateBackgroundImageWithTimer() {
+        // Update background image immediately
+        updateBackgroundImage()
+        
+        // Invalidate any existing timer
+        backgroundTimer?.invalidate()
+        
+        // Start a new timer to update the background every 20 seconds
+        backgroundTimer = Timer.scheduledTimer(withTimeInterval: themeDurationSeconds, repeats: true) { [weak self] _ in
+            self?.updateBackgroundImage()
+        }
+    }
+    
+    @objc private func updateBackgroundImage() {
+        if let themes = getRandomUniqueTheme() {
+            // Fade out the current image
+            UIView.animate(withDuration: 0.5, animations: {
+                self.backgroundImageView.alpha = 0
+            }, completion: { _ in
+                // Once the fade-out is complete, update the image
+                self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
+                
+                // Fade in the new image
+                UIView.animate(withDuration: 0.5) {
+                    self.backgroundImageView.alpha = 1
+                }
+            })
+        }
+    }
 }
 
 // MARK: - Calendar delegate
@@ -526,8 +609,13 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
         }
     }
     
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleSelectionColorFor date: Date) -> UIColor? {
+        return appearance.titlePlaceholderColor
+    }
+    
+    //Event Color for Date
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        let colors = colorForDate(date: date, color: "#FFFFFF")
+        let colors = eventColorForDate(date: date, color: "#FFFFFF")
         return [colors!]
     }
     
@@ -536,18 +624,19 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-        return colorForDate(date: date, color: randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
+        return fillColorForDate(date: date, color: !randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {
-       return colorForDate(date: date, color: randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
+       return fillColorForDate(date: date, color: !randomE.isOn ? self.customEventFillColorCode : self.publicEventFillColorCode)
     }
     
     func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
-        if randomE.isOn{
+        if !randomE.isOn{
             return true
         }
-        return isLockedDate(date: date) ? false : true
+        //return isLockedDate(date: date) ? false : true
+        return true
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, borderDefaultColorFor date: Date) -> UIColor? {
@@ -555,14 +644,18 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     }
     
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        if randomE.isOn{
+        if !randomE.isOn{
             return nil
         }
         return isLockedDate(date: date) ? UIImage(named: "calendarLock") : nil
     }
     
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, titleDefaultColorFor date: Date) -> UIColor? {
+        return titleColorForDate(date: date, calendar: calendar)
+    }
+   
     func isLockedDate(date:Date)->Bool{
-        if randomE.isOn{
+        if !randomE.isOn{
             return false
         }
         var isLocked = false
@@ -598,19 +691,24 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         let events = self.calendarVM.eventArray.filter({$0.eventdateAsDate == date})
-        if events.count > 1{
+        let holiday = self.calendarVM.holidayArray.filter({$0.holidayAsDate == date})
+        if events.count > 0 || holiday.count > 0{
+            presentAllEvents(events: events, holiday: holiday.first)
+        }
+        /*if events.count > 1{
            presentAllEvents(events: events)
         }else if events.count == 1{
             self.goToEventPage(event: events.first!)
-        }
+        }*/
         selectDate = date
         monthCalendarView.deselect(selectDate)
         print(date.toString(dateFormat: "dd-MM-yyyy"))
     }
     
-    func presentAllEvents(events:[EventModal]){
+    func presentAllEvents(events:[EventModal],holiday:HolidayModal?){
         let VC = self.getAllEventsVC()
         VC.eventsArray = events
+        VC.holiday = holiday
         VC.delegate = self
         VC.modalPresentationStyle = .overFullScreen
         self.present(VC, animated: false, completion: nil)
@@ -620,8 +718,8 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
     func calendar(_ calendar: FSCalendar, subtitleFor date: Date) -> String? {
         let events = getEventsForDate(date: date)
         if events.count > 0{
-            
-            return isLockedDate(date: date) ? nil : getString(str: events.first!.eventTitle)
+            //return isLockedDate(date: date) ? nil : getString(str: events.first!.eventTitle)
+            return getString(str: events.first!.eventTitle)
         }
         return nil
     }
@@ -634,7 +732,7 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
         }
     }
     
-    func colorForDate(date:Date,color:String)->UIColor?{
+    /*func colorForDate(date:Date,color:String)->UIColor?{
         for i in self.calendarVM.eventArray{
             let order = NSCalendar.current.compare(i.eventdateAsDate, to: date, toGranularity: .day)
             if order == .orderedSame{
@@ -646,18 +744,185 @@ extension CalendarVC : FSCalendarDataSource,FSCalendarDelegateAppearance,FSCalen
             }
         }
         return nil
+    }*/
+    
+    func eventColorForDate(date: Date, color: String) -> UIColor? {
+        // If not a holiday, check events
+        for event in self.calendarVM.eventArray {
+            if Calendar.current.compare(event.eventdateAsDate, to: date, toGranularity: .day) == .orderedSame {
+                if event.isLocked {
+                    return UIColor(hexString: color).withAlphaComponent(0.70)
+                } else {
+                    return UIColor(hexString: color)
+                }
+            }
+        }
+        return nil
     }
     
-    func borderColorForDate(date:Date)->UIColor?{
-        for i in self.calendarVM.eventArray{
-            let orderToday = NSCalendar.current.compare(Date(), to: date, toGranularity: .day)
-            let order = NSCalendar.current.compare(i.eventdateAsDate, to: date, toGranularity: .day)
-            if order == .orderedSame{
+    func fillColorForDate(date: Date, color: String) -> UIColor? {
+        //print(date.toString(dateFormat: "dd/MM/yyyy"))
+        // Check if it's a holiday first
+        for holiday in self.calendarVM.holidayArray {
+            if Calendar.current.compare(holiday.holidayAsDate, to: date, toGranularity: .day) == .orderedSame {
+                return UIColor(red: 230/255, green: 111/255, blue: 161/255, alpha: 1.0)
+            }
+        }
+        
+        // If not a holiday, check events
+        for event in self.calendarVM.eventArray {
+            
+            if Calendar.current.isDate(event.eventdateAsDate, inSameDayAs: date) {
+                let events = self.calendarVM.eventArray.filter { event in
+                    event.eventdateAsDate == date &&
+                    !event.customUserId.isEmpty &&
+                    event.customUserId == UserModal.sharedInstance.userId
+                }
+                
+                if event.isLocked {
+                    if events.count > 0{
+                        return UIColor(hexString: customEventFillColorCode).withAlphaComponent(0.70)
+                    }
+                    return UIColor(hexString: color).withAlphaComponent(0.70)
+                } else {
+                    //print("Event : \(event.customUserId) : date: \(date.toString(dateFormat: "dd/MM/yyyy"))")
+                    /*if !event.customUserId.isEmpty && event.customUserId == UserModal.sharedInstance.userId{
+                        return UIColor(hexString: customEventFillColorCode) //Custom Event approved by admin for the same user
+                    }*/
+                    if events.count > 0{
+                        return UIColor(hexString: customEventFillColorCode)
+                    }
+                    return UIColor(hexString: color)
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    /*func titleColorForDate(date: Date,calendar:FSCalendar) -> UIColor? {
+        
+        let order = NSCalendar.current.compare(Date(), to: date, toGranularity: .day)
+        if order == .orderedDescending {
+            let components = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
+            guard let currentPageDate = Calendar.current.date(from: components) else {
+                return nil
+            }
+            
+            if Calendar.current.compare(date, to: currentPageDate, toGranularity: .month) != .orderedSame {
+                return previousMonthAndFutureMonthDateColor // Custom color for out-of-month days
+            } else {
+                return titleColor // Default color for in-month days
+            }
+        }
+
+        for event in self.calendarVM.eventArray {
+            let order = NSCalendar.current.compare(event.eventdateAsDate, to: date, toGranularity: .day)
+            if order == .orderedSame {
+                if !randomE.isOn{
+                   return titleColor
+                }
+                return event.isLocked ? previousMonthAndFutureMonthDateColor : titleColor
+            }
+        }
+
+        if isDateInCurrentMonth(date, fsCalendar: calendar){
+            return titleColor
+        }else{
+            return previousMonthAndFutureMonthDateColor
+        }
+
+    }*/
+    
+    /*func isDateInCurrentMonth(_ date: Date, fsCalendar: FSCalendar) -> Bool {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        
+        let currentMonth = calendar.component(.month, from: currentDate)
+        let dateMonth = calendar.component(.month, from: date)
+        
+        let components = Calendar.current.dateComponents([.year, .month], from: fsCalendar.currentPage)
+        guard let currentPageDate = Calendar.current.date(from: components) else {
+            return false
+        }
+        
+        return currentMonth == dateMonth && calendar.isDate(date, equalTo: currentPageDate, toGranularity: .month)
+    }*/
+    
+    func titleColorForDate(date: Date,calendar:FSCalendar) -> UIColor? {
+        for event in self.calendarVM.eventArray {
+            let order = NSCalendar.current.compare(event.eventdateAsDate, to: date, toGranularity: .day)
+            if order == .orderedSame {
+                if !randomE.isOn{
+                   return titleColor
+                }
+                return event.isLocked ? previousMonthAndFutureMonthDateColor : titleColor
+            }
+        }
+        guard let monthEnd = Date().kvkEndOfMonth else {
+            return nil
+        }
+        let order = Calendar.current.compare(monthEnd, to: date, toGranularity: .day)
+        let components = Calendar.current.dateComponents([.year, .month], from: calendar.currentPage)
+        guard let currentPageDate = Calendar.current.date(from: components) else {
+            return nil
+        }
+        if order != .orderedAscending && Calendar.current.isDate(date, equalTo: currentPageDate, toGranularity: .month){
+           return titleColor
+        }else{
+            return previousMonthAndFutureMonthDateColor
+        }
+    }
+    
+    /*func borderColorForDate(date: Date) -> UIColor? {
+        let calendar = Calendar.current
+        let orderToday = calendar.compare(Date(), to: date, toGranularity: .day)
+        
+        // Holidays
+        /*for holiday in self.calendarVM.holidayArray {
+            if calendar.compare(holiday.holidayAsDate, to: date, toGranularity: .day) == .orderedSame {
+                return orderToday == .orderedSame ? UIColor.green : UIColor.clear
+            }
+        }*/
+        // Events
+        for event in self.calendarVM.eventArray {
+            if calendar.compare(event.eventdateAsDate, to: date, toGranularity: .day) == .orderedSame {
                 return orderToday == .orderedSame ? UIColor.white : UIColor.clear
             }
         }
+
+        return UIColor.clear
+    }*/
+    
+    func borderColorForDate(date: Date) -> UIColor? {
+        let calendar = Calendar.current
+        let today = Date()
+        let orderToday = calendar.compare(today, to: date, toGranularity: .day)
+
+        // Holidays (Priority)
+        /*for holiday in self.calendarVM.holidayArray {
+            if calendar.isDate(holiday.holidayAsDate, inSameDayAs: date) {
+                return UIColor.green
+            }
+        }
+            */
+        // Events
+        for event in self.calendarVM.eventArray {
+            if calendar.isDate(event.eventdateAsDate, inSameDayAs: date) {
+                return orderToday == .orderedSame ? UIColor.white : UIColor.clear
+            }
+        }
+
+        // Today
+        
+        if calendar.isDate(today, inSameDayAs: date) {
+            return UIColor.white
+        }
+
+        // Default
         return UIColor.clear
     }
+
     
     func getEventsForDate(date:Date)->[EventModal]{
         let events = self.calendarVM.eventArray.filter({$0.eventdateAsDate == date})
@@ -672,17 +937,22 @@ extension CalendarVC : AllEventsDelegate{
 }
 
 extension CalendarVC{
+    //Get Public Events
     func getActivityList(date:Date){
         let startDate = date.kvkStartOfMonth ?? Date()
         let endDate = date.kvkEndOfMonth ?? Date()
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]]] as [String : Any]
+                     "where":["active":true,
+                              "date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         calendarVM.getCalendarActivityList(urlParams: param, param: nil, onSuccess: { message in
-            AppDelegate.shared.showLoading(isShow: false)
-            self.createCalendarEventArray()
-            self.monthCalendarView.reloadData()
+            //Get Holidays List
+            self.getHolidayList(date: date) {
+                AppDelegate.shared.showLoading(isShow: false)
+                self.createCalendarEventArray()
+                self.monthCalendarView.reloadData()
+            }
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -693,9 +963,9 @@ extension CalendarVC{
         let orderMonth = NSCalendar.current.compare(monthCalendarView.currentPage, to: Date(), toGranularity: .month)
         if orderMonth == .orderedAscending || orderMonth == .orderedSame{
             _ = self.calendarVM.eventArray.map({$0.isLocked = false})
+            print("Past Month or same Month")
             return
         }
-        print("Future Month")
         for i in self.calendarVM.eventArray{
             for j in self.calendarVM.openEventArray{
                 let order = NSCalendar.current.compare(i.eventdateAsDate, to: j.eventdateAsDate, toGranularity: .day)
@@ -721,11 +991,14 @@ extension CalendarVC{
         let endDate = date.kvkEndOfMonth ?? Date()
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["user_id":Int(UserModal.sharedInstance.userId)!,"active":true,"date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]]] as [String : Any]
+                     "where":["user_id":Int(UserModal.sharedInstance.userId)!,"active":true,"date":["$gte":startDate.toString(dateFormat: "yyyy/MM/dd"),"$lte":endDate.toString(dateFormat: "yyyy/MM/dd")]],
+                     "populate":["custom_request"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         calendarVM.getCustomActivityList(urlParams: param, param: nil, onSuccess: { message in
-            AppDelegate.shared.showLoading(isShow: false)
-            self.monthCalendarView.reloadData()
+            self.getHolidayList(date: date) {
+                AppDelegate.shared.showLoading(isShow: false)
+                self.monthCalendarView.reloadData()
+            }
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -785,7 +1058,7 @@ extension CalendarVC{
         let param = ["offset":0,
                      "limit":-1,
                      "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["theme"]] as [String : Any]
+                     "populate":["+theme"]] as [String : Any]
         //AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
@@ -796,6 +1069,30 @@ extension CalendarVC{
         })
     }
     
+    func getHolidayList(date: Date, completion: @escaping () -> Void) {
+        let startDate = date.kvkStartOfMonth ?? Date()
+        let endDate = date.kvkEndOfMonth ?? Date()
+        let param = [
+            "offset": 0,
+            "limit": -1,
+            "where": [
+                "active": true,
+                "date": [
+                    "$gte": startDate.toString(dateFormat: "yyyy/MM/dd"),
+                    "$lte": endDate.toString(dateFormat: "yyyy/MM/dd")
+                ]
+            ]
+        ] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        calendarVM.getHolidayList(urlParams: param, param: nil, onSuccess: { message in
+            completion()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+            completion()
+        })
+    }
+
 }
 
 extension String {

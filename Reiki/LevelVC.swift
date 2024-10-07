@@ -21,11 +21,36 @@ class LevelVC: UIViewController {
     @IBOutlet var prestigeImageMainView: UIView!
     @IBOutlet var resetBtn: UIButton!
     
+    @IBOutlet weak var currentLevelImageView: UIImageView!
+    @IBOutlet weak var nextLevelImageView: UIImageView!
+    
+    //Prestige
+    
+    @IBOutlet weak var star1ImageView: UIImageView!
+    @IBOutlet weak var star2ImageView: UIImageView!
+    @IBOutlet weak var star3ImageView: UIImageView!
+    @IBOutlet weak var star4View: UIView!
+    @IBOutlet weak var star4CountLbl: UILabel!
+    
+    
     var viewModal = LevelVM()
     var unlockableViewModal = UnlockablesVM()
     var currentPage : Int = 1
     var isLoadingList : Bool = false
     var pageLimit = 10
+    
+    //Progress gradient Color
+    @IBOutlet weak var gradientProgressBar: GradientProgressBar!
+   
+    private var backgroundTimer: Timer?
+    
+    var previouslySelectedThemes: [ThemeModal] = []
+    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    
+    // Invalidate the timer when the view controller is deallocated
+    deinit {
+        backgroundTimer?.invalidate()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +61,7 @@ class LevelVC: UIViewController {
     }
     
     func initialSettings(){
+        
         //tableView.register(UINib(nibName: "LevelHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "LevelHeader")
         levelImageMainView.layer.borderWidth = 1.0
         levelImageMainView.layer.borderColor = UIColor.white.cgColor
@@ -54,21 +80,33 @@ class LevelVC: UIViewController {
         resetBtn.layer.borderColor = UIColor.white.cgColor
         NormalView.isHidden = UserModal.sharedInstance.prestige
         prestigeView.isHidden = !UserModal.sharedInstance.prestige
-        resetBtn.isHidden = UserModal.sharedInstance.levelNumber != "12"
+        //resetBtn.isHidden = UserModal.sharedInstance.levelNumber != "12"
         setTopView()
     }
     
     func setTopView(){
+        resetBtn.isHidden = !(UserModal.sharedInstance.levelNumber == "12" && (Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0) == 12)
         levelNumberLbl.text = "Level " + UserModal.sharedInstance.levelNumber
         levelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
         prestigeLevelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
         prestigeLevelNumberLbl.text = "Level " + UserModal.sharedInstance.levelNumber
+        let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
+        star1ImageView.isHidden = prestigeTotalRestart == 0
+        star2ImageView.isHidden = prestigeTotalRestart < 2
+        star3ImageView.isHidden = prestigeTotalRestart < 3
+        star4View.isHidden = prestigeTotalRestart < 4
+        star4CountLbl.text = String(prestigeTotalRestart)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         resetPagenation()
         getUserThemes()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        setProgressLevel()
     }
     
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -84,26 +122,6 @@ class LevelVC: UIViewController {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    func setCalendarBackground(date:Date){
-        if self.unlockableViewModal.themeArray.count > 0{
-            let themes = self.unlockableViewModal.themeArray.randomElement()
-            backgroundImageView.ImageViewLoading(mediaUrl: themes?.themeUrl ?? "", placeHolderImage: nil)
-            return
-        }
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
-    }
-    
     func resetPagenation(){
         viewModal.levelDictArray.removeAll()
         viewModal.levelArray = nil
@@ -111,6 +129,12 @@ class LevelVC: UIViewController {
         currentPage = 1
         isLoadingList = false
     }
+    
+    @IBAction func infoBtnClicked(_ sender: Any) {
+        let VC = self.getLevelCriteriaVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     
     /*
     // MARK: - Navigation
@@ -122,6 +146,105 @@ class LevelVC: UIViewController {
     }
     */
 
+}
+
+extension LevelVC{
+    func setProgressLevel() {
+        // Handle the special case for level 12
+        if UserModal.sharedInstance.levelNumber == "12" {
+            currentLevelImageView.image = LevelImageHelper.getImage(leveNumber: "1")
+            nextLevelImageView.image = LevelImageHelper.getImage(leveNumber: "12")
+            // Update the progress bar to full progress
+            gradientProgressBar.updateProgress(to: 1.0, animated: true, duration: 0.5)
+            return
+        }
+        
+        // Update the current and next level images for other levels
+        currentLevelImageView.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
+        let nextLevel = (Int(UserModal.sharedInstance.levelNumber) ?? 0) + 1
+        nextLevelImageView.image = LevelImageHelper.getImage(leveNumber: String(nextLevel))
+        
+        // Calculate the current and next level points
+        let currentPoint = Int(UserModal.sharedInstance.points) ?? 0
+        let nextPoint = Int(getLevelProgress(level: String(nextLevel))) ?? 1 // Default to 1 to avoid division by zero
+        
+        // Calculate the progress as a float between 0 and 1
+        let progress = nextPoint > 0 ? Float(currentPoint) / Float(nextPoint) : 0
+        
+        // Update the progress bar
+        gradientProgressBar.updateProgress(to: progress, animated: true, duration: 0.5)
+    }
+
+}
+
+//Themes
+extension LevelVC{
+    
+    func getRandomUniqueTheme() -> ThemeModal? {
+        let availableThemes = self.unlockableViewModal.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        guard let selectedTheme = availableThemes.randomElement() else {
+            previouslySelectedThemes.removeAll() // Reset if all themes have been used
+            return getRandomUniqueTheme()
+        }
+        
+        previouslySelectedThemes.append(selectedTheme)
+        return selectedTheme
+    }
+    
+    func setCalendarBackground(date:Date){
+        if self.unlockableViewModal.themeArray.count > 0 {
+            if self.unlockableViewModal.themeArray.count == 1{
+                updateBackgroundImage()
+            }else{
+                updateBackgroundImageWithTimer()
+            }
+        } else {
+            // Set background based on the current season
+            switch date.kvkMonth {
+            case 12, 1, 2:
+                backgroundImageView.image = UIImage(named: "CalandarWinter")
+            case 3, 4, 5:
+                backgroundImageView.image = UIImage(named: "CalandarSpring")
+            case 6, 7, 8:
+                backgroundImageView.image = UIImage(named: "CalandarSummer")
+            case 9, 10, 11:
+                backgroundImageView.image = UIImage(named: "CalandarAutumn")
+            default:
+                break
+            }
+        }
+    }
+    
+    private func updateBackgroundImageWithTimer() {
+        // Update background image immediately
+        updateBackgroundImage()
+        
+        // Invalidate any existing timer
+        backgroundTimer?.invalidate()
+        
+        // Start a new timer to update the background every 20 seconds
+        backgroundTimer = Timer.scheduledTimer(withTimeInterval: themeDurationSeconds, repeats: true) { [weak self] _ in
+            self?.updateBackgroundImage()
+        }
+    }
+    
+    @objc private func updateBackgroundImage() {
+        if let themes = getRandomUniqueTheme() {
+            // Fade out the current image
+            UIView.animate(withDuration: 0.5, animations: {
+                self.backgroundImageView.alpha = 0
+            }, completion: { _ in
+                // Once the fade-out is complete, update the image
+                self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
+                
+                // Fade in the new image
+                UIView.animate(withDuration: 0.5) {
+                    self.backgroundImageView.alpha = 1
+                }
+            })
+        }
+    }
 }
 
 extension LevelVC : UITableViewDelegate,UITableViewDataSource{
@@ -222,6 +345,37 @@ extension LevelVC : UITableViewDelegate,UITableViewDataSource{
         }
     }
     
+    func getLevelProgress(level:String)->String{
+        switch level {
+        case "1":
+            return "0"
+        case "2":
+            return "500"
+        case "3":
+            return "1500"
+        case "4":
+            return "2500"
+        case "5":
+            return "4000"
+        case "6":
+            return "5000"
+        case "7":
+            return "6000"
+        case "8":
+            return "7000"
+        case "9":
+            return "8000"
+        case "10":
+            return "9000"
+        case "11":
+            return "11000"
+        case "12":
+            return "15000"
+        default:
+            return "0"
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 97
     }
@@ -270,7 +424,7 @@ extension LevelVC{
         let param = ["offset":0,
                      "limit":-1,
                      "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["theme"]] as [String : Any]
+                     "populate":["+theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockableViewModal.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
@@ -318,7 +472,7 @@ extension LevelVC{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.resetLevel, type: .success)
             UserModal.sharedInstance.levelNumber = "1"
             UserModal.sharedInstance.points = "0"
-            self.resetBtn.isHidden = true
+            UserModal.sharedInstance.totalPrestigeRestart =  String((Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0) + 1)
             self.setTopView()
             self.resetPagenation()
             self.getlevelRequest(showLoader: true)

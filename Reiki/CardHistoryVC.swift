@@ -107,7 +107,7 @@ extension CardHistoryVC : UICollectionViewDelegate,UICollectionViewDataSource,UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.size.width / 2.0 - 15, height: 250)
+        return CGSize(width: collectionView.frame.size.width / 2.0 - 15, height: 215)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -143,10 +143,11 @@ extension CardHistoryVC{
         }
         let param = ["offset":offset,
                      "limit":pageLimit,
-                     "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"type":["$ne":"Purchase"]],
-                     "sort":[["created_at","DESC"]]] as [String : Any]
+                     "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "sort":[["card","gold_coins","ASC"],],
+                     "populate":["user","card"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
-        viewModal.getUserAllCoins(urlParams: param, param: nil, onSuccess: { message in
+        viewModal.getAllUserCards(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
             if !self.viewModal.isPageEmptyReached{
                 self.isLoadingList = false

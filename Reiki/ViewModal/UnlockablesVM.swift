@@ -67,11 +67,12 @@ class UnlockablesVM: NSObject {
                 self.customGearSubArray.removeAll()
                 if let data = result["data"] as? [String:Any]{
                     if let customGear = data["custom_gears"] as? [String:Any]{
-                        for (key, value) in customGear{
+                        for (_, value) in customGear{
                             if let valueArray = value as? [[String:Any]]{
                                 let modal = CustomGearSubCategoryModal()
                                 var itemArray = [ItemModal]()
                                 for i in valueArray{
+                                   
                                     if let sub = i["custom_gear_sub_category"] as? [String:Any]{
                                         modal.name = anyToStringConverter(dict: sub, key: "name")
                                         modal.subCategoryId = anyToStringConverter(dict: sub, key: "id")
@@ -79,19 +80,39 @@ class UnlockablesVM: NSObject {
                                         modal.categoryId = anyToStringConverter(dict: sub, key: "category_id")
                                     }
                                     let itemModal = ItemModal()
+                                    if let sub = i["level"] as? [String:Any]{
+                                        itemModal.levelNo = anyToStringConverter(dict: sub, key: "level_number")
+                                    }
+                                    itemModal.isActive = anyToBoolConverter(dict: i, key: "active")
                                     itemModal.name = anyToStringConverter(dict: i, key: "name")
                                     itemModal.image = anyToStringConverter(dict: i, key: "image_url")
-                                    itemModal.coin = anyToStringConverter(dict: i, key: "required_coin")
+                                    itemModal.animationUrl = anyToStringConverter(dict: i, key: "animation_url")
+                                    itemModal.requiredCoin = anyToStringConverter(dict: i, key: "required_coin")
                                     itemModal.itemId = anyToStringConverter(dict: i, key: "id")
+                                    itemModal.isDeleted = anyToStringConverter(dict: i, key: "deleted_at")
                                     if let user_custom_gear = i["user_custom_gear"] as? [String:Any]{
                                         itemModal.isUnlocked = true
                                         itemModal.isApplied = anyToBoolConverter(dict: user_custom_gear, key: "applied")
                                         itemModal.userCustomGearId = anyToStringConverter(dict: user_custom_gear, key: "id")
                                     }
-                                    itemArray.append(itemModal)
+                                    if itemModal.isDeleted.isEmpty{ //Not deleted
+                                        if !itemModal.isActive{
+                                            if itemModal.isUnlocked{
+                                                itemArray.append(itemModal)
+                                            }
+                                        }else{
+                                            itemArray.append(itemModal)
+                                        }
+                                    }else{
+                                        if itemModal.isUnlocked{
+                                            itemArray.append(itemModal)
+                                        }
+                                    }
                                 }
                                 modal.itemArray = itemArray
-                                self.customGearSubArray.append(modal)
+                                if modal.itemArray.count > 0{
+                                    self.customGearSubArray.append(modal)
+                                }
                             }
                         }
                         self.customGearSubArray = self.customGearSubArray.sorted(by: { $0.subCategoryIdInt < $1.subCategoryIdInt })
@@ -124,12 +145,27 @@ class UnlockablesVM: NSObject {
                             modal.image = anyToStringConverter(dict: i, key: "image_url")
                             modal.coin = anyToStringConverter(dict: i, key: "required_coin")
                             modal.themeId = anyToStringConverter(dict: i, key: "id")
+                            modal.isDeleted = anyToStringConverter(dict: i, key: "deleted_at")
+                            modal.isActive = anyToBoolConverter(dict: i, key: "active")
                             if let userTheme = i["user_theme"] as? [String:Any]{
                                 modal.isUnlocked = true
                                 modal.isApplied = anyToBoolConverter(dict: userTheme, key: "applied")
                                 modal.userThemeId = anyToStringConverter(dict: userTheme, key: "id")
                             }
-                            self.themeArray.append(modal)
+                            if modal.isDeleted.isEmpty{ //Not deleted
+                                if !modal.isActive{
+                                    if modal.isUnlocked{
+                                        self.themeArray.append(modal)
+                                    }
+                                }else{
+                                    self.themeArray.append(modal)
+                                }
+                            }else{
+                                if modal.isUnlocked{
+                                    self.themeArray.append(modal)
+                                }
+                            }
+                            
                         }
                     }
                 }
@@ -332,12 +368,12 @@ class UnlockablesVM: NSObject {
                                 if let customGear = i["custom_gear"] as? [String:Any]{
                                     modal.name = anyToStringConverter(dict: customGear, key: "name")
                                     modal.image = anyToStringConverter(dict: customGear, key: "image_url")
-                                    modal.coin = anyToStringConverter(dict: customGear, key: "required_coin")
+                                    modal.requiredCoin = anyToStringConverter(dict: customGear, key: "required_coin")
                                 }
                                 if let customGear = i["theme"] as? [String:Any]{
                                     modal.name = "Theme"
                                     modal.image = anyToStringConverter(dict: customGear, key: "image_url")
-                                    modal.coin = anyToStringConverter(dict: customGear, key: "required_coin")
+                                    modal.requiredCoin = anyToStringConverter(dict: customGear, key: "required_coin")
                                 }
                                 let date = anyToStringConverter(dict: i, key: "created_at")
                                 modal.createdDate = date.UTCToLocal(incomingFormat: "yyyy-MM-dd'T'HH:mm:ss.SSSZ", outGoingFormat: "MMMM d yyyy")
@@ -355,7 +391,7 @@ class UnlockablesVM: NSObject {
            
        }
     
-    func getCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+    /*func getCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
         let function = APIFunction.user_custom_gear
         RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
                if let error = result["error"] as? String{
@@ -367,15 +403,30 @@ class UnlockablesVM: NSObject {
                 print(result)
                 if let data = result["data"] as? [String:Any]{
                     self.purchaseHistoryArray.removeAll()
+                    var customGearArray: [[String: String]] = []
                     if let customGearsArray = data["user_custom_gears"] as? [[String:Any]]{
                         for i in customGearsArray{
                             if let customGear = i["custom_gear"] as? [String:Any]{
                                 let modal = ItemModal()
+                                modal.id = anyToStringConverter(dict: customGear, key: "name")
                                 modal.name = anyToStringConverter(dict: customGear, key: "name")
                                 modal.image = anyToStringConverter(dict: customGear, key: "image_url")
+                                modal.animationUrl = anyToStringConverter(dict: customGear, key: "animation_url")
                                 self.purchaseHistoryArray.append(modal)
+                                if !modal.animationUrl.isEmpty{
+                                    customGearArray.append(["url":modal.animationUrl,"completed":"N"])
+                                }
                             }
                         }
+                    }
+                    
+                    if let purchaseHistory = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]] {
+                        
+                    } else {
+                        UserDefaults.standard.set(customGearArray, forKey: "customGear")
+                    }
+                    if self.purchaseHistoryArray.count == 0{
+                        UserDefaults.standard.removeObject(forKey: "customGear")
                     }
                 }
                 if let message = result["message"] as? String{
@@ -385,6 +436,71 @@ class UnlockablesVM: NSObject {
                onFailure(error)
            })
            
-       }
+       }*/
+  
+    func getCustomGear(urlParams: [String: Any]?, param: [String: Any]?, onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void) {
+        let function = APIFunction.user_custom_gear
+        RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+            if let error = result["error"] as? String, !error.isEmpty {
+                onFailure(error)
+                return
+            }
+            
+            print(result)
+            
+            if let data = result["data"] as? [String: Any] {
+                self.purchaseHistoryArray.removeAll()
+                var customGearArray: [[String: String]] = []
+                
+                if let customGearsArray = data["user_custom_gears"] as? [[String: Any]] {
+                    for gear in customGearsArray {
+                        if let customGear = gear["custom_gear"] as? [String: Any] {
+                            let modal = ItemModal()
+                            modal.name = anyToStringConverter(dict: customGear, key: "name")
+                            modal.image = anyToStringConverter(dict: customGear, key: "image_url")
+                            modal.animationUrl = anyToStringConverter(dict: customGear, key: "animation_url")
+                            
+                            self.purchaseHistoryArray.append(modal)
+                            
+                            if !modal.animationUrl.isEmpty {
+                                customGearArray.append(["url": modal.animationUrl, "completed": "N"])
+                            }
+                        }
+                    }
+                }
+                
+                // Convert purchaseHistoryArray into [[String: String]] for comparison
+                let purchaseHistoryArrayConverted: [[String: String]] = self.purchaseHistoryArray.map { modal in
+                    return ["url": modal.animationUrl, "completed": "N"]
+                }
+                
+                // Retrieve stored customGear array from UserDefaults
+                if let storedCustomGearArray = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]] {
+                    // Compare customGearArray with purchaseHistoryArrayConverted
+                    let doesMatch = storedCustomGearArray == purchaseHistoryArrayConverted
+                    
+                    // If they don't match, remove the UserDefaults entry
+                    if !doesMatch {
+                        UserDefaults.standard.removeObject(forKey: "customGear")
+                    }
+                } else {
+                    // No previous customGear, so set the new customGearArray
+                    UserDefaults.standard.set(customGearArray, forKey: "customGear")
+                }
+                
+                // If purchaseHistoryArray is empty, remove the UserDefaults entry
+                if self.purchaseHistoryArray.isEmpty {
+                    UserDefaults.standard.removeObject(forKey: "customGear")
+                }
+            }
+            
+            if let message = result["message"] as? String {
+                onSuccess(message)
+            }
+        }, onFailure: { error in
+            onFailure(error)
+        })
+    }
+
 }
 

@@ -43,8 +43,9 @@ class SplashVC: UIViewController {
 
 extension SplashVC{
     func getUserRequest(){
+        let param = ["populate":["level"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
-        LoginVM().getUser(urlParams: nil, param: nil, onSuccess: { message in
+        LoginVM().getUser(urlParams: param, param: nil, onSuccess: { message in
             self.getConfigurationRequest()
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

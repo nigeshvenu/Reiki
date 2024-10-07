@@ -12,6 +12,7 @@ class LevelVM: NSObject {
     var levelArray : Array<(key: String, value: Array<LevelModal>)>?
     var levelDictArray = [[String:Any]]()
     var isPageEmptyReached = false
+    var levelCriteriaArray = [LevelModal]()
     
     func getUserLevel(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
         let function = APIFunction.userLevel
@@ -78,6 +79,38 @@ class LevelVM: NSObject {
                 print(result)
                 if let data = result["data"] as? [String:Any]{
                    
+                }
+                if let message = result["message"] as? String{
+                    onSuccess(message)
+                }
+           }, onFailure: {error in
+               onFailure(error)
+           })
+           
+       }
+    
+    func getLevels(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+        let function = APIFunction.level
+        RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
+               if let error = result["error"] as? String{
+                   if !(error.isEmpty){
+                       onFailure(error)
+                       return
+                   }
+               }
+                print(result)
+                self.levelCriteriaArray.removeAll()
+                if let data = result["data"] as? [String:Any]{
+                    if let badges = data["levels"] as? [[String:Any]]{
+                        for i in badges{
+                            let modal = LevelModal()
+                            modal.levelNo = anyToStringConverter(dict: i, key: "level_number")
+                            modal.levelName = anyToStringConverter(dict: i, key: "level_name")
+                            modal.levelShape = anyToStringConverter(dict: i, key: "shape")
+                            modal.requiredPoint = anyToStringConverter(dict: i, key: "required_point")
+                            self.levelCriteriaArray.append(modal)
+                        }
+                    }
                 }
                 if let message = result["message"] as? String{
                     onSuccess(message)

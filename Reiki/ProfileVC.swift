@@ -21,7 +21,9 @@ class ProfileVC: UIViewController {
     @IBOutlet var mobileNumberLbl: UILabel!
     @IBOutlet var aboutMeLbl: UILabel!
     @IBOutlet var timezoneLbl: UILabel!
-    
+    //
+    @IBOutlet weak var avatarNameLbl: UILabel!
+    @IBOutlet weak var avatarImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +61,8 @@ class ProfileVC: UIViewController {
         if user.timeZone != nil{
             self.timezoneLbl.text = user.timeZone!.name
         }
+        avatarNameLbl.text = user.avatar
+        avatarImageView.image = UIImage(named: user.avatar)
     }
     
     @IBAction func editProfileBtnClicked(_ sender: Any) {
@@ -80,6 +84,15 @@ class ProfileVC: UIViewController {
         settings.presentationStyle.presentingEndAlpha = 0.5
         SideMenuManager.default.leftMenuNavigationController?.settings = settings
     }
+    
+    @IBAction func changeCharacterBtnClicked(_ sender: Any) {
+        let VC = self.getSignupCharacterVC()
+        VC.selectedCharacter = UserModal.sharedInstance.avatar
+        VC.isSignup = false
+        VC.delegate = self
+        self.navigationController?.pushViewController(VC, animated: true)
+    }
+    
     
     /*
     // MARK: - Navigation
@@ -107,6 +120,7 @@ class ProfileVC: UIViewController {
 
 extension ProfileVC : ProfileEditDelegate{
     func profileEdited() {
+        UserDefaultsHelper().clearAvatarDate()
         self.getUserRequest()
     }
 }

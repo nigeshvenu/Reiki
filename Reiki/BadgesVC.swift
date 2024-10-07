@@ -21,6 +21,16 @@ class BadgesVC: UIViewController {
     var pageLimit = 10
     var unlockableViewModal = UnlockablesVM()
     
+    private var backgroundTimer: Timer?
+    
+    var previouslySelectedThemes: [ThemeModal] = []
+    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    
+    // Invalidate the timer when the view controller is deallocated
+    deinit {
+        backgroundTimer?.invalidate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,25 +58,12 @@ class BadgesVC: UIViewController {
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    func setCalendarBackground(date:Date){
-        if self.unlockableViewModal.themeArray.count > 0{
-            let themes = self.unlockableViewModal.themeArray.randomElement()
-            backgroundImageView.ImageViewLoading(mediaUrl: themes?.themeUrl ?? "", placeHolderImage: nil)
-            return
-        }
-        switch date.kvkMonth{
-        case 12,1,2:
-            backgroundImageView.image = UIImage(named: "CalandarWinter")
-        case 3,4,5:
-            backgroundImageView.image = UIImage(named: "CalandarSpring")
-        case 6,7,8:
-            backgroundImageView.image = UIImage(named: "CalandarSummer")
-        case 9,10,11:
-            backgroundImageView.image = UIImage(named: "CalandarAutumn")
-        default:
-            break
-        }
+    @IBAction func infoBtnClicked(_ sender: Any) {
+        let VC = self.getBadgeCriteriaVC()
+        self.navigationController?.pushViewController(VC, animated: true)
+        
     }
+    
     
     /*
     // MARK: - Navigation
@@ -78,6 +75,76 @@ class BadgesVC: UIViewController {
     }
     */
 
+}
+
+//Themes
+extension BadgesVC{
+    
+    func getRandomUniqueTheme() -> ThemeModal? {
+        let availableThemes = self.unlockableViewModal.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        guard let selectedTheme = availableThemes.randomElement() else {
+            previouslySelectedThemes.removeAll() // Reset if all themes have been used
+            return getRandomUniqueTheme()
+        }
+        
+        previouslySelectedThemes.append(selectedTheme)
+        return selectedTheme
+    }
+    
+    func setCalendarBackground(date:Date){
+        if self.unlockableViewModal.themeArray.count > 0 {
+            if self.unlockableViewModal.themeArray.count == 1{
+                updateBackgroundImage()
+            }else{
+                updateBackgroundImageWithTimer()
+            }
+        } else {
+            // Set background based on the current season
+            switch date.kvkMonth {
+            case 12, 1, 2:
+                backgroundImageView.image = UIImage(named: "CalandarWinter")
+            case 3, 4, 5:
+                backgroundImageView.image = UIImage(named: "CalandarSpring")
+            case 6, 7, 8:
+                backgroundImageView.image = UIImage(named: "CalandarSummer")
+            case 9, 10, 11:
+                backgroundImageView.image = UIImage(named: "CalandarAutumn")
+            default:
+                break
+            }
+        }
+    }
+    
+    private func updateBackgroundImageWithTimer() {
+        // Update background image immediately
+        updateBackgroundImage()
+        
+        // Invalidate any existing timer
+        backgroundTimer?.invalidate()
+        
+        // Start a new timer to update the background every 20 seconds
+        backgroundTimer = Timer.scheduledTimer(withTimeInterval: themeDurationSeconds, repeats: true) { [weak self] _ in
+            self?.updateBackgroundImage()
+        }
+    }
+    
+    @objc private func updateBackgroundImage() {
+        if let themes = getRandomUniqueTheme() {
+            // Fade out the current image
+            UIView.animate(withDuration: 0.5, animations: {
+                self.backgroundImageView.alpha = 0
+            }, completion: { _ in
+                // Once the fade-out is complete, update the image
+                self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
+                
+                // Fade in the new image
+                UIView.animate(withDuration: 0.5) {
+                    self.backgroundImageView.alpha = 1
+                }
+            })
+        }
+    }
 }
 
 extension BadgesVC : UITableViewDelegate,UITableViewDataSource{
@@ -94,6 +161,7 @@ extension BadgesVC : UITableViewDelegate,UITableViewDataSource{
         let badge = self.viewModal.badgeArray[indexPath.row]
         cell.badgeLbl.text = badge.badge
         cell.dateLbl.text = badge.badgeDate
+        cell.badgeCriteriaLbl.text = badge.badgeDesc
         let numberOfRows = self.viewModal.badgeArray.count
         if numberOfRows == 1{
             cell.contentView.setRoundCorners([.layerMaxXMaxYCorner,.layerMaxXMinYCorner,.layerMinXMaxYCorner,.layerMinXMinYCorner], radius: 16)
@@ -106,6 +174,10 @@ extension BadgesVC : UITableViewDelegate,UITableViewDataSource{
         }
         cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor.white.withAlphaComponent(0.39) : UIColor.white.withAlphaComponent(0.50)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 110
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -127,7 +199,7 @@ extension BadgesVC{
         let param = ["offset":0,
                      "limit":-1,
                      "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["theme"]] as [String : Any]
+                     "populate":["+theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockableViewModal.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
@@ -147,7 +219,7 @@ extension BadgesVC{
         let param = ["offset":offset,
                      "limit":pageLimit,
                      "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "sort":[["created_at","DESC"]],
+                     "sort":[["badge_id","DESC"]],
                      "populate":["badge"]] as [String : Any]
         if showLoader{
             AppDelegate.shared.showLoading(isShow: true)

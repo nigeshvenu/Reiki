@@ -52,7 +52,7 @@ class NewBadgePopUpVC: UIViewController {
         skeletonAnimationView.trailingAnchor.constraint(equalTo: badgeDecorView.trailingAnchor, constant: 0).isActive = true
     }
     
-    func getBadeDesc()->String{
+    /*func getBadeDesc()->String{
         if self.badge == "Badge 1"{
            return "You have gained badge 1 for completing 1 week of non consecutive calendar days."
         }else if self.badge == "Badge 2"{
@@ -68,6 +68,27 @@ class NewBadgePopUpVC: UIViewController {
         }else {
             return "You have gained badge 7 for completing 3 weeks of consecutive calendar days."
         }
+    }*/
+    
+    func getBadeDesc()->String{
+        if self.badge == "Badge 1"{
+           return "7 days completed (500 xp)"
+        }else if self.badge == "Badge 2"{
+            return "14 days completed (500xp)"
+        }else if self.badge == "Badge 3"{
+            return "21 days completed (500xp)"
+        }else if self.badge == "Badge 4"{
+            return "30 days completed (1000xp)"
+        }else if self.badge == "Badge 5"{
+            return "7 consecutive days (1000xp)"
+        }else if self.badge == "Badge 6"{
+            return "14 consecutive days (2000 xp)"
+        }else if self.badge == "Badge 7"{
+            return "21 consecutive days(3000 xp)"
+        }else if self.badge == "Badge 8" {
+            return "30 consecutive days (5000 xp)"
+        }
+        return ""
     }
     
     @IBAction func doneBtnClicked(_ sender: Any) {

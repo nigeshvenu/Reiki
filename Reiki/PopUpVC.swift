@@ -36,6 +36,10 @@ class PopUpVC: UIViewController {
         messageLbl.text = messageString
         addLoader()
         playLoaderAnimation()
+        if titleString == "Level Not Reached" || titleString == "minimum gold coin"{
+            yesBtn.isHidden = true
+            noBtn.setTitle("Ok", for: .normal)
+        }
     }
     
     @IBAction func closeBtnClicked(_ sender: Any) {

@@ -15,4 +15,6 @@ class ThemeModal: NSObject {
     var isApplied = false
     var userThemeId = ""
     var themeUrl = ""
+    var isDeleted = ""
+    var isActive = true
 }

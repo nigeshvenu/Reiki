@@ -10,11 +10,14 @@ import UIKit
 class LevelModal: NSObject {
 
     var levelNo = ""
+    var levelName = ""
+    var levelShape = ""
     var levelDate = ""
     var source = ""
     var levelDateSimple = ""
     var levelPoint = ""
     var log = [levelLogModal]()
+    var requiredPoint = ""
 }
 
 class levelLogModal: NSObject{

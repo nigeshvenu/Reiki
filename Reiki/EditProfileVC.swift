@@ -36,7 +36,7 @@ class EditProfileVC: UIViewController {
     @IBOutlet var toolBar: UIToolbar!
     
     var delegate:ProfileEditDelegate?
-    var imagePicker : ImagePicker!
+    var imagePicker : ImagePicker?
     var isRemoveImage = false
     var selectedImage : UIImage?
     var viewModal = EditProfileVM()
@@ -53,9 +53,15 @@ class EditProfileVC: UIViewController {
         initialSettings()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if imagePicker == nil{
+            imagePicker = ImagePicker(presentationController: self,editing: false, delegate: self)
+        }
+    }
+    
     func initialSettings(){
         gradientView.roundCorners(cornerRadius: 20.0, cornerMask: [.layerMinXMaxYCorner,.layerMaxXMaxYCorner])
-        imagePicker = ImagePicker(presentationController: self,editing: false, delegate: self)
         firstNameTxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
         setPlaceholderColor(textfield: firstNameTxt)
         lastNametxt.font = FontHelper.montserratFontSize(fontType: .medium, size: 15)
@@ -142,7 +148,7 @@ class EditProfileVC: UIViewController {
     
     
     @IBAction func cameraBtnClicked(_ sender: UIButton) {
-        imagePicker.present(from: sender)
+        imagePicker?.present(from: sender)
     }
     
     @IBAction func saveBtnClicked(_ sender: Any) {
@@ -180,14 +186,14 @@ class EditProfileVC: UIViewController {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.stateEmpty, type: .danger)
             return false
         }
-        guard let zip = zipTxt.text,!zip.trimmingCharacters(in: .whitespaces).isEmpty else {
+        /*guard let zip = zipTxt.text,!zip.trimmingCharacters(in: .whitespaces).isEmpty else {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.zipEmpty, type: .danger)
             return false
-        }
-        if zipTxt.text!.count < 5{
+        }*/
+        /*if zipTxt.text!.count < 6{
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.zipeCodeInvalid, type: .danger)
             return false
-        }
+        }*/
         guard let timeZone = timeZoneTxt.text,!timeZone.trimmingCharacters(in: .whitespaces).isEmpty else {
             SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.ErrorMessage.timeZoneEmpty, type: .danger)
             return false
@@ -299,7 +305,13 @@ extension EditProfileVC{
         param.updateValue(emailTxt.text!.trimmingCharacters(in: .whitespaces), forKey: "email")
         param.updateValue(cityTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "city")
         param.updateValue(stateTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "state")
-        param.updateValue(zipTxt.text?.trimmingCharacters(in: .whitespaces) ?? "", forKey: "zip")
+        
+        if let zip = zipTxt.text,!zip.trimmingCharacters(in: .whitespaces).isEmpty{
+            param.updateValue(zip.trimmingCharacters(in: .whitespaces), forKey: "zip")
+        }else{
+            param.updateValue(NSNull(), forKey: "zip")
+        }
+        
         if selectedTimeZone != nil{
             param.updateValue(Int(selectedTimeZone!.id)!, forKey: "timezone_id")
         }
@@ -418,7 +430,7 @@ extension EditProfileVC : UITextFieldDelegate{
             return false
         }else if textField == zipTxt{
            // make sure the result is under 16 characters
-           return updatedText.count <= 5
+           return updatedText.count <= 10
         }
         return true
     }

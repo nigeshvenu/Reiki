@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "E0041384-1E05-41AF-A7D8-7B35C8FF65B8"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "01C86B8F-E5F1-444A-BD9B-559DA1ED9C64"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Reiki/CalendarVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "969"
+            endingLineNumber = "969"
+            landmarkName = "createCalendarEventArray()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "01C86B8F-E5F1-444A-BD9B-559DA1ED9C64 - 4e88370f14d63e46"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Reiki.CalendarVC.createCalendarEventArray() -&gt; ()"
+                  moduleName = "Reiki"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/newagesmb/Desktop/Nigesh/My%20Projects/Reiki/Reiki/CalendarVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "958"
+                  endingLineNumber = "958"
+                  offsetFromSymbolStart = "1964">
+               </Location>
+               <Location
+                  uuid = "01C86B8F-E5F1-444A-BD9B-559DA1ED9C64 - 4e88370f14d63e46"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Reiki.CalendarVC.createCalendarEventArray() -&gt; ()"
+                  moduleName = "Reiki"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/newagesmb/Desktop/Nigesh/My%20Projects/Reiki/Reiki/CalendarVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "958"
+                  endingLineNumber = "958"
+                  offsetFromSymbolStart = "1668">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

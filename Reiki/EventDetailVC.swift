@@ -26,6 +26,9 @@ class EventDetailVC: UIViewController {
     @IBOutlet var statusLbl: UILabel!
     @IBOutlet var extraOptionBtn: UIButton!
     @IBOutlet var moreView: UIView!
+    @IBOutlet weak var submitToAdminStackView: UIStackView!
+    @IBOutlet weak var deleteStackView: UIStackView!
+    
     
     var event = EventModal()
     var viewModal = CalendarVM()
@@ -46,17 +49,18 @@ class EventDetailVC: UIViewController {
         super.viewWillAppear(true)
         //getConfigurationRequest(completion: {
             if self.event.eventType == .publicType{
-                self.updateUserActivityRequest()
-                self.getActivityStatusRequest()
+                updateUserActivityRequest()
+                getActivityStatusRequest()
             }else{
-                self.extraOptionBtn.isHidden = self.event.isCompleted
-                self.setUIEventStatus()
-                self.getFavoriteRequest()
+                submitToAdminStackView.isHidden = event.isCustomRequested
+                setUIEventStatus()
+                getFavoriteRequest()
             }
         //})
     }
     
     func initialSettings(){
+        extraOptionBtn.isHidden = self.event.eventType == .publicType
         moreView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         if !event.isCompleted{
             if let activity = UserModal.sharedInstance.configuration.filter({$0.type == "activity"}).first{
@@ -95,6 +99,17 @@ class EventDetailVC: UIViewController {
         eventDescription.numberOfLines = 6
         let noOfLines = countLabelLines(label: eventDescription)
         moreBtn.isHidden = noOfLines < 7
+    }
+    
+    @IBAction func submitToAdminBtnClicked(_ sender: Any) {
+        moreView.isHidden = true
+        if let customRequest = UserModal.sharedInstance.configuration.filter({$0.type == "custom_request"}).first{
+            if (Int(UserModal.sharedInstance.coin) ?? 0) < (Int(customRequest.point) ?? 0){
+                alertSubmitForReviewMinGoldCoins(coins: customRequest.point)
+                return
+            }
+        }
+        alertSubmitForReview()
     }
     
     @IBAction func downBtnClicked(_ sender: UIButton) {
@@ -157,8 +172,9 @@ class EventDetailVC: UIViewController {
     func setUIEventStatus(){
        
         let futureDate = NSCalendar.current.compare(event.eventdateAsDate, to: Date(), toGranularity: .day)
-        
+        deleteStackView.isHidden = false
         if event.isCompleted{
+            deleteStackView.isHidden = true
             statusView.isHidden = false
             statusView.backgroundColor = UIColor.init(hexString: "42980A")
             journalInfoView.isHidden = false
@@ -182,7 +198,7 @@ class EventDetailVC: UIViewController {
             if !event.journal.isEmpty{
                 jouranlLbl.attributedText = "View Journal".withFont(FontHelper.montserratFontSize(fontType: .semiBold, size: 14.0))
             }
-        }else if event.eventType == .publicType && isDateExpired(){ //Expired : Days before yesterday
+        }else if isDateExpired(){ //Expired : Past events
             statusView.isHidden = false
             statusView.backgroundColor = UIColor.init(hexString: "#DE4040")
             journalInfoView.isHidden = true
@@ -208,7 +224,7 @@ class EventDetailVC: UIViewController {
     
     func isDateExpired()->Bool{
         let calendar = Calendar.current
-        let oneDaysAgo = calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
+        let oneDaysAgo = calendar.date(byAdding: .day, value: 0, to: Date()) ?? Date()
         let order = NSCalendar.current.compare(event.eventdateAsDate, to: oneDaysAgo, toGranularity: .day)
         return order == .orderedAscending
     }
@@ -264,6 +280,37 @@ class EventDetailVC: UIViewController {
 
 }
 
+extension EventDetailVC{
+    
+    func alertSubmitForReviewMinGoldCoins(coins:String){
+        let VC = self.getPopUpVC()
+        VC.titleString = "minimum gold coin"
+        VC.messageString = "To submit a custom event, you need a minimum of \(coins) gold coins. Please earn more gold coins to proceed."
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
+    
+    func alertSubmitForReview(){
+        let VC = self.getPopUpVC()
+        VC.titleString = ""
+        VC.messageString = "\(MessageHelper.PopupMessage.submitToAdmin)"
+        VC.noBtnClick  = { [weak self]  in
+            
+        }
+        VC.yesBtnClick  = { [weak self]  in
+            self?.createCustomPublicRequest()
+        }
+        VC.modalPresentationStyle = .overFullScreen
+        self.present(VC, animated: false, completion: nil)
+    }
+}
+
 extension EventDetailVC : EditCustomEventDelegate{
     func eventEdited(event: EventModal) {
         self.event = event
@@ -277,7 +324,7 @@ extension EventDetailVC : AddJournalDelegate{
         self.event.journal = journal
         self.setUIEventStatus()
         if event.eventType == .custom && isCompleted{
-           self.extraOptionBtn.isHidden = true
+           //self.extraOptionBtn.isHidden = true
         }
         if chest != nil{
             self.HiddenChestAlert(card: chest!)
@@ -460,7 +507,7 @@ extension EventDetailVC{
             AppDelegate.shared.showLoading(isShow: false)
             self.event.isCompleted = true
             self.setUIEventStatus()
-            self.extraOptionBtn.isHidden = true
+            //self.extraOptionBtn.isHidden = true
             self.completAlert(xpPoint: "", isHiddenChest: self.viewModal.card)
         } onFailure: { (error) in
             AppDelegate.shared.showLoading(isShow: false)
@@ -480,4 +527,24 @@ extension EventDetailVC{
         })
     }
     
+}
+
+extension EventDetailVC{
+    
+    func createCustomPublicRequest(){
+        if event.eventId.isEmpty{
+           return
+        }
+        let param = ["custom_id":Int(event.eventId)!] as [String:Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.createCustomPublicRequest(urlParams: nil, param: param) { (message) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: MessageHelper.SuccessMessage.eventSubmittedForAdminReview, type: .success)
+            self.event.isCustomRequested = true
+            self.submitToAdminStackView.isHidden = true
+        } onFailure: { (error) in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        }
+    }
 }

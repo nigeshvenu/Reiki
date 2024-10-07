@@ -24,6 +24,10 @@ class EventModal: NSObject {
   var isFavorite = false
   var isCompleted = false
   var isLocked = true
+  var isHoliday = false
+  var isCustomRequested = false
+  var isCustomRequestApproved = false
+  var customUserId = ""
     
     func createModal(dict:[String:Any]){
         eventId = anyToStringConverter(dict: dict, key: "id")
@@ -38,5 +42,11 @@ class EventModal: NSObject {
         if status == "Completed"{
            isCompleted = true
         }
+        if let customRequest = dict["custom_request"] as? [String:Any]{
+           isCustomRequested = true
+           isCustomRequestApproved = anyToStringConverter(dict: customRequest, key: "status") == "Approved"
+        }
+        self.customUserId = anyToStringConverter(dict: dict, key: "custom_user_id")
+        
     }
 }

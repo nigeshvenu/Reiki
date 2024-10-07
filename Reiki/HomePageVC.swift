@@ -8,6 +8,7 @@
 import UIKit
 import SideMenu
 import Lightbox
+import Lottie
 
 class HomePageVC: UIViewController {
 
@@ -19,18 +20,35 @@ class HomePageVC: UIViewController {
     @IBOutlet var levelNumberLbl: UILabel!
     @IBOutlet var prestigeIcon: UIImageView!
     @IBOutlet var purchaseView: UIView!
+    @IBOutlet weak var purchasedAnimatioView: UIView!
+    
+    //Prestige
+    
+    @IBOutlet weak var star1ImageView: UIImageView!
+    @IBOutlet weak var star2ImageView: UIImageView!
+    @IBOutlet weak var star3ImageView: UIImageView!
+    @IBOutlet weak var star4View: UIView!
+    @IBOutlet weak var star4CountLbl: UILabel!
     
     var viewModal = UnlockablesVM()
     var timer: Timer?
     var timerIntervalHour : CGFloat = 3600 * 1
     var timerIntervalSeconds : CGFloat = 3600 * 11
     
+    private let animationView = AnimationView()
+    private var loopMode = LottieLoopMode.loop
+    private var fromProgress: AnimationProgressTime = 0
+    private var toProgress: AnimationProgressTime = 1
+    
+    var animationURLs: [[String: String]]  = []
+    var currentAnimationIndex: Int = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         initialSettings()
-        
+        addAnimationView()
+        userCustomGearRequest()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +85,22 @@ class HomePageVC: UIViewController {
         coinLbl.text = UserModal.sharedInstance.coin
         levelNumberLbl.text = "LVL " + UserModal.sharedInstance.levelNumber
         levelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
-        prestigeIcon.isHidden = !UserModal.sharedInstance.prestige
+        //prestigeIcon.isHidden = !UserModal.sharedInstance.prestige
+        //prestige
+        if !UserModal.sharedInstance.prestige{
+            star1ImageView.isHidden = true
+            star2ImageView.isHidden = true
+            star3ImageView.isHidden = true
+            star4View.isHidden = true
+        }else{
+            let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
+            star1ImageView.isHidden = prestigeTotalRestart == 0
+            star2ImageView.isHidden = prestigeTotalRestart < 2
+            star3ImageView.isHidden = prestigeTotalRestart < 3
+            star4View.isHidden = prestigeTotalRestart < 4
+            star4CountLbl.text = String(prestigeTotalRestart)
+        }
+        
     }
     
     func startTimer(interval:CGFloat){
@@ -207,7 +240,7 @@ extension HomePageVC{
 
 extension HomePageVC{
     
-    func userCustomGearRequest(){
+    /*func userCustomGearRequest(){
         let param = ["offset":0,
                      "limit":-1,
                      "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
@@ -221,7 +254,35 @@ extension HomePageVC{
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
         })
+    }*/
+    
+    func userCustomGearRequest(){
+        let param = ["offset":0,
+                     "limit":-1,
+                     "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
+                     "sort":[["updated_at","ASC"]],
+                     "populate":["custom_gear"]] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        viewModal.getCustomGear(urlParams: param, param: nil, onSuccess: { message in
+            AppDelegate.shared.showLoading(isShow: false)
+            self.loadAnimation()
+            self.characterImageView.isHidden = self.animationURLs.count > 0
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
     }
+    
+    func loadAnimation(){
+        if let purchaseHistory = UserDefaults().array(forKey: "customGear") as? [[String: String]]  {
+            self.animationURLs = purchaseHistory
+            if purchaseHistory.count > 0{
+                self.loadNextAnimation()
+            }
+            print("Total no of animations :\(purchaseHistory.count)")
+        }
+    }
+    
 }
 
 extension HomePageVC{
@@ -336,4 +397,101 @@ extension HomePageVC: SideMenuNavigationControllerDelegate {
     func sideMenuDidDisappear(menu: SideMenuNavigationController, animated: Bool) {
         print("SideMenu Disappeared! (animated: \(animated))")
     }
+}
+
+extension HomePageVC{
+    
+    func addAnimationView(){
+        self.purchasedAnimatioView.addSubview(animationView)
+        animationView.backgroundBehavior = .pauseAndRestore
+        animationView.isUserInteractionEnabled = false
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+          animationView.topAnchor.constraint(equalTo: self.purchasedAnimatioView.topAnchor, constant: 0),
+          animationView.leadingAnchor.constraint(equalTo: self.purchasedAnimatioView.leadingAnchor, constant: 0),
+          animationView.bottomAnchor.constraint(equalTo: self.purchasedAnimatioView.bottomAnchor, constant: 0),
+          animationView.trailingAnchor.constraint(equalTo: self.purchasedAnimatioView.trailingAnchor, constant: 0)
+        ])
+    }
+    
+    func loadNextAnimation() {
+        guard currentAnimationIndex < animationURLs.count else {
+            print("All animations loaded")
+            currentAnimationIndex = 0
+            resetCompletedStatus()
+            loadNextAnimation()
+            return
+        }
+        let animationModal = animationURLs[currentAnimationIndex]
+        if animationModal["completed"] == "N" {
+            guard let urlString = animationModal["url"], let url = URL(string: urlString) else {
+                print("Invalid URL format at index \(currentAnimationIndex)")
+                currentAnimationIndex += 1
+                loadNextAnimation()
+                return
+            }
+            //Load animation from url
+            loadAnimationFromUrl(url: url)
+        } else {
+            currentAnimationIndex += 1
+            loadNextAnimation()
+        }
+    }
+    
+    func loadAnimationFromUrl(url:URL){
+        Animation.loadedFrom(url: url, closure: { [weak self] animation in
+            guard let self = self else { return }
+            if let animation = animation {
+                print("Animation Started Playing at index : \(currentAnimationIndex)")
+                self.animationView.animation = animation
+                self.animationView.contentMode = .scaleAspectFit
+                //Play Animation
+                self.playAnimation(completion: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    strongSelf.updateCompletionStatus()
+                })
+            }else {
+                print("Failed to load animation at index \(self.currentAnimationIndex)")
+                self.currentAnimationIndex += 1
+                self.loadNextAnimation()
+            }
+        }, animationCache: LRUAnimationCache.sharedCache)
+    }
+
+    func updateCompletionStatus() {
+        guard let purchaseHistory = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]],
+              currentAnimationIndex < purchaseHistory.count else {
+            currentAnimationIndex += 1
+            loadNextAnimation()
+            return
+        }
+
+        var updatedPurchaseHistory = purchaseHistory
+        updatedPurchaseHistory[currentAnimationIndex]["completed"] = "Y"
+        UserDefaults.standard.set(updatedPurchaseHistory, forKey: "customGear")
+        animationURLs = updatedPurchaseHistory
+        currentAnimationIndex += 1
+        loadNextAnimation()
+    }
+    
+    func resetCompletedStatus(){
+        if var purchaseHistory = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]] {
+            for index in 0..<purchaseHistory.count {
+                purchaseHistory[index]["completed"] = "N"
+            }
+            UserDefaults.standard.set(purchaseHistory, forKey: "customGear")
+            self.animationURLs = purchaseHistory
+        }
+    }
+    
+    func playAnimation(completion: (() -> Void)? = nil) {
+    
+        animationView.play { status in
+            if status{
+                print("Animation Completed Playing")
+                completion?()
+            }
+        }
+    }
+    
 }
