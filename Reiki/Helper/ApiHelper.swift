@@ -12,10 +12,10 @@ struct APIUrl {
     
     #if DEBUG
     //Dev
-    //static let BaseURL = "https://apps-dev.myreikicalendar.com/"
+    static let BaseURL = "https://apps-dev.myreikicalendar.com/"
 
     //Staging
-    static let BaseURL = "https://apps-staging.myreikicalendar.com/"
+    //static let BaseURL = "https://apps-staging.myreikicalendar.com/"
    
     //Production
    
@@ -33,26 +33,6 @@ struct APIUrl {
     
 }
 
-struct Key{
-#if DEBUG
-    //Dev
-    //static let placesKey = "AIzaSyB23TUxw8OnaZ3h6LmIWu7--OYkPVyY_lw"
-    //Staging
-    //static let placesKey = "AIzaSyB23TUxw8OnaZ3h6LmIWu7--OYkPVyY_lw"
-    //Production
-    static let placesKey = "AIzaSyCAheDBbeg_qS-7qDOjVR06532vauCkvv8"
-    
-#else
-    //Dev
-    //static let placesKey = "AIzaSyB23TUxw8OnaZ3h6LmIWu7--OYkPVyY_lw"
-    //Staging
-    //static let placesKey = "AIzaSyB23TUxw8OnaZ3h6LmIWu7--OYkPVyY_lw"
-    //Production
-    static let placesKey = "AIzaSyCAheDBbeg_qS-7qDOjVR06532vauCkvv8"
-    
-#endif
-    
-}
 
 struct APIFunction {
     static var user_card = "user_card"
