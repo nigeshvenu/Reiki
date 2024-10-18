@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         UIApplication.shared.applicationIconBadgeNumber = 0
+        
         return true
     }
 
@@ -165,7 +166,7 @@ extension AppDelegate  : MessagingDelegate ,UNUserNotificationCenterDelegate {
                                 }
                             }else{
                                 if let event = self.getObject(userInfo: userInfo){
-                                   let modal = EventModal()
+                                    let modal = EventModal()
                                     modal.createModal(dict: event)
                                     modal.eventType = .custom
                                     self.getEventDetail(event: modal)
@@ -192,6 +193,7 @@ extension AppDelegate  : MessagingDelegate ,UNUserNotificationCenterDelegate {
                 modal.type = type
                 modal.levelNo = level
                 modal.isprestige = prestige == "true" ? true : false
+                modal.totalRestart = Int((userInfo["total_restart"] as? String) ?? "0") ?? 0
                 notificationArray.append(modal)
             }else if type == "badge"{
                 if let badge = getArray(userInfo: userInfo){
@@ -221,22 +223,25 @@ extension AppDelegate  : MessagingDelegate ,UNUserNotificationCenterDelegate {
     
     func getObject(userInfo:[AnyHashable: Any])->[String:Any]?{
         do {
-          let dd =  userInfo["event"] as! String
-          let con = try JSONSerialization.jsonObject(with: dd.data(using: .utf8)!, options: []) as! [String:Any]
-          return con
+            if let dd =  userInfo["event"] as? String{
+                let con = try JSONSerialization.jsonObject(with: dd.data(using: .utf8)!, options: []) as! [String:Any]
+                return con
+            }
+            return nil
         }catch {
            print(error)
             return nil
         }
     }
     
-    func getlevelPopup(level:String,prestige:Bool){
+    func getlevelPopup(level:String,prestige:Bool,totalRestart:Int){
       if let rootViewController = self.window!.rootViewController as? UINavigationController {
           let storyboard = UIStoryboard(name: "Main", bundle: nil)
           if let viewcontroller = storyboard.instantiateViewController(withIdentifier: "LevelUPPopUpVC") as? LevelUPPopUpVC {
              viewcontroller.modalPresentationStyle = .overFullScreen
              viewcontroller.level = level
              viewcontroller.isprestige = prestige
+             viewcontroller.prestigeRestartCount = totalRestart
              rootViewController.present(viewcontroller, animated: false)
           }
        }
@@ -272,7 +277,7 @@ extension AppDelegate{
                 if topController.presentedViewController == nil{
                     for i in notificationArray{
                         if i.type == "level"{
-                            self.getlevelPopup(level: i.levelNo, prestige: i.isprestige)
+                            self.getlevelPopup(level: i.levelNo, prestige: i.isprestige, totalRestart: i.totalRestart)
                             self.notificationArray.remove(at: 0)
                             return
                         }else if i.type == "badge"{

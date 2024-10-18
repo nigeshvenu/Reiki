@@ -11,6 +11,7 @@ class GoldCoinVC: UIViewController {
 
     
     @IBOutlet var backgroundImageView: CustomImageView!
+    @IBOutlet weak var transitionView: UIImageView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var listEmptyLbl: UILabel!
     @IBOutlet var goldCoinLbl: UILabel!
@@ -21,7 +22,7 @@ class GoldCoinVC: UIViewController {
     private var backgroundTimer: Timer?
     
     var previouslySelectedThemes: [ThemeModal] = []
-    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    var themeDurationSeconds : CGFloat = 35.0 //Seconds
     
     // Invalidate the timer when the view controller is deallocated
     deinit {
@@ -39,6 +40,11 @@ class GoldCoinVC: UIViewController {
         super.viewWillAppear(animated)
         getUserThemes()
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        backgroundTimer?.invalidate()
     }
 
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -66,11 +72,16 @@ class GoldCoinVC: UIViewController {
 extension GoldCoinVC{
     
     func getRandomUniqueTheme() -> ThemeModal? {
-        let availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        var availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        if availableThemes.isEmpty {
+            // Reset if all themes have been used
+            previouslySelectedThemes.removeAll()
+            availableThemes = self.unlockablesVM.themeArray
+        }
         
         guard let selectedTheme = availableThemes.randomElement() else {
-            previouslySelectedThemes.removeAll() // Reset if all themes have been used
-            return getRandomUniqueTheme()
+            return nil // Handle case where no themes are available
         }
         
         previouslySelectedThemes.append(selectedTheme)
@@ -118,14 +129,16 @@ extension GoldCoinVC{
         if let themes = getRandomUniqueTheme() {
             // Fade out the current image
             UIView.animate(withDuration: 0.5, animations: {
-                self.backgroundImageView.alpha = 0
+                self.transitionView.backgroundColor = UIColor.black
+                self.transitionView.alpha = 1
             }, completion: { _ in
                 // Once the fade-out is complete, update the image
                 self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
                 
                 // Fade in the new image
                 UIView.animate(withDuration: 0.5) {
-                    self.backgroundImageView.alpha = 1
+                    self.transitionView.backgroundColor = UIColor.clear
+                    self.transitionView.alpha = 0
                 }
             })
         }
@@ -137,12 +150,13 @@ extension GoldCoinVC{
     func getUserThemes(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["+theme"]] as [String : Any]
+                     "where":["$theme.active$":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "populate":["theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
             self.getCoinsRequest()
+            self.previouslySelectedThemes.removeAll()
             self.setCalendarBackground(date: Date())
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

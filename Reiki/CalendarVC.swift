@@ -14,6 +14,8 @@ import Switches
 class CalendarVC: UIViewController,KVKCalendarSettings {
     
     @IBOutlet var backgroundImageView: CustomImageView!
+    @IBOutlet weak var transitionView: UIImageView!
+    
     @IBOutlet var titleLbl: UILabel!
     @IBOutlet var monthBtn: UIButton!
     @IBOutlet var yearBtn: UIButton!
@@ -48,7 +50,7 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
     private var backgroundTimer: Timer?
     
     var previouslySelectedThemes: [ThemeModal] = []
-    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    var themeDurationSeconds : CGFloat = 35.0 //Seconds
     
     @IBOutlet weak var randomE: YapSwitch! {
         didSet {
@@ -89,6 +91,8 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         initialSettings()
+        
+        //AppDelegate.shared.getlevelPopup(level: "1", prestige: true)
     }
 
     func initialSettings(){
@@ -147,6 +151,11 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
         getConfigurationRequest()
         getUserThemes()
         commonSettings(date: selectDate,setCalendarImage: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        backgroundTimer?.invalidate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -324,11 +333,16 @@ class CalendarVC: UIViewController,KVKCalendarSettings {
 extension CalendarVC{
     
     func getRandomUniqueTheme() -> ThemeModal? {
-        let availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        var availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        if availableThemes.isEmpty {
+            // Reset if all themes have been used
+            previouslySelectedThemes.removeAll()
+            availableThemes = self.unlockablesVM.themeArray
+        }
         
         guard let selectedTheme = availableThemes.randomElement() else {
-            previouslySelectedThemes.removeAll() // Reset if all themes have been used
-            return getRandomUniqueTheme()
+            return nil // Handle case where no themes are available
         }
         
         previouslySelectedThemes.append(selectedTheme)
@@ -374,16 +388,19 @@ extension CalendarVC{
     
     @objc private func updateBackgroundImage() {
         if let themes = getRandomUniqueTheme() {
+            print("Theme changed")
             // Fade out the current image
             UIView.animate(withDuration: 0.5, animations: {
-                self.backgroundImageView.alpha = 0
+                self.transitionView.backgroundColor = UIColor.black
+                self.transitionView.alpha = 1
             }, completion: { _ in
                 // Once the fade-out is complete, update the image
                 self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
                 
                 // Fade in the new image
                 UIView.animate(withDuration: 0.5) {
-                    self.backgroundImageView.alpha = 1
+                    self.transitionView.backgroundColor = UIColor.clear
+                    self.transitionView.alpha = 0
                 }
             })
         }
@@ -1043,11 +1060,13 @@ extension CalendarVC{
         self.navigationController?.pushViewController(VC, animated: true)
     }
     
-    func getObject(userInfo:[String:Any])->[String:Any]?{
+    func getObject(userInfo:[AnyHashable: Any])->[String:Any]?{
         do {
-          let dd =  userInfo["event"] as! String
-          let con = try JSONSerialization.jsonObject(with: dd.data(using: .utf8)!, options: []) as! [String:Any]
-          return con
+            if let dd =  userInfo["event"] as? String{
+                let con = try JSONSerialization.jsonObject(with: dd.data(using: .utf8)!, options: []) as! [String:Any]
+                return con
+            }
+            return nil
         }catch {
            print(error)
             return nil
@@ -1057,11 +1076,12 @@ extension CalendarVC{
     func getUserThemes(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["+theme"]] as [String : Any]
+                     "where":["$theme.active$":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "populate":["theme"]] as [String : Any]
         //AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
+            self.previouslySelectedThemes.removeAll()
             self.setCalendarBackground(date: self.monthCalendarView.currentPage)
         }, onFailure: { error in
             //AppDelegate.shared.showLoading(isShow: false)

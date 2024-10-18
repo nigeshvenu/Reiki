@@ -48,13 +48,13 @@ class HomePageVC: UIViewController {
         // Do any additional setup after loading the view.
         initialSettings()
         addAnimationView()
-        userCustomGearRequest()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.setAvatarImage()
         self.getUserRequest()
+        userCustomGearRequest()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,9 +94,9 @@ class HomePageVC: UIViewController {
             star4View.isHidden = true
         }else{
             let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
-            star1ImageView.isHidden = prestigeTotalRestart == 0
-            star2ImageView.isHidden = prestigeTotalRestart < 2
-            star3ImageView.isHidden = prestigeTotalRestart < 3
+            star1ImageView.isHidden = prestigeTotalRestart == 0 || prestigeTotalRestart > 3
+            star2ImageView.isHidden = prestigeTotalRestart < 2 || prestigeTotalRestart > 3
+            star3ImageView.isHidden = prestigeTotalRestart < 3 || prestigeTotalRestart > 3
             star4View.isHidden = prestigeTotalRestart < 4
             star4CountLbl.text = String(prestigeTotalRestart)
         }
@@ -259,7 +259,7 @@ extension HomePageVC{
     func userCustomGearRequest(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
+                     "where":["$custom_gear.active$":true,"user_id":Int(UserModal.sharedInstance.userId)!,"applied":true],
                      "sort":[["updated_at","ASC"]],
                      "populate":["custom_gear"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
@@ -267,6 +267,7 @@ extension HomePageVC{
             AppDelegate.shared.showLoading(isShow: false)
             self.loadAnimation()
             self.characterImageView.isHidden = self.animationURLs.count > 0
+            self.purchasedAnimatioView.isHidden = self.animationURLs.count == 0
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
@@ -280,6 +281,8 @@ extension HomePageVC{
                 self.loadNextAnimation()
             }
             print("Total no of animations :\(purchaseHistory.count)")
+        }else{
+            self.animationURLs.removeAll()
         }
     }
     
@@ -415,6 +418,10 @@ extension HomePageVC{
     }
     
     func loadNextAnimation() {
+        if animationURLs.count == 0{
+           currentAnimationIndex = 0
+           return
+        }
         guard currentAnimationIndex < animationURLs.count else {
             print("All animations loaded")
             currentAnimationIndex = 0

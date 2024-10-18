@@ -391,7 +391,7 @@ class UnlockablesVM: NSObject {
            
        }
     
-    /*func getCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
+    func getCustomGear(urlParams:[String:Any]?,param:[String:Any]?,onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void){
         let function = APIFunction.user_custom_gear
         RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
                if let error = result["error"] as? String{
@@ -419,15 +419,15 @@ class UnlockablesVM: NSObject {
                             }
                         }
                     }
-                    
-                    if let purchaseHistory = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]] {
+                    UserDefaults.standard.set(customGearArray, forKey: "customGear")
+                    /*if let purchaseHistory = UserDefaults.standard.array(forKey: "customGear") as? [[String: String]] {
                         
                     } else {
                         UserDefaults.standard.set(customGearArray, forKey: "customGear")
                     }
                     if self.purchaseHistoryArray.count == 0{
                         UserDefaults.standard.removeObject(forKey: "customGear")
-                    }
+                    }*/
                 }
                 if let message = result["message"] as? String{
                     onSuccess(message)
@@ -436,9 +436,9 @@ class UnlockablesVM: NSObject {
                onFailure(error)
            })
            
-       }*/
+       }
   
-    func getCustomGear(urlParams: [String: Any]?, param: [String: Any]?, onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void) {
+    /*func getCustomGear(urlParams: [String: Any]?, param: [String: Any]?, onSuccess: @escaping (String) -> Void, onFailure: @escaping (String) -> Void) {
         let function = APIFunction.user_custom_gear
         RequestManager.serverRequestWithToken(function: function, method: .get, urlParams: urlParams, parameters: param, onSuccess: { result in
             if let error = result["error"] as? String, !error.isEmpty {
@@ -500,7 +500,7 @@ class UnlockablesVM: NSObject {
         }, onFailure: { error in
             onFailure(error)
         })
-    }
+    }*/
 
 }
 

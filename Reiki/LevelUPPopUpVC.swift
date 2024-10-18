@@ -14,7 +14,7 @@ class LevelUPPopUpVC: UIViewController {
     @IBOutlet var lvlImageView: UIImageView!
     @IBOutlet var lvlLbl: UILabel!
     @IBOutlet var lvlDescLbl: UILabel!
-    @IBOutlet var prestigeImgView: UIImageView!
+    //@IBOutlet var prestigeImgView: UIImageView!
     
     //Prestige
     
@@ -28,6 +28,7 @@ class LevelUPPopUpVC: UIViewController {
     private let skeletonAnimationView = AnimationView()
     var level = ""
     var isprestige = false
+    var prestigeRestartCount = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,19 +49,19 @@ class LevelUPPopUpVC: UIViewController {
         lvlImageView.image = LevelImageHelper.getImage(leveNumber: level)
         lvlLbl.text = "LVL \(level)"
         lvlDescLbl.text = "You have reached lvl \(level) now."
-        prestigeImgView.isHidden = !isprestige
+        //prestigeImgView.isHidden = !isprestige
         
         //prestige
-        if !UserModal.sharedInstance.prestige{
+        if !isprestige{
             star1ImageView.isHidden = true
             star2ImageView.isHidden = true
             star3ImageView.isHidden = true
             star4View.isHidden = true
         }else{
-            let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
-            star1ImageView.isHidden = prestigeTotalRestart == 0
-            star2ImageView.isHidden = prestigeTotalRestart < 2
-            star3ImageView.isHidden = prestigeTotalRestart < 3
+            let prestigeTotalRestart = prestigeRestartCount
+            star1ImageView.isHidden = prestigeTotalRestart == 0 || prestigeTotalRestart > 3
+            star2ImageView.isHidden = prestigeTotalRestart < 2 || prestigeTotalRestart > 3
+            star3ImageView.isHidden = prestigeTotalRestart < 3 || prestigeTotalRestart > 3
             star4View.isHidden = prestigeTotalRestart < 4
             star4CountLbl.text = String(prestigeTotalRestart)
         }

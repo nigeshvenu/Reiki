@@ -17,6 +17,7 @@ class AddJournalVC: UIViewController {
     @IBOutlet var textView: UITextView!
     @IBOutlet var cancelBtn: UIButton!
     @IBOutlet var backgroundImageView: CustomImageView!
+    @IBOutlet weak var transitionView: UIImageView!
     @IBOutlet var saveBtn: UIButton!
     @IBOutlet var saveAndCompleteBtn: UIButton!
     @IBOutlet var typeHereLbl: UILabel!
@@ -37,7 +38,7 @@ class AddJournalVC: UIViewController {
     private var backgroundTimer: Timer?
     
     var previouslySelectedThemes: [ThemeModal] = []
-    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    var themeDurationSeconds : CGFloat = 35.0 //Seconds
     
     // Invalidate the timer when the view controller is deallocated
     deinit {
@@ -55,6 +56,11 @@ class AddJournalVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         getUserThemes()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        backgroundTimer?.invalidate()
     }
     
     func initialSettings(){
@@ -175,11 +181,16 @@ class AddJournalVC: UIViewController {
 extension AddJournalVC{
     
     func getRandomUniqueTheme() -> ThemeModal? {
-        let availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        var availableThemes = self.unlockablesVM.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        if availableThemes.isEmpty {
+            // Reset if all themes have been used
+            previouslySelectedThemes.removeAll()
+            availableThemes = self.unlockablesVM.themeArray
+        }
         
         guard let selectedTheme = availableThemes.randomElement() else {
-            previouslySelectedThemes.removeAll() // Reset if all themes have been used
-            return getRandomUniqueTheme()
+            return nil // Handle case where no themes are available
         }
         
         previouslySelectedThemes.append(selectedTheme)
@@ -227,14 +238,16 @@ extension AddJournalVC{
         if let themes = getRandomUniqueTheme() {
             // Fade out the current image
             UIView.animate(withDuration: 0.5, animations: {
-                self.backgroundImageView.alpha = 0
+                self.transitionView.backgroundColor = UIColor.black
+                self.transitionView.alpha = 1
             }, completion: { _ in
                 // Once the fade-out is complete, update the image
                 self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
                 
                 // Fade in the new image
                 UIView.animate(withDuration: 0.5) {
-                    self.backgroundImageView.alpha = 1
+                    self.transitionView.backgroundColor = UIColor.clear
+                    self.transitionView.alpha = 0
                 }
             })
         }
@@ -332,11 +345,12 @@ extension AddJournalVC{
     func getUserThemes(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["+theme"]] as [String : Any]
+                     "where":["$theme.active$":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "populate":["theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockablesVM.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
+            self.previouslySelectedThemes.removeAll()
             self.setCalendarBackground(date: self.event.eventdateAsDate)
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)

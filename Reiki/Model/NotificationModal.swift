@@ -12,5 +12,6 @@ class NotificationModal: NSObject {
     var levelNo = ""
     var bageNo = ""
     var isprestige = false
+    var totalRestart = 0
     
 }

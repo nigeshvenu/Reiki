@@ -9,6 +9,7 @@ import UIKit
 
 class LevelVC: UIViewController {
     @IBOutlet var backgroundImageView: CustomImageView!
+    @IBOutlet weak var transitionView: UIImageView!
     @IBOutlet var tableView: UITableView!
     @IBOutlet var listEmptyLbl: UILabel!
     @IBOutlet var NormalView: UIView!
@@ -45,7 +46,7 @@ class LevelVC: UIViewController {
     private var backgroundTimer: Timer?
     
     var previouslySelectedThemes: [ThemeModal] = []
-    var themeDurationSeconds : CGFloat = 45.0 //Seconds
+    var themeDurationSeconds : CGFloat = 35.0 //Seconds
     
     // Invalidate the timer when the view controller is deallocated
     deinit {
@@ -85,15 +86,15 @@ class LevelVC: UIViewController {
     }
     
     func setTopView(){
-        resetBtn.isHidden = !(UserModal.sharedInstance.levelNumber == "12" && (Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0) == 12)
+        resetBtn.isHidden = !(UserModal.sharedInstance.levelNumber == "12" && (Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0) < 12)
         levelNumberLbl.text = "Level " + UserModal.sharedInstance.levelNumber
         levelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
         prestigeLevelImage.image = LevelImageHelper.getImage(leveNumber: UserModal.sharedInstance.levelNumber)
         prestigeLevelNumberLbl.text = "Level " + UserModal.sharedInstance.levelNumber
         let prestigeTotalRestart = Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0
-        star1ImageView.isHidden = prestigeTotalRestart == 0
-        star2ImageView.isHidden = prestigeTotalRestart < 2
-        star3ImageView.isHidden = prestigeTotalRestart < 3
+        star1ImageView.isHidden = prestigeTotalRestart == 0 || prestigeTotalRestart > 3
+        star2ImageView.isHidden = prestigeTotalRestart < 2 || prestigeTotalRestart > 3
+        star3ImageView.isHidden = prestigeTotalRestart < 3 || prestigeTotalRestart > 3
         star4View.isHidden = prestigeTotalRestart < 4
         star4CountLbl.text = String(prestigeTotalRestart)
     }
@@ -107,6 +108,11 @@ class LevelVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         setProgressLevel()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        backgroundTimer?.invalidate()
     }
     
     @IBAction func backBtnClicked(_ sender: Any) {
@@ -180,12 +186,18 @@ extension LevelVC{
 //Themes
 extension LevelVC{
     
+
     func getRandomUniqueTheme() -> ThemeModal? {
-        let availableThemes = self.unlockableViewModal.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        var availableThemes = self.unlockableViewModal.themeArray.filter { !previouslySelectedThemes.contains($0) }
+        
+        if availableThemes.isEmpty {
+            // Reset if all themes have been used
+            previouslySelectedThemes.removeAll()
+            availableThemes = self.unlockableViewModal.themeArray
+        }
         
         guard let selectedTheme = availableThemes.randomElement() else {
-            previouslySelectedThemes.removeAll() // Reset if all themes have been used
-            return getRandomUniqueTheme()
+            return nil // Handle case where no themes are available
         }
         
         previouslySelectedThemes.append(selectedTheme)
@@ -233,14 +245,16 @@ extension LevelVC{
         if let themes = getRandomUniqueTheme() {
             // Fade out the current image
             UIView.animate(withDuration: 0.5, animations: {
-                self.backgroundImageView.alpha = 0
+                self.transitionView.backgroundColor = UIColor.black
+                self.transitionView.alpha = 1
             }, completion: { _ in
                 // Once the fade-out is complete, update the image
                 self.backgroundImageView.ImageViewLoading(mediaUrl: themes.themeUrl, placeHolderImage: nil)
                 
                 // Fade in the new image
                 UIView.animate(withDuration: 0.5) {
-                    self.backgroundImageView.alpha = 1
+                    self.transitionView.backgroundColor = UIColor.clear
+                    self.transitionView.alpha = 0
                 }
             })
         }
@@ -423,12 +437,13 @@ extension LevelVC{
     func getUserThemes(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":["active":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
-                     "populate":["+theme"]] as [String : Any]
+                     "where":["$theme.active$":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "populate":["theme"]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         unlockableViewModal.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
             //AppDelegate.shared.showLoading(isShow: false)
             self.getlevelRequest(showLoader: false)
+            self.previouslySelectedThemes.removeAll()
             self.setCalendarBackground(date: Date())
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
@@ -473,9 +488,27 @@ extension LevelVC{
             UserModal.sharedInstance.levelNumber = "1"
             UserModal.sharedInstance.points = "0"
             UserModal.sharedInstance.totalPrestigeRestart =  String((Int(UserModal.sharedInstance.totalPrestigeRestart) ?? 0) + 1)
+            self.setProgressLevel()
             self.setTopView()
             self.resetPagenation()
             self.getlevelRequest(showLoader: true)
+            self.getUserThemesAfterReset()
+        }, onFailure: { error in
+            AppDelegate.shared.showLoading(isShow: false)
+            SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)
+        })
+    }
+    
+    func getUserThemesAfterReset(){
+        let param = ["offset":0,
+                     "limit":-1,
+                     "where":["$theme.active$":true,"applied":true,"user_id":Int(UserModal.sharedInstance.userId)!],
+                     "populate":["theme"]] as [String : Any]
+        AppDelegate.shared.showLoading(isShow: true)
+        unlockableViewModal.getUserThemes(urlParams: param, param: nil, onSuccess: { message in
+            //AppDelegate.shared.showLoading(isShow: false)
+            self.previouslySelectedThemes.removeAll()
+            self.setCalendarBackground(date: Date())
         }, onFailure: { error in
             AppDelegate.shared.showLoading(isShow: false)
             SwiftMessagesHelper.showSwiftMessage(title: "", body: error, type: .danger)

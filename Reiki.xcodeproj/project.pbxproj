@@ -1239,7 +1239,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.14;
+				MARKETING_VERSION = 0.6.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;
@@ -1282,7 +1282,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.14;
+				MARKETING_VERSION = 0.6.17;
 				PRODUCT_BUNDLE_IDENTIFIER = com.newagesmb.Reiki;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Reiki_Dev;

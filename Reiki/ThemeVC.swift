@@ -154,7 +154,7 @@ extension ThemeVC{
     func getThemesRequest(){
         let param = ["offset":0,
                      "limit":-1,
-                     "where":[]] as [String : Any]
+                     "where":["active":true]] as [String : Any]
         AppDelegate.shared.showLoading(isShow: true)
         viewModal.getThemes(urlParams: param, param: nil, onSuccess: { message in
             AppDelegate.shared.showLoading(isShow: false)
